@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,7 +67,8 @@ public class TargetListActivity extends ListPageActivity<Target> {
             new ExcelView.D<>("价格-标记", d -> TextUtil.net(this.getMarkPrice(d)), C, C, CommonUtil.nullsLast(this::getMarkPrice)),
             new ExcelView.D<>("价格-目标", d -> TextUtil.net(this.getTargetPrice(d)), C, C, CommonUtil.nullsLast(this::getTargetPrice)),
             new ExcelView.D<>("涨跌幅", d -> TextUtil.hundred(d.getRate()), C, C, CommonUtil.nullsLast(Target::getRate)),
-            new ExcelView.D<>("涨跌幅-目标", d -> TextUtil.hundred(this.getTargetRate(d)), C, C, CommonUtil.nullsLast(this::getTargetRate))
+            new ExcelView.D<>("涨跌幅-目标", d -> TextUtil.hundred(this.getTargetRate(d)), C, C, CommonUtil.nullsLast(this::getTargetRate)),
+            new ExcelView.D<>("操作", d -> TextUtil.text(this.getHandleText()), C, C, this.handle())
     );
 
     @Override
@@ -140,4 +142,20 @@ public class TargetListActivity extends ListPageActivity<Target> {
         return mark.getPrice() * (1 + ("1".equals(type) ? mark.getRateBuy() : mark.getRateSell()));
     }
 
+    private String getHandleText() {
+        String type = this.typeSel.getValue();
+        if ("0".equals(type)) {
+            return null;
+        } else if ("1".equals(type)) {
+            return "+";
+        } else if ("2".equals(type)) {
+            return "-";
+        } else {
+            return null;
+        }
+    }
+
+    private Consumer<Target> handle() {
+        return null;
+    }
 }

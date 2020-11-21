@@ -12,10 +12,6 @@ import java.util.Map;
 public class FundRate extends Net {
 
     /**
-     * 名称
-     */
-    private String name;
-    /**
      * 净资产规模
      */
     private Double scale;
@@ -23,14 +19,6 @@ public class FundRate extends Net {
      * 涨幅map
      */
     private final Map<String, Double> rates = new HashMap<>();
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Double getScale() {
         return scale;

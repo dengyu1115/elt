@@ -102,10 +102,10 @@ public class ItemQuotaActivity extends ListPageActivity<ItemQuota> {
         return d -> {
             Intent intent;
             if (DefaultGroup.FUND.getCode().equals(this.group.getType())) {
-                intent = new Intent(this, FundLineViewActivity.class);
+                intent = new Intent(context, FundLineViewActivity.class);
                 intent.putExtra("fund", JSON.toJSONString(d));
             } else {
-                intent = new Intent(this, KlineViewActivity.class);
+                intent = new Intent(context, KlineViewActivity.class);
                 intent.putExtra("market", d.getMarket());
                 intent.putExtra("code", d.getCode());
             }

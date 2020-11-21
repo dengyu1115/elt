@@ -6,11 +6,8 @@ package com.nature.kline.common.model;
  * @version 1.0.0
  * @since 2020/4/4 18:26
  */
-public class Net extends BaseModel {
-    /**
-     * 编号
-     */
-    private String code;
+public class Net extends Item {
+
     /**
      * 日期
      */
@@ -31,15 +28,6 @@ public class Net extends BaseModel {
      * 总增长率
      */
     private Double rateTotal;
-
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getDate() {
         return date;

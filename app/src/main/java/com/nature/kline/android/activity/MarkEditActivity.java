@@ -2,6 +2,7 @@ package com.nature.kline.android.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import com.alibaba.fastjson.JSON;
 import com.nature.kline.android.util.PopUtil;
 import com.nature.kline.android.util.ViewTemplate;
 import com.nature.kline.android.util.ViewUtil;
@@ -65,6 +67,7 @@ public class MarkEditActivity extends AppCompatActivity {
             itemSelector.refreshData(li);
         };
         typeSelector.mapper(DefaultGroup::getName).onChangeRun(run).init().refreshData(DefaultGroup.codes());
+        this.initSelected();
         date.setOnClickListener(v -> template.datePiker(date));
         keyword.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,23 +125,38 @@ public class MarkEditActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("DefaultLocale")
+    private void initSelected() {
+        Intent intent = this.getIntent();
+        String type = intent.getStringExtra("type");
+        Item item = JSON.parseObject(intent.getStringExtra("item"), Item.class);
+        if (item == null) {
+            return;
+        }
+        this.typeSelector.setValue(type);
+        this.itemSelector.setValue(item);
+        this.recommend();
+    }
+
+
     private Runnable change() {
-        return () -> {
-            Item item = itemSelector.getValue();
-            Mark mark = markManager.recommend(item);
-            if (mark == null) {
-                this.date.setText("");
-                this.price.setText("");
-                this.rateBuy.setText("");
-                this.rateSell.setText("");
-            } else {
-                this.date.setText(mark.getDate());
-                this.price.setText(String.valueOf(mark.getPrice()));
-                this.rateBuy.setText(String.format("%.4f", mark.getRateBuy()));
-                this.rateSell.setText(String.format("%.4f", mark.getRateSell()));
-            }
-        };
+        return this::recommend;
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void recommend() {
+        Item item = itemSelector.getValue();
+        Mark mark = markManager.recommend(item);
+        if (mark == null) {
+            this.date.setText("");
+            this.price.setText("");
+            this.rateBuy.setText("");
+            this.rateSell.setText("");
+        } else {
+            this.date.setText(mark.getDate());
+            this.price.setText(String.valueOf(mark.getPrice()));
+            this.rateBuy.setText(String.format("%.4f", mark.getRateBuy()));
+            this.rateSell.setText(String.format("%.4f", mark.getRateSell()));
+        }
     }
 
     public void makeStructure() {
@@ -175,7 +193,6 @@ public class MarkEditActivity extends AppCompatActivity {
         page.addView(l6);
         page.addView(l7);
         page.addView(l8);
-
     }
 
 }

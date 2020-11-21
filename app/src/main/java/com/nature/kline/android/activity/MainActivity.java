@@ -86,12 +86,12 @@ public class MainActivity extends AppCompatActivity {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, LineViewActivity.class)));
     }
 
-    public void toEditGroup(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, GroupEditActivity.class)));
+    public void toManageGroup(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, GroupListActivity.class)));
     }
 
     public void toEditItemGroup(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemGroupEditActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemGroupActivity.class)));
     }
 
     public void toTradeEdit(View view) {

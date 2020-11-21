@@ -31,13 +31,16 @@ public class FundRateManager {
     public List<FundRate> list(Definition def, Group group, String date, String keyword) {
         List<FundRate> list = fundRateMapper.listByDate(date);
         if (list.isEmpty()) return list;
-        Map<String, String> items = itemManager.list().stream().collect(Collectors.toMap(Item::getCode, Item::getName));
+        List<Item> items = itemManager.list();
+        Map<String, String> names = items.stream().collect(Collectors.toMap(Item::getCode, Item::getName));
+        Map<String, String> markets = items.stream().collect(Collectors.toMap(Item::getCode, Item::getMarket));
         Map<String, Double> scales = scaleManager.listLast(date).stream()
                 .collect(Collectors.toMap(Scale::getCode, Scale::getAmount));
         list = list.stream().peek(i -> {
-            i.setName(items.get(i.getCode()));
+            i.setName(names.get(i.getCode()));
+            i.setMarket(markets.get(i.getCode()));
             i.setScale(scales.get(i.getCode()));
-        }).filter(i -> doFilter(i, keyword)).collect(Collectors.toList());
+        }).filter(i -> Objects.nonNull(i.getMarket())).filter(i -> doFilter(i, keyword)).collect(Collectors.toList());
         if (group != null && group.getCodes() != null)
             list = list.stream().filter(i -> group.getCodes().contains(i.getCode())).collect(Collectors.toList());
         if (def == null) return list;

@@ -40,7 +40,22 @@ public class FundRateActivity extends AppCompatActivity {
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
     private Context context;
 
-    private LinearLayout page, header, body, footer;
+    private LinearLayout page;
+    private LinearLayout body;
+
+    private ExcelView<FundRate> excel;
+
+    private Selector<Definition> ruleSel;
+
+    private Selector<Group> groupSel;
+
+    private Selector<String> selector;
+
+    private EditText editText;
+
+    private TextView total;
+
+    private Button rb;
 
     private ViewTemplate template;
 
@@ -57,8 +72,9 @@ public class FundRateActivity extends AppCompatActivity {
     private final List<ExcelView.D<FundRate>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(FundRate::getName), kline()),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(FundRate::getCode), priceNet()),
+            new ExcelView.D<>("标记", d -> TextUtil.text("+"), C, C, toMark()),
             new ExcelView.D<>("规模", d -> TextUtil.amount(d.getScale()), C, E, Sorter.nullsLast(FundRate::getScale), scale()),
-            new ExcelView.D<>("净值", d -> TextUtil.net(d.getNet()), C, E, Sorter.nullsLast(FundRate::getNet)),
+            new ExcelView.D<>("净值", d -> TextUtil.net(d.getNet()), C, E, Sorter.nullsLast(FundRate::getNet), lineView()),
             new ExcelView.D<>("增长率", d -> TextUtil.hundred(d.getRate()), C, E, Sorter.nullsLast(FundRate::getRate)),
             new ExcelView.D<>("总净值", d -> TextUtil.net(d.getNetTotal()), C, E, Sorter.nullsLast(FundRate::getNetTotal)),
             new ExcelView.D<>("总增长", d -> TextUtil.hundred(d.getRateTotal()), C, E, Sorter.nullsLast(FundRate::getRateTotal))
@@ -120,6 +136,7 @@ public class FundRateActivity extends AppCompatActivity {
     }
 
     private void header() {
+        LinearLayout header;
         page.addView(header = new LinearLayout(context));
         header.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) (height * 0.05)));
         SearchBar searchBar = new SearchBar(context);
@@ -142,6 +159,7 @@ public class FundRateActivity extends AppCompatActivity {
     }
 
     private void footer() {
+        LinearLayout footer;
         page.addView(footer = new LinearLayout(context));
         footer.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) (height * 0.05)));
         footer.setGravity(Gravity.CENTER);
@@ -199,7 +217,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> priceNet() {
         return d -> {
-            Intent intent = new Intent(this, PriceNetViewActivity.class);
+            Intent intent = new Intent(context, PriceNetViewActivity.class);
             intent.putExtra("code", d.getCode());
             this.startActivity(intent);
         };
@@ -207,7 +225,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> kline() {
         return d -> {
-            Intent intent = new Intent(this, FundLineViewActivity.class);
+            Intent intent = new Intent(context, FundLineViewActivity.class);
             Item item = new Item();
             item.setName(d.getName());
             item.setCode(d.getCode());
@@ -216,11 +234,28 @@ public class FundRateActivity extends AppCompatActivity {
         };
     }
 
+    private Consumer<FundRate> lineView() {
+        return d -> {
+            Intent intent = new Intent(context, FundLineViewActivity.class);
+            intent.putExtra("fund", JSON.toJSONString(d));
+            this.startActivity(intent);
+        };
+    }
 
     private Consumer<FundRate> scale() {
         return d -> {
-            Intent intent = new Intent(this, ScaleListActivity.class);
+            Intent intent = new Intent(context, ScaleListActivity.class);
             intent.putExtra("code", d.getCode());
+            intent.putExtra("name", d.getName());
+            this.startActivity(intent);
+        };
+    }
+
+    private Consumer<FundRate> toMark() {
+        return d -> {
+            Intent intent = new Intent(context, MarkEditActivity.class);
+            intent.putExtra("type", DefaultGroup.FUND.getCode());
+            intent.putExtra("item", JSON.toJSONString(d));
             this.startActivity(intent);
         };
     }
@@ -234,17 +269,4 @@ public class FundRateActivity extends AppCompatActivity {
         handler.sendMessage(new Message());
     }
 
-    private ExcelView<FundRate> excel;
-
-    private Selector<Definition> ruleSel;
-
-    private Selector<Group> groupSel;
-
-    private Selector<String> selector;
-
-    private EditText editText;
-
-    private TextView total;
-
-    private Button rb;
 }

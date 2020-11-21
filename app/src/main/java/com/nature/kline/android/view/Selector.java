@@ -73,6 +73,11 @@ public class Selector<T> extends BasicView {
         return (T) valueView.getTag();
     }
 
+    public void setValue(T t) {
+        valueView.setTag(t);
+        valueView.setText(mapper.apply(t));
+    }
+
     @SuppressWarnings("unchecked")
     @SuppressLint("ResourceAsColor")
     private void makeStructure() {

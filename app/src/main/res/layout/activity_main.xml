@@ -115,8 +115,8 @@
             <Button android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:onClick="toEditGroup"
-                    android:text="分组编辑"/>
+                    android:onClick="toManageGroup"
+                    android:text="分组管理"/>
             <Button android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:gravity="center"

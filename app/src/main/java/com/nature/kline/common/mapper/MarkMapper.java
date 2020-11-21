@@ -58,7 +58,9 @@ public class MarkMapper {
     }
 
     public List<Mark> list() {
-        SqlParam param = SqlParam.build().append("select " + COLUMNS + " from trade order by date asc");
+        SqlParam param = SqlParam.build().append("select t2.code, t2.market, t2.date, t2.price, t2.rate_buy, " +
+                "t2.rate_sell from (select code,market,max(date) date from trade group by code,market) t1 " +
+                "left join trade t2 on t1.code = t2.code and t1.market = t2.market and t1.date = t2.date ");
         return baseDB.list(param, mapper);
     }
 

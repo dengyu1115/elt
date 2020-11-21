@@ -25,6 +25,8 @@ public class TargetManager {
     @Injection
     private MarkManager markManager;
     @Injection
+    private ItemManager itemManager;
+    @Injection
     private KlineManager klineManager;
     @Injection
     private WorkDayManager workDayManager;
@@ -35,7 +37,7 @@ public class TargetManager {
         // 取出全部的买入交易数据
         List<Mark> list = markManager.list();
         if (list.isEmpty()) return new ArrayList<>();
-        Map<String, Mark> tradeMap = list.stream()
+        Map<String, Mark> markMap = list.stream()
                 .filter(i -> i.getDate().compareTo(date) <= 0)
                 .sorted(Comparator.comparing(Mark::getDate))
                 .collect(Collectors.toMap(Mark::getCode, i -> i, (o, n) -> n));
@@ -45,7 +47,7 @@ public class TargetManager {
         List<Target> targets = new ArrayList<>();
         if ("0".equals(type)) {
             for (Kline k : ks) {
-                Target target = this.tradeToTarget(tradeMap, k);
+                Target target = this.markToTarget(markMap, k);
                 if (target == null) continue;
                 targets.add(target);
             }
@@ -54,7 +56,7 @@ public class TargetManager {
             Function<Mark, Double> getRate = isBuy ? Mark::getRateBuy : Mark::getRateSell;
             BiFunction<Double, Double, Boolean> compare = isBuy ? (a, b) -> a < b : (a, b) -> a > b;
             for (Kline k : ks) {
-                Target target = this.tradeToTarget(tradeMap, k, getRate, compare);
+                Target target = this.markToTarget(markMap, k, getRate, compare);
                 if (target == null) continue;
                 targets.add(target);
             }
@@ -72,8 +74,8 @@ public class TargetManager {
         return workDayManager.doInTradeTimeOrNot(() -> klineHttp.listLatest(), () -> klineManager.listByDate(date));
     }
 
-    private Target tradeToTarget(Map<String, Mark> tradeMap, Kline k, Function<Mark, Double> getRate,
-                                 BiFunction<Double, Double, Boolean> compare) {
+    private Target markToTarget(Map<String, Mark> tradeMap, Kline k, Function<Mark, Double> getRate,
+                                BiFunction<Double, Double, Boolean> compare) {
         Mark mark = tradeMap.get(k.getCode());
         if (mark == null) return null;
         Double p1 = k.getLatest();
@@ -91,7 +93,7 @@ public class TargetManager {
         return target;
     }
 
-    private Target tradeToTarget(Map<String, Mark> tradeMap, Kline k) {
+    private Target markToTarget(Map<String, Mark> tradeMap, Kline k) {
         Mark mark = tradeMap.get(k.getCode());
         if (mark == null) return null;
         Double p1 = k.getLatest();

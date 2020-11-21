@@ -26,8 +26,7 @@
         <activity android:name=".android.activity.KlineListActivity"/>
         <activity android:name=".android.activity.KlineViewActivity"/>
         <activity android:name=".android.activity.BsListActivity"/>
-        <activity android:name=".android.activity.GroupEditActivity"/>
-        <activity android:name=".android.activity.ItemGroupEditActivity"/>
+        <activity android:name=".android.activity.ItemGroupActivity"/>
         <activity android:name=".android.activity.PriceNetSearchActivity"/>
         <activity android:name=".android.activity.PriceNetDetailActivity"/>
         <activity android:name=".android.activity.PriceNetViewActivity"/>
@@ -41,6 +40,7 @@
         <activity android:name=".android.activity.MarkListActivity"/>
         <activity android:name=".android.activity.MarkEditActivity"/>
         <activity android:name=".android.activity.TargetListActivity"/>
+        <activity android:name=".android.activity.GroupListActivity"/>
         <service android:name=".android.service.TaskService"/>
     </application>
 
