@@ -5,7 +5,6 @@ import android.database.Cursor;
 import com.nature.kline.android.db.BaseDB;
 import com.nature.kline.android.db.SqlParam;
 import com.nature.kline.common.model.PriceNet;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.function.Function;
@@ -42,7 +41,8 @@ public class PriceNetMapper {
 
 
     private final BaseDB baseDB = BaseDB.create();
-    private Function<Cursor, PriceNet> mapper = c -> {
+
+    private final Function<Cursor, PriceNet> mapper = c -> {
         PriceNet i = new PriceNet();
         i.setCode(BaseDB.getString(c, "code"));
         i.setDate(BaseDB.getString(c, "date"));
@@ -70,42 +70,29 @@ public class PriceNetMapper {
         return baseDB.executeUpdate(SqlParam.build().append("delete from price_net"));
     }
 
-    public int deleteTemp() {
-        return baseDB.executeUpdate(SqlParam.build().append("delete from price_net_temp"));
-    }
-
     public int batchSave(List<PriceNet> list) {
         SqlParam param = SqlParam.build().append("insert into price_net_temp(" + SQL_COLUMN + ")")
-                .foreach(list, "values", null, ",", (i, p) -> {
-                    p.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", i.getCode(), i.getDate(),
-                            i.getPriceLast(), i.getPriceLatest(), i.getPriceHigh(), i.getPriceLow(), i.getNetLast(),
-                            i.getNetLatest(), i.getRatePrice(),
-                            i.getRateNet(), i.getRateDiff(), i.getScale(), i.getAmount(), i.getRateAmount());
-                });
+                .foreach(list, "values", null, ",", (i, p) ->
+                        p.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", i.getCode(), i.getDate(),
+                                i.getPriceLast(), i.getPriceLatest(), i.getPriceHigh(), i.getPriceLow(), i.getNetLast(),
+                                i.getNetLatest(), i.getRatePrice(),
+                                i.getRateNet(), i.getRateDiff(), i.getScale(), i.getAmount(), i.getRateAmount()));
         return baseDB.executeUpdate(param);
-    }
-
-    public List<PriceNet> listByCondition(String condition) {
-        SqlParam param = SqlParam.build().append("select " + SQL_COLUMN + " from price_net_temp");
-        if (StringUtils.isNotBlank(condition)) param.append("where " + condition);
-        return baseDB.list(param, mapper);
     }
 
     public int batchMerge(List<PriceNet> list) {
         SqlParam param = SqlParam.build().append("replace into price_net(" + SQL_COLUMN + ")")
-                .foreach(list, "values", null, ",", (i, p) -> {
-                    p.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", i.getCode(), i.getDate(),
-                            i.getPriceLast(), i.getPriceLatest(), i.getPriceHigh(), i.getPriceLow(), i.getNetLast(),
-                            i.getNetLatest(), i.getRatePrice(),
-                            i.getRateNet(), i.getRateDiff(), i.getScale(), i.getAmount(), i.getRateAmount());
-                });
+                .foreach(list, "values", null, ",", (i, p) ->
+                        p.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", i.getCode(), i.getDate(),
+                                i.getPriceLast(), i.getPriceLatest(), i.getPriceHigh(), i.getPriceLow(), i.getNetLast(),
+                                i.getNetLatest(), i.getRatePrice(),
+                                i.getRateNet(), i.getRateDiff(), i.getScale(), i.getAmount(), i.getRateAmount()));
         return baseDB.executeUpdate(param);
     }
 
-    public List<PriceNet> list(String date, String condition) {
+    public List<PriceNet> list(String date) {
         SqlParam param = SqlParam.build().append("select " + SQL_COLUMN + " from price_net")
                 .append("where date = ?", date);
-        if (StringUtils.isNotBlank(condition)) param.append("and " + condition);
         return baseDB.list(param, mapper);
     }
 

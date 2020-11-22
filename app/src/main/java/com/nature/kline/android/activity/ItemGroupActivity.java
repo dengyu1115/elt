@@ -102,7 +102,7 @@ public class ItemGroupActivity extends AppCompatActivity {
         this.toAdd.define(lds);
         this.toAdd.data(itemManager.listByKeyWord(lkw));
         this.added.define(rds);
-        this.added.data(itemGroupManager.listItem(this.group, rkw));
+        this.refreshRightExcel();
         this.tQuery.setOnClickListener(v -> {
             lkw = this.tText.getText().toString();
             this.toAdd.data(itemManager.listByKeyWord(lkw));

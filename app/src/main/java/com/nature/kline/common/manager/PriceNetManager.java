@@ -58,11 +58,6 @@ public class PriceNetManager {
         if (StringUtils.isNotBlank(keyword))
             stream = stream.filter(i -> i.getCode().contains(keyword) || i.getName().contains(keyword));
         if (group != null) {
-            if (StringUtils.isNotBlank(group.getRemark())) {
-                priceNetMapper.deleteTemp();
-                this.batchSave(stream.collect(Collectors.toList()));
-                stream = priceNetMapper.listByCondition(group.getRemark()).stream();
-            }
             Set<String> codes = group.getCodes();
             if (codes != null && !codes.isEmpty()) stream = stream.filter(i -> codes.contains(i.getCode()));
         }
@@ -119,8 +114,7 @@ public class PriceNetManager {
      * @return list
      */
     public List<PriceNet> list(Group group, String date, String keyword) {
-        String remark = group == null ? null : group.getRemark();
-        List<PriceNet> list = priceNetMapper.list(date, remark);
+        List<PriceNet> list = priceNetMapper.list(date);
         this.appendName(list);
         Stream<PriceNet> stream = list.stream().filter(i -> Math.abs(i.getRateDiff()) < 1);
         if (group != null) {
