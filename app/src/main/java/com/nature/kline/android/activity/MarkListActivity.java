@@ -51,13 +51,11 @@ public class MarkListActivity extends ListPageActivity<Mark> {
     private Selector<Item> itemSel;
 
     private final MarkManager markManager = InstanceHolder.get(MarkManager.class);
-
     private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
     private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
     private final ItemGroupManager itemGroupManager = InstanceHolder.get(ItemGroupManager.class);
 
     private List<Item> items;
-
     private Map<String, String> itemMap;
 
     private final List<ExcelView.D<Mark>> ds = Arrays.asList(
@@ -87,6 +85,10 @@ public class MarkListActivity extends ListPageActivity<Mark> {
             String keyword = this.keyword.getText().toString();
             list = markManager.list();
             Stream<Mark> stream = list.stream().peek(i -> i.setName(itemMap.get(this.key(i.getCode(), i.getMarket()))));
+            Group group = this.groupSel.getValue();
+            if (group != null && group.getCodes() != null) {
+                stream = stream.filter(i -> group.getCodes().contains(i.getCode()));
+            }
             if (StringUtils.isNotBlank(keyword)) {
                 stream = stream.filter(i -> i.getName().contains(keyword) || i.getCode().contains(keyword));
             }
