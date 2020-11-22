@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemGroupActivity.class)));
     }
 
-    public void toTradeEdit(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkEditActivity.class)));
+    public void toMarkManage(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkListActivity.class)));
     }
 
     public void toPriceNetList(View view) {
@@ -108,10 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void toBsList(View view) {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, BsListActivity.class)));
-    }
-
-    public void toTradeList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkListActivity.class)));
     }
 
     public void toTargetList(View view) {
@@ -151,33 +147,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reloadItem(View view) {
-        PopUtil.confirm(context, "项目数据全部重载", "确定执行吗？", () -> {
-            ClickUtil.asyncClick(view, () -> String.format("项目数据加载完成,共%s条", itemManager.reloadAll()));
-        });
+        PopUtil.confirm(context, "项目数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
+                () -> String.format("项目数据加载完成,共%s条", itemManager.reloadAll())));
     }
 
     public void reloadKline(View view) {
-        PopUtil.confirm(context, "K线数据全部重载", "确定执行吗？", () -> {
-            ClickUtil.asyncClick(view, () -> String.format("K线历史加载完成,共%s条", klineManager.reloadAll()));
-        });
+        PopUtil.confirm(context, "K线数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
+                () -> String.format("K线历史加载完成,共%s条", klineManager.reloadAll())));
     }
 
     public void reloadNet(View view) {
-        PopUtil.confirm(context, "净值数据全部重载", "确定执行吗？", () -> {
-            ClickUtil.asyncClick(view, () -> String.format("净值历史加载完成,共%s条", netManager.reloadAll()));
-        });
+        PopUtil.confirm(context, "净值数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
+                () -> String.format("净值历史加载完成,共%s条", netManager.reloadAll())));
     }
 
     public void reloadQuota(View view) {
-        PopUtil.confirm(context, "指数指标数据全部重载", "确定执行吗？", () -> {
-            ClickUtil.asyncClick(view, () -> String.format("指数指标数据加载完成,共%s条", quotaManager.loadAll()));
-        });
+        PopUtil.confirm(context, "指数指标数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
+                () -> String.format("指数指标数据加载完成,共%s条", quotaManager.loadAll())));
     }
 
     public void reloadScale(View view) {
-        PopUtil.confirm(context, "规模数据全部重载", "确定执行吗？", () -> {
-            ClickUtil.asyncClick(view, () -> String.format("规模数据加载完成,共%s条", scaleManager.reloadAll()));
-        });
+        PopUtil.confirm(context, "规模数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
+                () -> String.format("规模数据加载完成,共%s条", scaleManager.reloadAll())));
     }
 
     public void calculateKlineAverage(View view) {
@@ -185,9 +176,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recalculatePriceNet(View view) {
-        PopUtil.confirm(context, "价值净值数据全部重载", "确定执行吗？", () -> {
-            ClickUtil.asyncClick(view, () -> String.format("价值净值历史计算完成,共%s条", priceNetManager.recalculate()));
-        });
+        PopUtil.confirm(context, "价值净值数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
+                () -> String.format("价值净值历史计算完成,共%s条", priceNetManager.recalculate())));
     }
 
     public void calculatePriceNet(View view) {

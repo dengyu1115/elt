@@ -253,7 +253,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> toMark() {
         return d -> {
-            Intent intent = new Intent(context, MarkEditActivity.class);
+            Intent intent = new Intent(context, MarkListActivity.class);
             intent.putExtra("type", DefaultGroup.FUND.getCode());
             intent.putExtra("item", JSON.toJSONString(d));
             this.startActivity(intent);

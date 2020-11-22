@@ -1,14 +1,26 @@
 package com.nature.kline.android.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import com.alibaba.fastjson.JSON;
 import com.nature.kline.android.util.PopUtil;
 import com.nature.kline.android.util.TextUtil;
+import com.nature.kline.android.util.ViewTemplate;
 import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
+import com.nature.kline.android.view.Selector;
+import com.nature.kline.common.constant.DefaultGroup;
+import com.nature.kline.common.manager.GroupManager;
+import com.nature.kline.common.manager.ItemGroupManager;
 import com.nature.kline.common.manager.ItemManager;
 import com.nature.kline.common.manager.MarkManager;
+import com.nature.kline.common.model.Group;
 import com.nature.kline.common.model.Item;
 import com.nature.kline.common.model.Mark;
 import com.nature.kline.common.util.CommonUtil;
@@ -31,10 +43,20 @@ import java.util.stream.Stream;
 public class MarkListActivity extends ListPageActivity<Mark> {
 
     private EditText keyword;
+    private LinearLayout window;
+    private EditText text, price, rateBuy, rateSell;
+    private Button add, date;
+    private Selector<String> typeSel;
+    private Selector<Group> groupSel;
+    private Selector<Item> itemSel;
 
     private final MarkManager markManager = InstanceHolder.get(MarkManager.class);
 
     private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
+    private final ItemGroupManager itemGroupManager = InstanceHolder.get(ItemGroupManager.class);
+
+    private List<Item> items;
 
     private Map<String, String> itemMap;
 
@@ -48,7 +70,8 @@ public class MarkListActivity extends ListPageActivity<Mark> {
             new ExcelView.D<>("补仓价格", d -> TextUtil.net(d.getPriceBuy()), C, E, CommonUtil.nullsLast(Mark::getPriceBuy)),
             new ExcelView.D<>("止盈涨幅", d -> TextUtil.hundred(d.getRateSell()), C, E, CommonUtil.nullsLast(Mark::getRateSell)),
             new ExcelView.D<>("止盈价格", d -> TextUtil.net(d.getPriceSell()), C, E, CommonUtil.nullsLast(Mark::getPriceSell)),
-            new ExcelView.D<>("操作", d -> "-", C, C, CommonUtil.nullsLast(Mark::getRateSell), this.delete())
+            new ExcelView.D<>("编辑", d -> "+", C, C, this.edit()),
+            new ExcelView.D<>("操作", d -> "-", C, C, this.delete())
     );
 
     @Override
@@ -78,15 +101,97 @@ public class MarkListActivity extends ListPageActivity<Mark> {
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
-        if (this.getInitMark() == null) {
-            searchBar.addConditionView(keyword = template.editText(100, 30));
+        if (this.getInitMark() != null) {
+            return;
         }
+        searchBar.addConditionView(add = template.button("+", 30, 30));
+        searchBar.addConditionView(groupSel = template.selector(100, 30));
+        searchBar.addConditionView(keyword = template.editText(100, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
         List<Item> items = itemManager.list();
         itemMap = items.stream().collect(Collectors.toMap(i -> this.key(i.getCode(), i.getMarket()), Item::getName));
+        if (this.getInitMark() != null) {
+            return;
+        }
+        add.setOnClickListener(v -> this.popAdd());
+        groupSel.mapper(Group::getName).init().refreshData(this.listGroups());
+        this.initAddMark();
+    }
+
+    private void initAddMark() {
+        Item item = JSON.parseObject(this.getIntent().getStringExtra("item"), Item.class);
+        if (item == null) {
+            return;
+        }
+        this.popAdd();
+    }
+
+    private void popAdd() {
+        this.makeWindowStructure();
+        this.initWindowBehaviours();
+        PopUtil.confirm(context, "新增标记", window, this::doSave);
+    }
+
+    private Consumer<Mark> edit() {
+        return d -> {
+            this.makeWindowStructure();
+            this.initWindowBehaviours();
+            this.itemSel.setValue(d);
+            this.date.setText(d.getDate());
+            this.price.setText(TextUtil.net(d.getPrice()));
+            this.rateBuy.setText(TextUtil.text(d.getRateBuy()));
+            this.rateSell.setText(TextUtil.text(d.getRateSell()));
+            PopUtil.confirm(context, "编辑标记", window, this::doSave);
+        };
+    }
+
+    private void doSave() {
+        Item item = this.itemSel.getValue();
+        if (item == null) {
+            PopUtil.alert(context, "请选择项目");
+            return;
+        }
+        String date = this.date.getText().toString();
+        if (date.isEmpty()) {
+            PopUtil.alert(context, "请选择日期");
+            return;
+        }
+        String price = this.price.getText().toString();
+        if (price.isEmpty()) {
+            PopUtil.alert(context, "请填写价格");
+            return;
+        }
+        String rateBuy = this.rateBuy.getText().toString();
+        if (rateBuy.isEmpty()) {
+            PopUtil.alert(context, "请填写补仓跌幅");
+            return;
+        }
+        String rateSell = this.rateSell.getText().toString();
+        if (rateSell.isEmpty()) {
+            PopUtil.alert(context, "请填写补仓跌幅");
+            return;
+        }
+        Mark mark = new Mark();
+        mark.setCode(item.getCode());
+        mark.setMarket(item.getMarket());
+        mark.setDate(date);
+        mark.setPrice(Double.valueOf(price));
+        mark.setRateBuy(Double.valueOf(rateBuy));
+        mark.setRateSell(Double.valueOf(rateSell));
+        markManager.merge(mark);
+        this.refreshData();
+        PopUtil.alert(context, "保存成功");
+    }
+
+    private List<Group> listGroups() {
+        List<Group> groups = groupManager.list(null);
+        Group group = new Group();
+        group.setName("-请选择-");
+        groups.add(0, group);
+        return groups;
     }
 
     private Consumer<Mark> detail() {
@@ -113,6 +218,99 @@ public class MarkListActivity extends ListPageActivity<Mark> {
 
     private Mark getInitMark() {
         return JSON.parseObject(this.getIntent().getStringExtra("mark"), Mark.class);
+    }
+
+    private void initWindowBehaviours() {
+        itemSel.mapper(Item::getName).onChangeRun(this.change()).init();
+        Runnable run = () -> {
+            List<Item> items = this.items = itemGroupManager.listItem(typeSel.getValue());
+            String keyword = this.text.getText().toString();
+            List<Item> li = items.stream().filter(i -> i.getName().contains(keyword)).collect(Collectors.toList());
+            itemSel.refreshData(li);
+        };
+        typeSel.mapper(DefaultGroup::getName).onChangeRun(run).init().refreshData(DefaultGroup.codes());
+        this.initSelected();
+        date.setOnClickListener(v -> template.datePiker(date));
+        text.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String keyword = s.toString();
+                List<Item> li = items.stream().filter(i -> i.getName().contains(keyword)).collect(Collectors.toList());
+                itemSel.refreshData(li);
+            }
+        });
+
+    }
+
+    private void initSelected() {
+        Intent intent = this.getIntent();
+        String type = intent.getStringExtra("type");
+        Item item = JSON.parseObject(intent.getStringExtra("item"), Item.class);
+        if (item == null) {
+            return;
+        }
+        this.typeSel.setValue(type);
+        this.itemSel.setValue(item);
+        this.recommend();
+    }
+
+
+    private Runnable change() {
+        return this::recommend;
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void recommend() {
+        Item item = itemSel.getValue();
+        Mark mark = markManager.recommend(item);
+        if (mark == null) {
+            this.date.setText("");
+            this.price.setText("");
+            this.rateBuy.setText("");
+            this.rateSell.setText("");
+        } else {
+            this.date.setText(mark.getDate());
+            this.price.setText(String.valueOf(mark.getPrice()));
+            this.rateBuy.setText(String.format("%.4f", mark.getRateBuy()));
+            this.rateSell.setText(String.format("%.4f", mark.getRateSell()));
+        }
+    }
+
+    private void makeWindowStructure() {
+        template = ViewTemplate.build(context);
+        window = template.linearPage();
+        window.setGravity(Gravity.CENTER);
+        LinearLayout l1 = template.line(300, 30);
+        LinearLayout l2 = template.line(300, 30);
+        LinearLayout l3 = template.line(300, 30);
+        LinearLayout l4 = template.line(300, 30);
+        LinearLayout l5 = template.line(300, 30);
+        LinearLayout l6 = template.line(300, 30);
+        l1.addView(template.textView("类型：", 80, 30));
+        l1.addView(typeSel = template.selector(100, 30));
+        l1.addView(text = template.editText(100, 30));
+        l2.addView(template.textView("项目：", 80, 30));
+        l2.addView(itemSel = template.selector(200, 30));
+        l3.addView(template.textView("日期：", 80, 30));
+        l3.addView(date = template.button(200, 30));
+        l4.addView(template.textView("价格：", 80, 30));
+        l4.addView(price = template.numeric(200, 30));
+        l5.addView(template.textView("补仓跌幅：", 80, 30));
+        l5.addView(rateBuy = template.numeric(200, 30));
+        l6.addView(template.textView("止盈涨幅：", 80, 30));
+        l6.addView(rateSell = template.numeric(200, 30));
+        window.addView(l1);
+        window.addView(l2);
+        window.addView(l3);
+        window.addView(l4);
+        window.addView(l5);
+        window.addView(l6);
     }
 
 }
