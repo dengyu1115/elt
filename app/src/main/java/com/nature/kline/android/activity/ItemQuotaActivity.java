@@ -41,16 +41,16 @@ public class ItemQuotaActivity extends ListPageActivity<ItemQuota> {
             new ExcelView.D<>("结束日期", d -> TextUtil.text(d.getDateEnd()), C, E, Sorter.nullsLast(ItemQuota::getDateEnd)),
             new ExcelView.D<>("最新", d -> TextUtil.net(d.getLatest()), C, E, Sorter.nullsLast(ItemQuota::getLatest)),
             new ExcelView.D<>("初始", d -> TextUtil.net(d.getOpen()), C, E, Sorter.nullsLast(ItemQuota::getOpen)),
-            new ExcelView.D<>("⬆-初始", d -> TextUtil.hundred(d.getRateOpen()), C, E, Sorter.nullsLast(ItemQuota::getRateOpen)),
             new ExcelView.D<>("最低", d -> TextUtil.net(d.getLow()), C, E, Sorter.nullsLast(ItemQuota::getLow)),
-            new ExcelView.D<>("⬆-最低", d -> TextUtil.hundred(d.getRateLow()), C, E, Sorter.nullsLast(ItemQuota::getRateLow)),
             new ExcelView.D<>("最高", d -> TextUtil.net(d.getHigh()), C, E, Sorter.nullsLast(ItemQuota::getHigh)),
-            new ExcelView.D<>("⬆-最高", d -> TextUtil.hundred(d.getRateHigh()), C, E, Sorter.nullsLast(ItemQuota::getRateHigh)),
             new ExcelView.D<>("平均", d -> TextUtil.net(d.getAvg()), C, E, Sorter.nullsLast(ItemQuota::getAvg)),
+            new ExcelView.D<>("⬆-初始", d -> TextUtil.hundred(d.getRateOpen()), C, E, Sorter.nullsLast(ItemQuota::getRateOpen)),
+            new ExcelView.D<>("⬆-最低", d -> TextUtil.hundred(d.getRateLow()), C, E, Sorter.nullsLast(ItemQuota::getRateLow)),
+            new ExcelView.D<>("⬆-最高", d -> TextUtil.hundred(d.getRateHigh()), C, E, Sorter.nullsLast(ItemQuota::getRateHigh)),
             new ExcelView.D<>("⬆-平均", d -> TextUtil.hundred(d.getRateAvg()), C, E, Sorter.nullsLast(ItemQuota::getRateAvg)),
-            new ExcelView.D<>("%-平均", d -> TextUtil.hundred(d.getRatioAvg()), C, E, Sorter.nullsLast(ItemQuota::getRatioAvg)),
             new ExcelView.D<>("⬆-高-低", d -> TextUtil.hundred(d.getRateHL()), C, E, Sorter.nullsLast(ItemQuota::getRateHL)),
             new ExcelView.D<>("⬆-低-高", d -> TextUtil.hundred(d.getRateLH()), C, E, Sorter.nullsLast(ItemQuota::getRateLH)),
+            new ExcelView.D<>("%-平均", d -> TextUtil.hundred(d.getRatioAvg()), C, E, Sorter.nullsLast(ItemQuota::getRatioAvg)),
             new ExcelView.D<>("%-最新", d -> TextUtil.hundred(d.getRatioLatest()), C, E, Sorter.nullsLast(ItemQuota::getRatioLatest))
     );
 

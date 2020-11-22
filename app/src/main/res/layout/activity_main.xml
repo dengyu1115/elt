@@ -68,7 +68,7 @@
                     android:layout_height="50dp"
                     android:gravity="center"
                     android:onClick="toItemQuota"
-                    android:text="指数指标列表"/>
+                    android:text="项目指标列表"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:id="@+id/back"
