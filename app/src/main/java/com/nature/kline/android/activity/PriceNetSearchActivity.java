@@ -1,8 +1,10 @@
 package com.nature.kline.android.activity;
 
 import android.content.Intent;
+import android.view.Gravity;
 import android.widget.EditText;
-import com.alibaba.fastjson.JSON;
+import android.widget.LinearLayout;
+import com.nature.kline.android.util.PopUtil;
 import com.nature.kline.android.util.TextUtil;
 import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
@@ -28,10 +30,9 @@ public class PriceNetSearchActivity extends ListPageActivity<PriceNet> {
 
     public final PriceNetSearchActivity context = PriceNetSearchActivity.this;
     private Selector<String> selector;
-
     private Selector<Group> groupSel;
-
     private EditText editText;
+    private LinearLayout window;
 
     private final PriceNetManager priceNetManager = InstanceHolder.get(PriceNetManager.class);
 
@@ -96,11 +97,54 @@ public class PriceNetSearchActivity extends ListPageActivity<PriceNet> {
         groupSel.mapper(Group::getName).init().refreshData(this.getGroups());
     }
 
+
+    public void showDetail(PriceNet priceNet) {
+        window = template.linearPage();
+        window.setOrientation(LinearLayout.VERTICAL);
+        window.setGravity(Gravity.TOP | Gravity.CENTER);
+        LinearLayout l1 = template.line(800, 30);
+        LinearLayout l2 = template.line(800, 30);
+        LinearLayout l3 = template.line(800, 30);
+        LinearLayout l4 = template.line(800, 30);
+        LinearLayout l5 = template.line(800, 30);
+        LinearLayout l6 = template.line(800, 30);
+        l1.addView(template.textView("名称：", 80, 30));
+        l1.addView(template.textView(TextUtil.text(priceNet.getName()), 100, 30));
+        l1.addView(template.textView("编号：", 80, 30));
+        l1.addView(template.textView(TextUtil.text(priceNet.getCode()), 100, 30));
+        l2.addView(template.textView("净值昨收：", 80, 30));
+        l2.addView(template.textView(TextUtil.net(priceNet.getNetLast()), 100, 30));
+        l2.addView(template.textView("净值最新：", 80, 30));
+        l2.addView(template.textView(TextUtil.net(priceNet.getNetLatest()), 100, 30));
+        l3.addView(template.textView("价格昨收：", 80, 30));
+        l3.addView(template.textView(TextUtil.net(priceNet.getPriceLast()), 100, 30));
+        l3.addView(template.textView("价格最新：", 80, 30));
+        l3.addView(template.textView(TextUtil.net(priceNet.getPriceLatest()), 100, 30));
+        l4.addView(template.textView("规模：", 80, 30));
+        l4.addView(template.textView(TextUtil.amount(priceNet.getScale()), 100, 30));
+        l4.addView(template.textView("交易额：", 80, 30));
+        l4.addView(template.textView(TextUtil.amount(priceNet.getAmount()), 100, 30));
+        l5.addView(template.textView("净值增长率：", 80, 30));
+        l5.addView(template.textView(TextUtil.hundred(priceNet.getRateNet()), 100, 30));
+        l5.addView(template.textView("价格增长率：", 80, 30));
+        l5.addView(template.textView(TextUtil.hundred(priceNet.getRatePrice()), 100, 30));
+        l6.addView(template.textView("折价率：", 80, 30));
+        l6.addView(template.textView(TextUtil.hundred(priceNet.getRateDiff()), 100, 30));
+        l6.addView(template.textView("交易额占比：", 80, 30));
+        l6.addView(template.textView(TextUtil.hundred(priceNet.getRateAmount()), 100, 30));
+        window.addView(l1);
+        window.addView(l2);
+        window.addView(l3);
+        window.addView(l4);
+        window.addView(l5);
+        window.addView(l6);
+    }
+
     private Consumer<PriceNet> detail() {
         return d -> {
-            Intent intent = new Intent(context, PriceNetDetailActivity.class);
-            intent.putExtra("detail", JSON.toJSONString(d));
-            this.startActivity(intent);
+            this.showDetail(d);
+            PopUtil.confirm(context, "详情", window, () -> {
+            });
         };
     }
 

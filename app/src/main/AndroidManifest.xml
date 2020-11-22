@@ -28,7 +28,6 @@
         <activity android:name=".android.activity.BsListActivity"/>
         <activity android:name=".android.activity.ItemGroupActivity"/>
         <activity android:name=".android.activity.PriceNetSearchActivity"/>
-        <activity android:name=".android.activity.PriceNetDetailActivity"/>
         <activity android:name=".android.activity.PriceNetViewActivity"/>
         <activity android:name=".android.activity.QuotaActivity"/>
         <activity android:name=".android.activity.LineViewActivity"/>
