@@ -3,6 +3,7 @@ package com.nature.kline.common.manager;
 import com.nature.kline.common.constant.DefaultGroup;
 import com.nature.kline.common.ioc.annotation.Injection;
 import com.nature.kline.common.model.*;
+import com.nature.kline.common.util.CalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,8 +70,8 @@ public class ItemQuotaManager {
         double rateHigh = (latest - high) / high;
         double rateLow = (latest - low) / low;
         double rateAvg = (latest - avg) / avg;
-        double rateLH = (low - high) / high;
-        double rateHL = (high - low) / low;
+        double rateLH = CalUtil.maxUp(ks, getPrice);
+        double rateHL = CalUtil.maxDown(ks, getPrice);
         double ratioLow = (high - low) == 0 ? 1d : (latest - low) / (high - low);
         double ratioAvg = (high - low) == 0 ? 1d : (avg - low) / (high - low);
         quota.setDateStart(getDate.apply(ks.get(0)));
