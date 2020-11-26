@@ -19,12 +19,11 @@ import com.nature.kline.common.util.InstanceHolder;
 
 import java.util.List;
 
-
 /**
- * 债券线图
+ * 指标数据
  * @author nature
  * @version 1.0.0
- * @since 2020/4/5 15:46
+ * @since 2020/11/24 19:26
  */
 public class QuotaActivity extends AppCompatActivity {
 

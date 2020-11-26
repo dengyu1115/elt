@@ -7,9 +7,9 @@ import java.util.function.BiConsumer;
 
 public class SqlParam {
 
-    private List<String> params;
+    private final List<String> params;
 
-    private StringBuilder sqlBuilder;
+    private final StringBuilder sqlBuilder;
 
     private SqlParam() {
         params = new ArrayList<>();

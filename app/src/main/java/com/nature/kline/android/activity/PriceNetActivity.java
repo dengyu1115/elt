@@ -26,9 +26,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class PriceNetSearchActivity extends ListPageActivity<PriceNet> {
+/**
+ * 价格净值
+ * @author nature
+ * @version 1.0.0
+ * @since 2020/11/24 18:54
+ */
+public class PriceNetActivity extends BaseListActivity<PriceNet> {
 
-    public final PriceNetSearchActivity context = PriceNetSearchActivity.this;
     private Selector<String> selector;
     private Selector<Group> groupSel;
     private EditText editText;
@@ -69,7 +74,6 @@ public class PriceNetSearchActivity extends ListPageActivity<PriceNet> {
         return list;
     }
 
-
     @Override
     protected List<ExcelView.D<PriceNet>> define() {
         return ds;
@@ -97,8 +101,7 @@ public class PriceNetSearchActivity extends ListPageActivity<PriceNet> {
         groupSel.mapper(Group::getName).init().refreshData(this.getGroups());
     }
 
-
-    public void showDetail(PriceNet priceNet) {
+    private void showDetail(PriceNet priceNet) {
         window = template.linearPage();
         window.setOrientation(LinearLayout.VERTICAL);
         window.setGravity(Gravity.TOP | Gravity.CENTER);
@@ -158,7 +161,7 @@ public class PriceNetSearchActivity extends ListPageActivity<PriceNet> {
 
     private Consumer<PriceNet> kline() {
         return d -> {
-            Intent intent = new Intent(context, KlineViewActivity.class);
+            Intent intent = new Intent(context, KlineActivity.class);
             intent.putExtra("market", this.getMarket(d.getCode()));
             intent.putExtra("code", d.getCode());
             this.startActivity(intent);

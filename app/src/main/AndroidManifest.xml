@@ -24,21 +24,21 @@
         </activity>
         <activity android:name=".android.activity.TaskActivity"/>
         <activity android:name=".android.activity.KlineListActivity"/>
-        <activity android:name=".android.activity.KlineViewActivity"/>
+        <activity android:name=".android.activity.KlineActivity"/>
         <activity android:name=".android.activity.BsListActivity"/>
         <activity android:name=".android.activity.ItemGroupActivity"/>
-        <activity android:name=".android.activity.PriceNetSearchActivity"/>
+        <activity android:name=".android.activity.PriceNetActivity"/>
         <activity android:name=".android.activity.PriceNetViewActivity"/>
         <activity android:name=".android.activity.QuotaActivity"/>
-        <activity android:name=".android.activity.LineViewActivity"/>
-        <activity android:name=".android.activity.FundListDefActivity"/>
+        <activity android:name=".android.activity.LineActivity"/>
+        <activity android:name=".android.activity.FundRateDefActivity"/>
         <activity android:name=".android.activity.FundRateActivity"/>
         <activity android:name=".android.activity.ItemQuotaActivity"/>
-        <activity android:name=".android.activity.FundLineViewActivity"/>
-        <activity android:name=".android.activity.ScaleListActivity"/>
-        <activity android:name=".android.activity.MarkListActivity"/>
-        <activity android:name=".android.activity.TargetListActivity"/>
-        <activity android:name=".android.activity.GroupListActivity"/>
+        <activity android:name=".android.activity.FundLineActivity"/>
+        <activity android:name=".android.activity.ScaleActivity"/>
+        <activity android:name=".android.activity.MarkActivity"/>
+        <activity android:name=".android.activity.TargetActivity"/>
+        <activity android:name=".android.activity.GroupActivity"/>
         <service android:name=".android.service.TaskService"/>
     </application>
 

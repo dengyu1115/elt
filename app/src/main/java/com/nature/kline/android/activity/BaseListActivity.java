@@ -19,7 +19,13 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public abstract class ListPageActivity<T> extends AppCompatActivity {
+/**
+ * 列表展示页面基类
+ * @author nature
+ * @version 1.0.0
+ * @since 2020/11/24 18:56
+ */
+public abstract class BaseListActivity<T> extends AppCompatActivity {
 
     protected static final int C = 0, S = 1, E = 2;
 
@@ -40,7 +46,7 @@ public abstract class ListPageActivity<T> extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.context = ListPageActivity.this;
+        this.context = BaseListActivity.this;
         this.makeStructure();
         this.initBehaviours();
         this.setContentView(page);

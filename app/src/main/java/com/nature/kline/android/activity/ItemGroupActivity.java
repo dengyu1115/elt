@@ -57,7 +57,8 @@ public class ItemGroupActivity extends AppCompatActivity {
     private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
     private final ItemGroupManager itemGroupManager = InstanceHolder.get(ItemGroupManager.class);
 
-    private String lkw, rkw, group;
+    private String lkw;
+    private String group;
 
     private static final int CENTER = 0, START = 1;
 
@@ -103,10 +104,7 @@ public class ItemGroupActivity extends AppCompatActivity {
         this.toAdd.data(itemManager.listByKeyWord(lkw));
         this.added.define(rds);
         this.refreshRightExcel();
-        this.tQuery.setOnClickListener(v -> {
-            lkw = this.tText.getText().toString();
-            this.toAdd.data(itemManager.listByKeyWord(lkw));
-        });
+        this.tQuery.setOnClickListener(v -> this.refreshLeftExcel());
         this.aQuery.setOnClickListener(v -> this.refreshRightExcel());
     }
 
@@ -196,16 +194,21 @@ public class ItemGroupActivity extends AppCompatActivity {
 
     private Consumer<Item> toKlineView() {
         return d -> {
-            Intent intent = new Intent(getApplicationContext(), KlineViewActivity.class);
+            Intent intent = new Intent(getApplicationContext(), KlineActivity.class);
             intent.putExtra("code", d.getCode());
             intent.putExtra("market", d.getMarket());
             this.startActivity(intent);
         };
     }
 
+    private void refreshLeftExcel() {
+        lkw = this.tText.getText().toString();
+        this.toAdd.data(itemManager.listByKeyWord(lkw));
+    }
+
     private void refreshRightExcel() {
         group = this.groupSel.getValue().getCode();
-        rkw = this.aText.getText().toString();
+        String rkw = this.aText.getText().toString();
         this.added.data(itemGroupManager.listItem(group, rkw));
     }
 

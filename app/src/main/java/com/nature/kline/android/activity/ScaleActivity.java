@@ -17,7 +17,7 @@ import java.util.List;
  * @version 1.0.0
  * @since 2020/11/21 12:13
  */
-public class ScaleListActivity extends ListPageActivity<Scale> {
+public class ScaleActivity extends BaseListActivity<Scale> {
 
     private final ScaleManager scaleManager = InstanceHolder.get(ScaleManager.class);
 

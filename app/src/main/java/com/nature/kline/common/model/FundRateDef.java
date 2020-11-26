@@ -6,7 +6,7 @@ package com.nature.kline.common.model;
  * @version 1.0.0
  * @since 2020/9/17 22:19
  */
-public class FundListDef extends BaseModel {
+public class FundRateDef extends BaseModel {
     /**
      * 标题
      */
@@ -31,10 +31,6 @@ public class FundListDef extends BaseModel {
      * 结束日
      */
     private String dateEnd;
-    /**
-     * 起始净值
-     */
-    private Double netStart;
 
     public String getTitle() {
         return title;

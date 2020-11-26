@@ -83,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toLineView(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, LineViewActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, LineActivity.class)));
     }
 
     public void toManageGroup(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, GroupListActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, GroupActivity.class)));
     }
 
     public void toEditItemGroup(View view) {
@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toMarkManage(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkListActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkActivity.class)));
     }
 
     public void toPriceNetList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, PriceNetSearchActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, PriceNetActivity.class)));
     }
 
     public void toKlineList(View view) {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toTargetList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, TargetListActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, TargetActivity.class)));
     }
 
     public void toFundRate(View view) {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toDefineFundList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, FundListDefActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, FundRateDefActivity.class)));
     }
 
     public void loadLatestKline(View view) {

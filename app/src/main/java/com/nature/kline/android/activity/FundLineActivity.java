@@ -22,7 +22,7 @@ import java.util.List;
  * @version 1.0.0
  * @since 2020/10/18 14:34
  */
-public class FundLineViewActivity extends AppCompatActivity {
+public class FundLineActivity extends AppCompatActivity {
 
     private final LineManager lineManager = InstanceHolder.get(LineManager.class);
 

@@ -1,7 +1,7 @@
 package com.nature.kline.common.manager;
 
 import com.nature.kline.common.ioc.annotation.Injection;
-import com.nature.kline.common.model.FundListDef;
+import com.nature.kline.common.model.FundRateDef;
 import com.nature.kline.common.util.CommonUtil;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class FundListDefManager {
         return new ArrayList<>(map.keySet());
     }
 
-    public void calculateDate(FundListDef def, String date) {
+    public void calculateDate(FundRateDef def, String date) {
         String type = def.getType();
         if (DEFINED.equals(type)) {
             return;
@@ -64,7 +64,7 @@ public class FundListDefManager {
         }
     }
 
-    private void cal(FundListDef def, Integer count, String dateEnd, BiFunction<String, Integer, String> consumer) {
+    private void cal(FundRateDef def, Integer count, String dateEnd, BiFunction<String, Integer, String> consumer) {
         def.setDateEnd(dateEnd);
         def.setDateStart(consumer.apply(dateEnd, -count));
     }

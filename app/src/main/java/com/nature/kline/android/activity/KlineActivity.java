@@ -13,12 +13,12 @@ import com.nature.kline.common.util.InstanceHolder;
 import java.util.List;
 
 /**
- * 债券线图
+ * K线图
  * @author nature
  * @version 1.0.0
- * @since 2020/4/5 15:46
+ * @since 2020/11/24 19:11
  */
-public class KlineViewActivity extends AppCompatActivity {
+public class KlineActivity extends AppCompatActivity {
 
     private final KlineManager klineManager = InstanceHolder.get(KlineManager.class);
 

@@ -46,7 +46,7 @@ public class FundRateManager {
         if (def == null) return list;
         String json = def.getJson();
         if (StringUtils.isBlank(json)) return list;
-        List<FundListDef> ds = JSON.parseArray(json, FundListDef.class);
+        List<FundRateDef> ds = JSON.parseArray(json, FundRateDef.class);
         if (ds == null || ds.isEmpty()) return list;
         ds.forEach(i -> fundListDefManager.calculateDate(i, date));
         Set<String> dates = new TreeSet<>();
@@ -56,7 +56,7 @@ public class FundRateManager {
         });
         Map<String, Double> nets = new HashMap<>();
         dates.parallelStream().forEach(d -> this.appendNets(nets, d));
-        for (FundRate rate : list) for (FundListDef d : ds) this.formatFundRate(rate, d, nets);
+        for (FundRate rate : list) for (FundRateDef d : ds) this.formatFundRate(rate, d, nets);
         return list;
     }
 
@@ -66,7 +66,7 @@ public class FundRateManager {
         nets.putAll(ns.stream().collect(Collectors.toMap(i -> this.k(i.getCode(), d), Net::getNetTotal)));
     }
 
-    private void formatFundRate(FundRate rate, FundListDef d, Map<String, Double> nets) {
+    private void formatFundRate(FundRate rate, FundRateDef d, Map<String, Double> nets) {
         String code = rate.getCode();
         String dateStart = d.getDateStart();
         String dateEnd = d.getDateEnd();

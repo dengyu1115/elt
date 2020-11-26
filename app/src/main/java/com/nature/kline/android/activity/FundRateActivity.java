@@ -84,7 +84,7 @@ public class FundRateActivity extends AppCompatActivity {
         List<ExcelView.D<FundRate>> list = new ArrayList<>(ds);
         String json = def.getJson();
         if (StringUtils.isBlank(json)) return list;
-        for (FundListDef i : JSON.parseArray(json, FundListDef.class)) {
+        for (FundRateDef i : JSON.parseArray(json, FundRateDef.class)) {
             list.add(new ExcelView.D<>(i.getTitle(), d -> {
                 Double rate = d.getRate(i.getCode());
                 return TextUtil.hundred(rate);
@@ -225,7 +225,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> kline() {
         return d -> {
-            Intent intent = new Intent(context, FundLineViewActivity.class);
+            Intent intent = new Intent(context, FundLineActivity.class);
             Item item = new Item();
             item.setName(d.getName());
             item.setCode(d.getCode());
@@ -236,7 +236,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> lineView() {
         return d -> {
-            Intent intent = new Intent(context, FundLineViewActivity.class);
+            Intent intent = new Intent(context, FundLineActivity.class);
             intent.putExtra("fund", JSON.toJSONString(d));
             this.startActivity(intent);
         };
@@ -244,7 +244,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> scale() {
         return d -> {
-            Intent intent = new Intent(context, ScaleListActivity.class);
+            Intent intent = new Intent(context, ScaleActivity.class);
             intent.putExtra("code", d.getCode());
             intent.putExtra("name", d.getName());
             this.startActivity(intent);
@@ -253,7 +253,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> toMark() {
         return d -> {
-            Intent intent = new Intent(context, MarkListActivity.class);
+            Intent intent = new Intent(context, MarkActivity.class);
             intent.putExtra("type", DefaultGroup.FUND.getCode());
             intent.putExtra("item", JSON.toJSONString(d));
             this.startActivity(intent);

@@ -21,8 +21,10 @@ public class ItemQuotaManager {
     @Injection
     private NetManager netManager;
 
-    public List<ItemQuota> list(Group group, String dateStart, String dateEnd) {
-        List<Item> list = itemGroupManager.listItem(group.getCode());
+    public List<ItemQuota> list(Group group, String keyword, String dateStart, String dateEnd) {
+        List<Item> list = itemGroupManager.listItem(group.getCode()).stream()
+                .filter(i -> i.getName().contains(keyword) || i.getCode().contains(keyword))
+                .collect(Collectors.toList());
         if (list.isEmpty()) return new ArrayList<>();
         if (DefaultGroup.INDEX.getCode().equals(group.getCode())) {
             return list.parallelStream().map(i -> this.calculate(

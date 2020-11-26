@@ -35,12 +35,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * 交易
+ * 标记
  * @author nature
  * @version 1.0.0
- * @since 2020/11/7 9:55
+ * @since 2020/11/24 19:14
  */
-public class MarkListActivity extends ListPageActivity<Mark> {
+public class MarkActivity extends BaseListActivity<Mark> {
 
     private EditText keyword;
     private LinearLayout window;
@@ -199,7 +199,7 @@ public class MarkListActivity extends ListPageActivity<Mark> {
     private Consumer<Mark> detail() {
         return d -> {
             if (this.getInitMark() == null) {
-                Intent intent = new Intent(context, MarkListActivity.class);
+                Intent intent = new Intent(context, MarkActivity.class);
                 intent.putExtra("mark", JSON.toJSONString(d));
                 this.startActivity(intent);
             }

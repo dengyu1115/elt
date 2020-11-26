@@ -16,7 +16,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BsListActivity extends ListPageActivity<Kline> {
+/**
+ * 买入卖出建议
+ * @author nature
+ * @version 1.0.0
+ * @since 2020/11/24 18:55
+ */
+public class BsListActivity extends BaseListActivity<Kline> {
 
     private Selector<String> selector;
 
@@ -42,7 +48,7 @@ public class BsListActivity extends ListPageActivity<Kline> {
 
     private Consumer<Kline> getConsumer() {
         return d -> {
-            Intent intent = new Intent(getApplicationContext(), KlineViewActivity.class);
+            Intent intent = new Intent(getApplicationContext(), KlineActivity.class);
             intent.putExtra("code", d.getCode());
             intent.putExtra("market", d.getMarket());
             this.startActivity(intent);

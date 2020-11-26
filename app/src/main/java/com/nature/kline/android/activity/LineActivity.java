@@ -31,12 +31,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 债券线图
+ * 折线图
  * @author nature
  * @version 1.0.0
- * @since 2020/4/5 15:46
+ * @since 2020/11/24 19:12
  */
-public class LineViewActivity extends AppCompatActivity {
+public class LineActivity extends AppCompatActivity {
 
     private final LineManager lineManager = InstanceHolder.get(LineManager.class);
 
@@ -55,7 +55,7 @@ public class LineViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.context = LineViewActivity.this;
+        this.context = LineActivity.this;
         this.makeStructure();
         this.setContentView(page);
         ViewUtil.initActivity(this);

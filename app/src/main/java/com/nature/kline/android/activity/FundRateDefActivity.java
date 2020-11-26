@@ -19,7 +19,7 @@ import com.nature.kline.common.constant.DefType;
 import com.nature.kline.common.manager.DefinitionManager;
 import com.nature.kline.common.manager.FundListDefManager;
 import com.nature.kline.common.model.Definition;
-import com.nature.kline.common.model.FundListDef;
+import com.nature.kline.common.model.FundRateDef;
 import com.nature.kline.common.util.InstanceHolder;
 import com.nature.kline.common.util.Sorter;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +31,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class FundListDefActivity extends AppCompatActivity {
+/**
+ * 基金涨幅定义
+ * @author nature
+ * @version 1.0.0
+ * @since 2020/11/24 18:58
+ */
+public class FundRateDefActivity extends AppCompatActivity {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
 
@@ -46,7 +52,7 @@ public class FundListDefActivity extends AppCompatActivity {
     private final DefinitionManager definitionManager = InstanceHolder.get(DefinitionManager.class);
     private final FundListDefManager fundListDefManager = InstanceHolder.get(FundListDefManager.class);
 
-    private ExcelView<FundListDef> excel;
+    private ExcelView<FundRateDef> excel;
 
     private Selector<Definition> selector;
 
@@ -58,20 +64,20 @@ public class FundListDefActivity extends AppCompatActivity {
 
     private LinearLayout header, body, footer;
 
-    private final List<ExcelView.D<FundListDef>> ds = Arrays.asList(
-            new ExcelView.D<>("名称", d -> TextUtil.text(d.getTitle()), C, S, Sorter.nullsLast(FundListDef::getTitle)),
-            new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(FundListDef::getCode)),
-            new ExcelView.D<>("类型", d -> TextUtil.text(fundListDefManager.getTypeName(d.getType())), C, E, Sorter.nullsLast(FundListDef::getType)),
-            new ExcelView.D<>("数量", d -> TextUtil.text(d.getCount()), C, E, Sorter.nullsLast(FundListDef::getCount)),
-            new ExcelView.D<>("开始日期", d -> TextUtil.text(d.getDateStart()), C, E, Sorter.nullsLast(FundListDef::getDateStart)),
-            new ExcelView.D<>("结束日期", d -> TextUtil.text(d.getDateEnd()), C, E, Sorter.nullsLast(FundListDef::getDateEnd)),
+    private final List<ExcelView.D<FundRateDef>> ds = Arrays.asList(
+            new ExcelView.D<>("名称", d -> TextUtil.text(d.getTitle()), C, S, Sorter.nullsLast(FundRateDef::getTitle)),
+            new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(FundRateDef::getCode)),
+            new ExcelView.D<>("类型", d -> TextUtil.text(fundListDefManager.getTypeName(d.getType())), C, E, Sorter.nullsLast(FundRateDef::getType)),
+            new ExcelView.D<>("数量", d -> TextUtil.text(d.getCount()), C, E, Sorter.nullsLast(FundRateDef::getCount)),
+            new ExcelView.D<>("开始日期", d -> TextUtil.text(d.getDateStart()), C, E, Sorter.nullsLast(FundRateDef::getDateStart)),
+            new ExcelView.D<>("结束日期", d -> TextUtil.text(d.getDateEnd()), C, E, Sorter.nullsLast(FundRateDef::getDateEnd)),
             new ExcelView.D<>("操作", d -> "-", C, C, this::popDelDef)
     );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = FundListDefActivity.this;
+        context = FundRateDefActivity.this;
         this.makeStructure();
         this.setContentView(page);
         ViewUtil.initActivity(this);
@@ -182,13 +188,13 @@ public class FundListDefActivity extends AppCompatActivity {
                 count = Integer.valueOf(s);
             }
             String json = definition.getJson();
-            List<FundListDef> list;
+            List<FundRateDef> list;
             if (StringUtils.isBlank(json)) {
                 list = new ArrayList<>();
             } else {
-                list = JSON.parseArray(json, FundListDef.class);
+                list = JSON.parseArray(json, FundRateDef.class);
             }
-            FundListDef def = new FundListDef();
+            FundRateDef def = new FundRateDef();
             def.setCode(code);
             def.setTitle(title);
             def.setType(type);
@@ -196,7 +202,7 @@ public class FundListDefActivity extends AppCompatActivity {
             def.setDateStart(dateStart);
             def.setDateEnd(dateEnd);
             list.add(def);
-            list.sort(Comparator.comparing(FundListDef::getCode));
+            list.sort(Comparator.comparing(FundRateDef::getCode));
             definition.setJson(JSON.toJSONString(list));
             definitionManager.merge(definition);
             PopUtil.alert(context, "保存成功");
@@ -204,15 +210,15 @@ public class FundListDefActivity extends AppCompatActivity {
         });
     }
 
-    private void popDelDef(FundListDef o) {
+    private void popDelDef(FundRateDef o) {
         PopUtil.confirm(context, "删除显示规则", "确定删除 " + o.getTitle() + " 吗？", () -> {
             Definition definition = selector.getValue();
             if (definition == null) {
                 PopUtil.alert(context, "请选择规则");
                 return;
             }
-            List<FundListDef> list = JSON.parseArray(definition.getJson(), FundListDef.class);
-            for (FundListDef def : list) {
+            List<FundRateDef> list = JSON.parseArray(definition.getJson(), FundRateDef.class);
+            for (FundRateDef def : list) {
                 if (def.getCode().equals(o.getCode())) {
                     list.remove(def);
                     break;
@@ -234,7 +240,7 @@ public class FundListDefActivity extends AppCompatActivity {
         if (d == null) return;
         String json = d.getJson();
         if (StringUtils.isBlank(json)) excel.data(new ArrayList<>());
-        else excel.data(JSON.parseArray(json, FundListDef.class));
+        else excel.data(JSON.parseArray(json, FundRateDef.class));
     }
 
     private void refreshType() {

@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  * @version 1.0.0
  * @since 2020/11/7 9:55
  */
-public class TargetListActivity extends ListPageActivity<Target> {
+public class TargetActivity extends BaseListActivity<Target> {
 
     private EditText keyword;
     private Selector<String> typeSel;

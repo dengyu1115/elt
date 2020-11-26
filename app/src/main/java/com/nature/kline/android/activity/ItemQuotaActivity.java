@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import com.alibaba.fastjson.JSON;
 import com.nature.kline.android.util.TextUtil;
@@ -24,7 +25,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ItemQuotaActivity extends ListPageActivity<ItemQuota> {
+/**
+ * 项目指标
+ * @author nature
+ * @version 1.0.0
+ * @since 2020/11/24 19:09
+ */
+public class ItemQuotaActivity extends BaseListActivity<ItemQuota> {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
 
@@ -33,6 +40,8 @@ public class ItemQuotaActivity extends ListPageActivity<ItemQuota> {
     private Selector<Group> selector;
 
     private Group group;
+
+    private EditText keyword;
 
     private final List<ExcelView.D<ItemQuota>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(ItemQuota::getName), this.lineView()),
@@ -68,19 +77,17 @@ public class ItemQuotaActivity extends ListPageActivity<ItemQuota> {
         this.group = selector.getValue();
         String dateStart = this.dateStart.getText().toString();
         String dateEnd = this.dateEnd.getText().toString();
-        return itemQuotaManager.list(this.group, dateStart, dateEnd);
+        return itemQuotaManager.list(this.group, this.keyword.getText().toString(), dateStart, dateEnd);
     }
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
-        selector = template.selector(80, 30);
         String end = CommonUtil.formatDate(new Date());
         String start = CommonUtil.addMonths(end, -1);
-        dateStart = template.button(start, 80, 30);
-        dateEnd = template.button(end, 80, 30);
-        searchBar.addConditionView(selector);
-        searchBar.addConditionView(dateStart);
-        searchBar.addConditionView(dateEnd);
+        searchBar.addConditionView(selector = template.selector(80, 30));
+        searchBar.addConditionView(keyword = template.editText(80, 30));
+        searchBar.addConditionView(dateStart = template.button(start, 80, 30));
+        searchBar.addConditionView(dateEnd = template.button(end, 80, 30));
     }
 
     @Override
@@ -102,10 +109,10 @@ public class ItemQuotaActivity extends ListPageActivity<ItemQuota> {
         return d -> {
             Intent intent;
             if (DefaultGroup.FUND.getCode().equals(this.group.getType())) {
-                intent = new Intent(context, FundLineViewActivity.class);
+                intent = new Intent(context, FundLineActivity.class);
                 intent.putExtra("fund", JSON.toJSONString(d));
             } else {
-                intent = new Intent(context, KlineViewActivity.class);
+                intent = new Intent(context, KlineActivity.class);
                 intent.putExtra("market", d.getMarket());
                 intent.putExtra("code", d.getCode());
             }
