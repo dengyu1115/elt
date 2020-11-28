@@ -217,7 +217,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> priceNet() {
         return d -> {
-            Intent intent = new Intent(context, PriceNetViewActivity.class);
+            Intent intent = new Intent(context, PriceNetActivity.class);
             intent.putExtra("code", d.getCode());
             this.startActivity(intent);
         };
@@ -244,7 +244,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> scale() {
         return d -> {
-            Intent intent = new Intent(context, ScaleActivity.class);
+            Intent intent = new Intent(context, ScaleListActivity.class);
             intent.putExtra("code", d.getCode());
             intent.putExtra("name", d.getName());
             this.startActivity(intent);
@@ -253,7 +253,7 @@ public class FundRateActivity extends AppCompatActivity {
 
     private Consumer<FundRate> toMark() {
         return d -> {
-            Intent intent = new Intent(context, MarkActivity.class);
+            Intent intent = new Intent(context, MarkListActivity.class);
             intent.putExtra("type", DefaultGroup.FUND.getCode());
             intent.putExtra("item", JSON.toJSONString(d));
             this.startActivity(intent);

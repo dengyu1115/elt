@@ -122,15 +122,15 @@ public class KlineManager {
 
     /**
      * 按照date，keyWord查询k线数据
-     * @param date     日期
-     * @param strategy 策略
+     * @param date 日期
+     * @param type 策略
      * @return list
      */
-    public List<Kline> listByStrategy(String date, String strategy) {
+    public List<Kline> listByStrategy(String date, String type) {
         List<Kline> list = klineMapper.listByDate(date);
         Map<String, String> map = itemManager.list().stream().collect(Collectors.toMap(this::key, Item::getName));
         for (Kline k : list) k.setName(map.get(this.key(k)));
-        switch (strategy) {
+        switch (type) {
             case "1":
                 list = list.stream().filter(k -> {
                     Double latest = k.getLatest();

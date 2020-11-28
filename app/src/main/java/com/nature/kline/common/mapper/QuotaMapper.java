@@ -100,4 +100,16 @@ public class QuotaMapper {
     public void delete() {
         baseDB.executeUpdate(SqlParam.build().append("delete from quota"));
     }
+
+    public Quota findLast(String code, String date) {
+        SqlParam param = SqlParam.build().append("select " + COLUMN + " from quota")
+                .append("where code = ? and date < ? order by date desc limit 1", code, date);
+        return baseDB.find(param, mapper);
+    }
+
+    public List<Quota> list(String code, String dateStat, String dateEnd) {
+        SqlParam param = SqlParam.build().append("select " + COLUMN + " from quota")
+                .append("where code = ? and date >= ? and date <= ? order by date", code, dateStat, dateEnd);
+        return baseDB.list(param, mapper);
+    }
 }

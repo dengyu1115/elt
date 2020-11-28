@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  * @since 2020/3/7 17:32
  */
-public class TaskActivity extends BaseListActivity<TaskRecord> {
+public class TaskListActivity extends BaseListActivity<TaskRecord> {
 
     private Selector<String> selector;
 

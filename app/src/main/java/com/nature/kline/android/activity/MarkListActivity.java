@@ -40,7 +40,7 @@ import java.util.stream.Stream;
  * @version 1.0.0
  * @since 2020/11/24 19:14
  */
-public class MarkActivity extends BaseListActivity<Mark> {
+public class MarkListActivity extends BaseListActivity<Mark> {
 
     private EditText keyword;
     private LinearLayout window;
@@ -199,7 +199,7 @@ public class MarkActivity extends BaseListActivity<Mark> {
     private Consumer<Mark> detail() {
         return d -> {
             if (this.getInitMark() == null) {
-                Intent intent = new Intent(context, MarkActivity.class);
+                Intent intent = new Intent(context, MarkListActivity.class);
                 intent.putExtra("mark", JSON.toJSONString(d));
                 this.startActivity(intent);
             }

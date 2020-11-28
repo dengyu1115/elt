@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toTaskList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, TaskActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, TaskListActivity.class)));
     }
 
     public void toLineView(View view) {
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toManageGroup(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, GroupActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, GroupListActivity.class)));
     }
 
     public void toEditItemGroup(View view) {
@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toMarkManage(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkListActivity.class)));
     }
 
     public void toPriceNetList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, PriceNetActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, PriceNetListActivity.class)));
     }
 
     public void toKlineList(View view) {
@@ -107,11 +107,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toBsList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, BsListActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, BuySellListActivity.class)));
     }
 
     public void toTargetList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, TargetActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, TargetListActivity.class)));
     }
 
     public void toFundRate(View view) {
@@ -119,7 +119,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toItemQuota(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemQuotaActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemQuotaListActivity.class)));
+    }
+
+    public void toQuotaList(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, QuotaListActivity.class)));
     }
 
     public void toQuotaView(View view) {

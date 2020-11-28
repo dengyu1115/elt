@@ -12,6 +12,12 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * 项目指标
+ * @author nature
+ * @version 1.0.0
+ * @since 2020/11/28 14:14
+ */
 public class ItemQuotaManager {
 
     @Injection
@@ -30,7 +36,6 @@ public class ItemQuotaManager {
             return list.parallelStream().map(i -> this.calculate(
                     i,
                     dateStart,
-                    dateEnd,
                     Kline::getDate,
                     () -> klineManager.list(i.getCode(), i.getMarket(), dateStart, dateEnd),
                     () -> klineManager.findLast(i.getCode(), i.getMarket(), dateStart),
@@ -41,7 +46,6 @@ public class ItemQuotaManager {
             return list.parallelStream().map(i -> this.calculate(
                     i,
                     dateStart,
-                    dateEnd,
                     Net::getDate,
                     () -> netManager.list(i.getCode(), dateStart, dateEnd),
                     () -> netManager.findLast(i.getCode(), dateStart),
@@ -51,10 +55,10 @@ public class ItemQuotaManager {
         }
     }
 
-    private <T> ItemQuota calculate(Item item, String dateStart, String dateEnd, Function<T, String> getDate,
-                                    Supplier<List<T>> getList, Supplier<T> getFirst,
-                                    Function<T, Double> getPrice,
-                                    Function<T, Double> getLow, Function<T, Double> getHigh) {
+    public <T> ItemQuota calculate(Item item, String dateStart, Function<T, String> getDate,
+                                   Supplier<List<T>> getList, Supplier<T> getFirst,
+                                   Function<T, Double> getPrice,
+                                   Function<T, Double> getLow, Function<T, Double> getHigh) {
         List<T> ks = getList.get();
         if (ks.isEmpty()) return null;
         T first = getFirst.get();

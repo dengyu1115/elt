@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  * @since 2020/11/21 15:58
  */
-public class GroupActivity extends BaseListActivity<Group> {
+public class GroupListActivity extends BaseListActivity<Group> {
 
     private EditText keyword;
     private LinearLayout page;

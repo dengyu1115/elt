@@ -1,7 +1,6 @@
 package com.nature.kline.android.activity;
 
 import android.content.Intent;
-import android.widget.EditText;
 import com.nature.kline.android.util.TextUtil;
 import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
@@ -12,8 +11,7 @@ import com.nature.kline.common.model.Kline;
 import com.nature.kline.common.util.CommonUtil;
 import com.nature.kline.common.util.InstanceHolder;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -22,11 +20,9 @@ import java.util.function.Consumer;
  * @version 1.0.0
  * @since 2020/11/24 18:55
  */
-public class BsListActivity extends BaseListActivity<Kline> {
+public class BuySellListActivity extends BaseListActivity<Kline> {
 
-    private Selector<String> selector;
-
-    private EditText editText;
+    private Selector<String> dateSel, typeSel;
 
     private final KlineManager klineManager = InstanceHolder.get(KlineManager.class);
 
@@ -46,6 +42,13 @@ public class BsListActivity extends BaseListActivity<Kline> {
             new ExcelView.D<>("年平均", d -> TextUtil.net(d.getAvgYear()), C, S, CommonUtil.nullsLast(Kline::getAvgYear))
     );
 
+    private static final Map<String, String> typeMap = new LinkedHashMap<>();
+
+    static {
+        typeMap.put("1", "可购买");
+        typeMap.put("2", "可卖出");
+    }
+
     private Consumer<Kline> getConsumer() {
         return d -> {
             Intent intent = new Intent(getApplicationContext(), KlineActivity.class);
@@ -62,19 +65,20 @@ public class BsListActivity extends BaseListActivity<Kline> {
 
     @Override
     protected List<Kline> listData() {
-        String date = this.selector.getValue();
-        String strategy = this.editText.getText().toString();
-        return klineManager.listByStrategy(date, strategy);
+        String date = this.dateSel.getValue();
+        String type = this.typeSel.getValue();
+        return klineManager.listByStrategy(date, type);
     }
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
-        searchBar.addConditionView(selector = template.selector(100, 30));
-        searchBar.addConditionView(editText = template.editText(100, 30));
+        searchBar.addConditionView(dateSel = template.selector(100, 30));
+        searchBar.addConditionView(typeSel = template.selector(100, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
-        selector.mapper(s -> s).init().refreshData(workDayManager.listWorkDays(workDayManager.getLatestWorkDay()));
+        dateSel.mapper(s -> s).init().refreshData(workDayManager.listWorkDays(workDayManager.getLatestWorkDay()));
+        typeSel.mapper(typeMap::get).init().refreshData(new ArrayList<>(typeMap.keySet()));
     }
 }

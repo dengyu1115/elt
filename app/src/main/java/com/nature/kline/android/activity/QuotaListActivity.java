@@ -4,21 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import com.alibaba.fastjson.JSON;
 import com.nature.kline.android.util.TextUtil;
 import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
 import com.nature.kline.android.view.Selector;
-import com.nature.kline.common.constant.DefaultGroup;
-import com.nature.kline.common.manager.GroupManager;
-import com.nature.kline.common.manager.ItemQuotaManager;
-import com.nature.kline.common.model.Group;
+import com.nature.kline.common.constant.DefaultQuota;
+import com.nature.kline.common.constant.QuotaField;
+import com.nature.kline.common.manager.QuotaManager;
 import com.nature.kline.common.model.ItemQuota;
 import com.nature.kline.common.util.CommonUtil;
 import com.nature.kline.common.util.InstanceHolder;
 import com.nature.kline.common.util.Sorter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -26,26 +24,22 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * 项目指标
+ * 大盘指标
  * @author nature
  * @version 1.0.0
  * @since 2020/11/24 19:09
  */
-public class ItemQuotaActivity extends BaseListActivity<ItemQuota> {
+public class QuotaListActivity extends BaseListActivity<ItemQuota> {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
 
     private Button dateStart, dateEnd;
 
-    private Selector<Group> selector;
-
-    private Group group;
-
-    private EditText keyword;
+    private Selector<String> codeSel, typeSel;
 
     private final List<ExcelView.D<ItemQuota>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(ItemQuota::getName), this.lineView()),
-            new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(ItemQuota::getCode)),
+            new ExcelView.D<>("类型", d -> TextUtil.text(d.getMarket()), C, C, Sorter.nullsLast(ItemQuota::getMarket)),
             new ExcelView.D<>("开始日期", d -> TextUtil.text(d.getDateStart()), C, E, Sorter.nullsLast(ItemQuota::getDateStart)),
             new ExcelView.D<>("结束日期", d -> TextUtil.text(d.getDateEnd()), C, E, Sorter.nullsLast(ItemQuota::getDateEnd)),
             new ExcelView.D<>("最新", d -> TextUtil.net(d.getLatest()), C, E, Sorter.nullsLast(ItemQuota::getLatest)),
@@ -63,8 +57,7 @@ public class ItemQuotaActivity extends BaseListActivity<ItemQuota> {
             new ExcelView.D<>("%-最新", d -> TextUtil.hundred(d.getRatioLatest()), C, E, Sorter.nullsLast(ItemQuota::getRatioLatest))
     );
 
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-    private final ItemQuotaManager itemQuotaManager = InstanceHolder.get(ItemQuotaManager.class);
+    private final QuotaManager quotaManager = InstanceHolder.get(QuotaManager.class);
 
 
     @SuppressLint("ResourceType")
@@ -74,30 +67,58 @@ public class ItemQuotaActivity extends BaseListActivity<ItemQuota> {
     }
 
     protected List<ItemQuota> listData() {
-        this.group = selector.getValue();
+        String code = this.codeSel.getValue();
+        String type = this.typeSel.getValue();
         String dateStart = this.dateStart.getText().toString();
         String dateEnd = this.dateEnd.getText().toString();
-        return itemQuotaManager.list(this.group, this.keyword.getText().toString(), dateStart, dateEnd);
+        return quotaManager.listToItems(code, type, dateStart, dateEnd);
     }
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
         String end = CommonUtil.formatDate(new Date());
         String start = CommonUtil.addMonths(end, -1);
-        searchBar.addConditionView(selector = template.selector(80, 30));
-        searchBar.addConditionView(keyword = template.editText(80, 30));
+        searchBar.addConditionView(codeSel = template.selector(80, 30));
+        searchBar.addConditionView(typeSel = template.selector(80, 30));
         searchBar.addConditionView(dateStart = template.button(start, 80, 30));
         searchBar.addConditionView(dateEnd = template.button(end, 80, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
-        List<Group> list = groupManager.list(DefaultGroup.INDEX.getCode());
-        list.addAll(groupManager.list(DefaultGroup.FUND.getCode()));
-        selector.mapper(Group::getName).init().refreshData(list);
+        codeSel.mapper(this::getCodeName).init().refreshData(this.getCodes());
+        typeSel.mapper(this::getTypeName).init().refreshData(this.getTypes());
         Button.OnClickListener listener = this::onDateChooseClick;
         dateStart.setOnClickListener(listener);
         dateEnd.setOnClickListener(listener);
+    }
+
+    private List<String> getCodes() {
+        List<String> codes = DefaultQuota.codes();
+        codes.add(0, null);
+        return codes;
+    }
+
+    private List<String> getTypes() {
+        List<String> codes = QuotaField.codes();
+        codes.add(0, null);
+        return codes;
+    }
+
+    private String getCodeName(String s) {
+        String name = DefaultQuota.getName(s);
+        if (StringUtils.isBlank(name)) {
+            return "-请选择-";
+        }
+        return name;
+    }
+
+    private String getTypeName(String s) {
+        String name = QuotaField.getName(s);
+        if (StringUtils.isBlank(name)) {
+            return "-请选择-";
+        }
+        return name;
     }
 
     @Override
@@ -107,15 +128,7 @@ public class ItemQuotaActivity extends BaseListActivity<ItemQuota> {
 
     private Consumer<ItemQuota> lineView() {
         return d -> {
-            Intent intent;
-            if (DefaultGroup.FUND.getCode().equals(this.group.getType())) {
-                intent = new Intent(context, FundLineActivity.class);
-                intent.putExtra("fund", JSON.toJSONString(d));
-            } else {
-                intent = new Intent(context, KlineActivity.class);
-                intent.putExtra("market", d.getMarket());
-                intent.putExtra("code", d.getCode());
-            }
+            Intent intent = new Intent(context, QuotaActivity.class);
             this.startActivity(intent);
         };
     }

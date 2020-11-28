@@ -1,16 +1,22 @@
 package com.nature.kline.common.manager;
 
 import com.nature.kline.android.db.BaseDB;
+import com.nature.kline.common.constant.DefaultQuota;
+import com.nature.kline.common.constant.QuotaField;
 import com.nature.kline.common.http.QuotaHttp;
 import com.nature.kline.common.ioc.annotation.Injection;
 import com.nature.kline.common.ioc.annotation.TaskMethod;
 import com.nature.kline.common.mapper.QuotaMapper;
+import com.nature.kline.common.model.Item;
+import com.nature.kline.common.model.ItemQuota;
 import com.nature.kline.common.model.Quota;
 import com.nature.kline.common.util.ExeUtil;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * 净值
@@ -29,13 +35,16 @@ public class QuotaManager {
     @Injection
     private WorkDayManager workDayManager;
 
+    @Injection
+    private ItemQuotaManager itemQuotaManager;
+
     public int loadAll() {
-        return ExeUtil.exec(quotaMapper::delete, this::codes, this::load);
+        return ExeUtil.exec(quotaMapper::delete, DefaultQuota::codes, this::load);
     }
 
     @TaskMethod("load_latest_quota")
     public int loadLatest() {
-        return ExeUtil.exec(this::codes, this::load);
+        return ExeUtil.exec(DefaultQuota::codes, this::load);
     }
 
     private int load(String code) {
@@ -74,8 +83,59 @@ public class QuotaManager {
         return quotaMapper.listByCode(code);
     }
 
-    private List<String> codes() {
-        return Arrays.asList("000001", "399001", "000300", "399005", "399006");
+    public List<ItemQuota> listToItems(String code, String type, String dateStart, String dateEnd) {
+        List<Item> items = this.items();
+        if (StringUtils.isNotBlank(code)) {
+            items = items.stream().filter(i -> i.getCode().equals(code)).collect(Collectors.toList());
+        }
+        if (StringUtils.isNotBlank(type)) {
+            items = items.stream().filter(i -> i.getType().equals(type)).collect(Collectors.toList());
+        }
+        Map<String, Function<Quota, Double>> funcMap = this.funcMap();
+        Map<String, List<Quota>> listMap = items.stream().map(Item::getCode).distinct()
+                .collect(Collectors.toMap(i -> i, i -> quotaMapper.list(i, dateStart, dateEnd)));
+        Map<String, Quota> quotaMap = items.stream().map(Item::getCode).distinct()
+                .map(i -> quotaMapper.findLast(i, dateStart)).filter(Objects::nonNull)
+                .collect(Collectors.toMap(Quota::getCode, i -> i));
+        return items.parallelStream().map(i -> itemQuotaManager.calculate(
+                i,
+                dateStart,
+                Quota::getDate,
+                () -> listMap.get(i.getCode()),
+                () -> quotaMap.get(i.getCode()),
+                funcMap.get(i.getType()),
+                funcMap.get(i.getType()),
+                funcMap.get(i.getType()))).filter(Objects::nonNull).collect(Collectors.toList());
     }
+
+    private List<Item> items() {
+        List<Item> items = new ArrayList<>();
+        List<String> codes = DefaultQuota.codes();
+        List<String> fcs = QuotaField.codes();
+        for (String code : codes) {
+            for (String fc : fcs) {
+                Item item = new Item();
+                item.setCode(code);
+                item.setType(fc);
+                item.setName(DefaultQuota.getName(code));
+                item.setMarket(QuotaField.getName(fc));
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    private Map<String, Function<Quota, Double>> funcMap() {
+        Map<String, Function<Quota, Double>> funcMap = new HashMap<>();
+        funcMap.put(QuotaField.JG.getCode(), Quota::getPrice);
+        funcMap.put(QuotaField.SY.getCode(), Quota::getSyl);
+        funcMap.put(QuotaField.GS.getCode(), Quota::getCount);
+        funcMap.put(QuotaField.SZ.getCode(), Quota::getSzZ);
+        funcMap.put(QuotaField.SZ_LT.getCode(), Quota::getSzLt);
+        funcMap.put(QuotaField.GB.getCode(), Quota::getGbZ);
+        funcMap.put(QuotaField.GB_LT.getCode(), Quota::getGbLt);
+        return funcMap;
+    }
+
 
 }
