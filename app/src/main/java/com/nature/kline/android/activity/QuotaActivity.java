@@ -16,6 +16,7 @@ import com.nature.kline.android.view.QuotaView;
 import com.nature.kline.common.manager.QuotaManager;
 import com.nature.kline.common.model.Quota;
 import com.nature.kline.common.util.InstanceHolder;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -40,10 +41,19 @@ public class QuotaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.context = QuotaActivity.this;
         this.makeStructure();
-        view.data(this.refreshData("000300"));
+        view.data(this.refreshData(this.getCode()));
         this.setContentView(page);
         ViewUtil.initActivity(this);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    private String getCode() {
+        String code = "000300";
+        String extra = this.getIntent().getStringExtra("code");
+        if (StringUtils.isNotBlank(extra)) {
+            code = extra;
+        }
+        return code;
     }
 
 

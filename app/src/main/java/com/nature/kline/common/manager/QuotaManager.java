@@ -117,8 +117,7 @@ public class QuotaManager {
                 Item item = new Item();
                 item.setCode(code);
                 item.setType(fc);
-                item.setName(DefaultQuota.getName(code));
-                item.setMarket(QuotaField.getName(fc));
+                item.setName(DefaultQuota.getName(code) + "-" + QuotaField.getName(fc));
                 items.add(item);
             }
         }

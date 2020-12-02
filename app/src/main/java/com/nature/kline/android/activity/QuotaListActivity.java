@@ -39,7 +39,6 @@ public class QuotaListActivity extends BaseListActivity<ItemQuota> {
 
     private final List<ExcelView.D<ItemQuota>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(ItemQuota::getName), this.lineView()),
-            new ExcelView.D<>("类型", d -> TextUtil.text(d.getMarket()), C, C, Sorter.nullsLast(ItemQuota::getMarket)),
             new ExcelView.D<>("开始日期", d -> TextUtil.text(d.getDateStart()), C, E, Sorter.nullsLast(ItemQuota::getDateStart)),
             new ExcelView.D<>("结束日期", d -> TextUtil.text(d.getDateEnd()), C, E, Sorter.nullsLast(ItemQuota::getDateEnd)),
             new ExcelView.D<>("最新", d -> TextUtil.net(d.getLatest()), C, E, Sorter.nullsLast(ItemQuota::getLatest)),
@@ -129,6 +128,7 @@ public class QuotaListActivity extends BaseListActivity<ItemQuota> {
     private Consumer<ItemQuota> lineView() {
         return d -> {
             Intent intent = new Intent(context, QuotaActivity.class);
+            intent.putExtra("code", d.getCode());
             this.startActivity(intent);
         };
     }
