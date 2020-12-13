@@ -68,9 +68,9 @@ public class TaskService extends Service {
     public void onCreate() {
         super.onCreate();
         this.createNotificationChannel();
-        this.getNotificationManager().notify(NOTIFICATION_ID, notification("服务初始化..."));
+        this.getNotificationManager().notify(NOTIFICATION_ID, this.notification("服务初始化..."));
         // 设置为前台进程，降低oom_adj，提高进程优先级，提高存活机率
-        this.startForeground(NOTIFICATION_ID, notification("服务前台启动..."));
+        this.startForeground(NOTIFICATION_ID, this.notification("服务前台启动..."));
         this.acquireWakeLock();
         synchronized (TaskService.class) {  // 保证逻辑只启动一次
             if (service != null) {
