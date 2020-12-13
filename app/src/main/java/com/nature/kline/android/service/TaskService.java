@@ -129,8 +129,12 @@ public class TaskService extends Service {
      * @return timer
      */
     private Timer getTimer() {
-        if (timer == null) synchronized (TaskService.class) {
-            if (timer == null) timer = new Timer();
+        if (timer == null) {
+            synchronized (TaskService.class) {
+                if (timer == null) {
+                    timer = new Timer();
+                }
+            }
         }
         return timer;
     }
