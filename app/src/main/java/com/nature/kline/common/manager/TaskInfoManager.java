@@ -26,7 +26,11 @@ public class TaskInfoManager {
         return taskInfoMapper.list();
     }
 
-    public int merge(TaskInfo d){
+    public int merge(TaskInfo d) {
         return taskInfoMapper.merge(d);
+    }
+
+    public int delete(String code, String startTime) {
+        return taskInfoMapper.delete(code, startTime);
     }
 }

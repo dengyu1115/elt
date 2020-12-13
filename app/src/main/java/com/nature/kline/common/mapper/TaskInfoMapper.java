@@ -33,7 +33,6 @@ public class TaskInfoMapper {
     private final BaseDB baseDB = BaseDB.create();
 
     public TaskInfoMapper() {
-        baseDB.executeSql("DROP TABLE task_info");
         baseDB.executeSql(SQL_TABLE);
     }
 
@@ -68,6 +67,12 @@ public class TaskInfoMapper {
         SqlParam param = SqlParam.build().append("replace into task_info(code, name, type, start_time, end_time, " +
                         "status) values(?, ?, ?, ?, ?, ?)", d.getCode(), d.getName(), d.getType(),
                 d.getStartTime(), d.getEndTime(), d.getStatus());
+        return baseDB.executeUpdate(param);
+    }
+
+    public int delete(String code, String startTime) {
+        SqlParam param = SqlParam.build().append("delete from task_info where code = ? and start_time = ?",
+                code, startTime);
         return baseDB.executeUpdate(param);
     }
 }

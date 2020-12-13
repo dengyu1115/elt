@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 任务管理
@@ -43,7 +44,9 @@ public class TaskManageActivity extends BaseListActivity<TaskInfo> {
             new ExcelView.D<>("类型", d -> TextUtil.text(d.getType()), C, C, CommonUtil.nullsLast(TaskInfo::getType)),
             new ExcelView.D<>("执行开始", d -> TextUtil.text(d.getStartTime()), C, C, CommonUtil.nullsLast(TaskInfo::getStartTime)),
             new ExcelView.D<>("执行结束", d -> TextUtil.text(d.getEndTime()), C, C, CommonUtil.nullsLast(TaskInfo::getEndTime)),
-            new ExcelView.D<>("状态", d -> TextUtil.text(d.getStatus()), C, C, CommonUtil.nullsLast(TaskInfo::getStatus))
+            new ExcelView.D<>("状态", d -> TextUtil.text(d.getStatus()), C, C, CommonUtil.nullsLast(TaskInfo::getStatus)),
+            new ExcelView.D<>("修改", d -> TextUtil.text("+"), C, C, this.edit()),
+            new ExcelView.D<>("删除", d -> TextUtil.text("-"), C, C, this.delete())
     );
 
     @Override
@@ -64,34 +67,7 @@ public class TaskManageActivity extends BaseListActivity<TaskInfo> {
 
     @Override
     protected void initHeaderBehaviours() {
-        add.setOnClickListener(v -> PopUtil.confirm(context, "添加任务", this.popAddWindow(), () -> {
-            TaskInfo taskInfo = taskSel.getValue();
-            if (taskInfo == null) {
-                throw new RuntimeException("任务不可为空");
-            }
-            String type = typeSel.getValue();
-            if (StringUtils.isBlank(type)) {
-                throw new RuntimeException("请选择类型");
-            }
-            String status = statusSel.getValue();
-            if (StringUtils.isBlank(status)) {
-                throw new RuntimeException("请选择状态");
-            }
-            String timeStart = startTime.getText().toString();
-            String timeEnd = endTime.getText().toString();
-            if (timeStart.compareTo(timeEnd) >= 0) {
-                throw new RuntimeException("结束时间必须大于开始时间");
-            }
-            TaskInfo ti = new TaskInfo();
-            ti.setCode(taskInfo.getCode());
-            ti.setName(taskInfo.getName());
-            ti.setType(type);
-            ti.setStartTime(timeStart);
-            ti.setEndTime(timeEnd);
-            ti.setStatus(status);
-            taskInfoManager.merge(ti);
-            PopUtil.alert(context, "保存成功");
-        }));
+        add.setOnClickListener(v -> PopUtil.confirm(context, "添加任务", this.popAddWindow(), this::doSave));
     }
 
     private View popAddWindow() {
@@ -120,6 +96,56 @@ public class TaskManageActivity extends BaseListActivity<TaskInfo> {
         }
         line.setGravity(Gravity.LEFT);
         return line;
+    }
+
+    private Consumer<TaskInfo> edit() {
+        return d -> {
+            View view = this.popAddWindow();
+            taskSel.setValue(d);
+            typeSel.setValue(d.getType());
+            statusSel.setValue(d.getStatus());
+            startTime.setText(d.getStartTime());
+            endTime.setText(d.getEndTime());
+            PopUtil.confirm(context, "修改任务", view, this::doSave);
+        };
+    }
+
+    private Consumer<TaskInfo> delete() {
+        return d -> PopUtil.confirm(context, "删除任务", "确定删除吗？", () -> {
+            taskInfoManager.delete(d.getCode(), d.getStartTime());
+            PopUtil.alert(context, "删除成功");
+            this.refreshData();
+        });
+    }
+
+    private void doSave() {
+        TaskInfo taskInfo = taskSel.getValue();
+        if (taskInfo == null) {
+            throw new RuntimeException("任务不可为空");
+        }
+        String type = typeSel.getValue();
+        if (StringUtils.isBlank(type)) {
+            throw new RuntimeException("请选择类型");
+        }
+        String status = statusSel.getValue();
+        if (StringUtils.isBlank(status)) {
+            throw new RuntimeException("请选择状态");
+        }
+        String timeStart = startTime.getText().toString();
+        String timeEnd = endTime.getText().toString();
+        if (timeStart.compareTo(timeEnd) >= 0) {
+            throw new RuntimeException("结束时间必须大于开始时间");
+        }
+        TaskInfo ti = new TaskInfo();
+        ti.setCode(taskInfo.getCode());
+        ti.setName(taskInfo.getName());
+        ti.setType(type);
+        ti.setStartTime(timeStart);
+        ti.setEndTime(timeEnd);
+        ti.setStatus(status);
+        taskInfoManager.merge(ti);
+        PopUtil.alert(context, "保存成功");
+        this.refreshData();
     }
 
 }
