@@ -142,7 +142,7 @@ public class PriceNetManager {
      * 全部项目数据计算价值净值数据
      * @return int
      */
-    @TaskMethod(value = "calculate_price_net", name = "计算价格净值")
+    @TaskMethod(value = "004", name = "计算价格净值")
     public int calculate() {
         return ExeUtil.exec(itemManager::list, this::calculate);
     }

@@ -42,7 +42,7 @@ public class QuotaManager {
         return ExeUtil.exec(quotaMapper::delete, DefaultQuota::codes, this::load);
     }
 
-    @TaskMethod(value = "load_latest_quota", name = "加载最新指标")
+    @TaskMethod(value = "005", name = "加载最新指标")
     public int loadLatest() {
         return ExeUtil.exec(DefaultQuota::codes, this::load);
     }

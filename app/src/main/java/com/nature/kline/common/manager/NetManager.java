@@ -44,7 +44,7 @@ public class NetManager {
         return ExeUtil.exec(netMapper::delete, itemGroupManager::listAllFunds, this::reload);
     }
 
-    @TaskMethod(value = "load_latest_net", name = "加载最新净值")
+    @TaskMethod(value = "003", name = "加载最新净值")
     public int loadLatest() {
         return ExeUtil.exec(() -> map = netMapper.listLast().stream().collect(Collectors.toMap(Net::getCode, i -> i)),
                 itemGroupManager::listAllFunds, this::doLoad,
