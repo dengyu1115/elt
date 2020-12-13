@@ -19,10 +19,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -52,13 +51,11 @@ public class TaskService extends Service {
     /**
      * 定时器
      */
-    private static Timer timer;
+    private static ScheduledExecutorService service;
     /**
      * 执行间隔
      */
     private static final int PERIOD = 60 * 1000;
-
-    private final ExecutorService service = Executors.newCachedThreadPool();
 
     private static final AtomicInteger counter = new AtomicInteger();
 
@@ -76,9 +73,11 @@ public class TaskService extends Service {
         this.startForeground(NOTIFICATION_ID, notification("服务前台启动..."));
         this.acquireWakeLock();
         synchronized (TaskService.class) {  // 保证逻辑只启动一次
-            if (timer != null) return;
+            if (service != null) {
+                return;
+            }
         }
-        getTimer().schedule(this.task(), this.calculateDelay(), PERIOD);
+        getService().scheduleAtFixedRate(this.task(), this.calculateDelay(), PERIOD, TimeUnit.MILLISECONDS);
     }
 
     @Nullable
@@ -104,12 +103,12 @@ public class TaskService extends Service {
      * 计算延迟执行时间
      * @return int
      */
-    private int calculateDelay() {
+    private long calculateDelay() {
         Calendar calendar = Calendar.getInstance();
         long now = calendar.getTimeInMillis();
         calendar.add(Calendar.MINUTE, 1);
-        long later = calendar.getTimeInMillis() / 60000L * 60000L;
-        return (int) (later - now);
+        long later = calendar.getTimeInMillis() / PERIOD * PERIOD;
+        return later - now;
     }
 
     /**
@@ -120,37 +119,38 @@ public class TaskService extends Service {
         super.onDestroy();
         this.stopForeground(true);
         this.releaseWakeLock();
-        timer.cancel();
-        timer = null;
+        service.shutdown();
+        service = null;
     }
 
     /**
      * 获取timer
      * @return timer
      */
-    private Timer getTimer() {
-        if (timer == null) {
+    private ScheduledExecutorService getService() {
+        if (service == null) {
             synchronized (TaskService.class) {
-                if (timer == null) {
-                    timer = new Timer();
+                if (service == null) {
+                    service = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
                 }
             }
         }
-        return timer;
+        return service;
     }
 
     /**
      * 定时任务执行的逻辑
      * @return TimerTask
      */
-    private TimerTask task() {
-        return new TimerTask() {
-            @Override
-            public void run() {
+    private Runnable task() {
+        return () -> {
+            try {
                 String date = DateFormatUtils.format(new Date(), Constant.FORMAT_DATETIME);
                 String s = String.format("%s:%s", date, counter.incrementAndGet());
                 getNotificationManager().notify(NOTIFICATION_ID, notification(s));
                 service.execute(taskManager::execute);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         };
     }
