@@ -2,6 +2,7 @@ package com.nature.kline.android.util;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
@@ -121,6 +122,18 @@ public class ViewTemplate {
         return line;
     }
 
+    public LinearLayout block(int w, int h) {
+        LinearLayout line = new LinearLayout(context);
+        line.setGravity(Gravity.CENTER);
+        float density = context.getResources().getDisplayMetrics().density;
+        int width = (int) (w * density + 0.5f);
+        int height = (int) (h * density + 0.5f);
+        LayoutParams param = new LayoutParams(width, height);
+        line.setLayoutParams(param);
+        line.setOrientation(LinearLayout.VERTICAL);
+        return line;
+    }
+
     public LinearLayout linearPage() {
         LinearLayout page = new LinearLayout(context);
         page.setOrientation(LinearLayout.VERTICAL);
@@ -143,8 +156,29 @@ public class ViewTemplate {
         datePicker.show();
     }
 
+    public void timePiker(Button button) {
+        String s = button.getText().toString();
+        Date date;
+        if (s.isEmpty()) {
+            date = new Date();
+        } else {
+            date = CommonUtil.parseDate(s, Constant.FORMAT_TIME);
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        TimePickerDialog datePicker = new TimePickerDialog(context, 3,
+                (view, hour, min) -> button.setText(this.getTime(view)),
+                c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true);
+        datePicker.show();
+    }
+
     @SuppressLint("DefaultLocale")
     private String getDate(DatePicker view) {
         return String.format("%04d-%02d-%02d", view.getYear(), view.getMonth() + 1, view.getDayOfMonth());
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String getTime(TimePicker view) {
+        return String.format("%02d:%02d:00", view.getHour(), view.getMinute());
     }
 }

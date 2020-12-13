@@ -15,7 +15,7 @@ import com.nature.kline.android.util.ViewTemplate;
 import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
 import com.nature.kline.android.view.Selector;
-import com.nature.kline.common.constant.DefaultGroup;
+import com.nature.kline.common.enums.DefaultGroup;
 import com.nature.kline.common.manager.GroupManager;
 import com.nature.kline.common.manager.ItemGroupManager;
 import com.nature.kline.common.manager.ItemManager;
@@ -153,28 +153,23 @@ public class MarkListActivity extends BaseListActivity<Mark> {
     private void doSave() {
         Item item = this.itemSel.getValue();
         if (item == null) {
-            PopUtil.alert(context, "请选择项目");
-            return;
+            throw new RuntimeException("请选择项目");
         }
         String date = this.date.getText().toString();
         if (date.isEmpty()) {
-            PopUtil.alert(context, "请选择日期");
-            return;
+            throw new RuntimeException("请选择日期");
         }
         String price = this.price.getText().toString();
         if (price.isEmpty()) {
-            PopUtil.alert(context, "请填写价格");
-            return;
+            throw new RuntimeException("请填写价格");
         }
         String rateBuy = this.rateBuy.getText().toString();
         if (rateBuy.isEmpty()) {
-            PopUtil.alert(context, "请填写补仓跌幅");
-            return;
+            throw new RuntimeException("请填写补仓跌幅");
         }
         String rateSell = this.rateSell.getText().toString();
         if (rateSell.isEmpty()) {
-            PopUtil.alert(context, "请填写补仓跌幅");
-            return;
+            throw new RuntimeException("请填写补仓跌幅");
         }
         Mark mark = new Mark();
         mark.setCode(item.getCode());

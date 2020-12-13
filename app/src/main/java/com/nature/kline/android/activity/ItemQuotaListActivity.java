@@ -11,7 +11,7 @@ import com.nature.kline.android.util.TextUtil;
 import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
 import com.nature.kline.android.view.Selector;
-import com.nature.kline.common.constant.DefaultGroup;
+import com.nature.kline.common.enums.DefaultGroup;
 import com.nature.kline.common.manager.GroupManager;
 import com.nature.kline.common.manager.ItemQuotaManager;
 import com.nature.kline.common.model.Group;

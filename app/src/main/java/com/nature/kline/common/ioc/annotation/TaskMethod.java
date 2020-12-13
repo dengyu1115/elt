@@ -16,4 +16,6 @@ import java.lang.annotation.Target;
 public @interface TaskMethod {
 
     String value() default "";
+
+    String name() default "";
 }

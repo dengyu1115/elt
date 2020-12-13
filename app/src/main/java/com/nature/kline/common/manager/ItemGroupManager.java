@@ -1,6 +1,6 @@
 package com.nature.kline.common.manager;
 
-import com.nature.kline.common.constant.DefaultGroup;
+import com.nature.kline.common.enums.DefaultGroup;
 import com.nature.kline.common.ioc.annotation.Injection;
 import com.nature.kline.common.mapper.ItemGroupMapper;
 import com.nature.kline.common.model.Item;

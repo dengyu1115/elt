@@ -101,13 +101,11 @@ public class LineActivity extends AppCompatActivity {
                 PopUtil.confirm(context, "添加策略", this.strategy(), () -> {
                     String code = this.code.getText().toString();
                     if (StringUtils.isBlank(code)) {
-                        PopUtil.alert(context, "请填写编号");
-                        return;
+                        throw new RuntimeException("请填写编号");
                     }
                     String name = this.name.getText().toString();
                     if (StringUtils.isBlank(name)) {
-                        PopUtil.alert(context, "请填写名称");
-                        return;
+                        throw new RuntimeException("请填写名称");
                     }
                     Strategy d = new Strategy();
                     d.setCode(code);
@@ -127,8 +125,7 @@ public class LineActivity extends AppCompatActivity {
                 PopUtil.confirm(context, "载入策略", "确定载入策略吗？", () -> {
                     Strategy strategy = selector.getValue();
                     if (strategy == null) {
-                        PopUtil.alert(context, "请先选择策略");
-                        return;
+                        throw new RuntimeException("请先选择策略");
                     }
                     List<LineDef> list = strategy.getList();
                     if (list == null) {
@@ -159,8 +156,7 @@ public class LineActivity extends AppCompatActivity {
                 PopUtil.confirm(context, "策略入库", "确定入库策略吗？", () -> {
                     Strategy strategy = selector.getValue();
                     if (strategy == null) {
-                        PopUtil.alert(context, "请先选择策略");
-                        return;
+                        throw new RuntimeException("请先选择策略");
                     }
                     List<LineDef> list = new ArrayList<>();
                     for (Button button : bs.values()) {
@@ -236,12 +232,10 @@ public class LineActivity extends AppCompatActivity {
                     String title = this.title.getText().toString();
                     String sql = this.sql.getText().toString();
                     if (StringUtils.isBlank(title) && StringUtils.isNotBlank(sql)) {
-                        PopUtil.alert(context, "请填写标题");
-                        return;
+                        throw new RuntimeException("请填写标题");
                     }
                     if (StringUtils.isNotBlank(title) && StringUtils.isBlank(sql)) {
-                        PopUtil.alert(context, "请填写sql");
-                        return;
+                        throw new RuntimeException("请填写sql");
                     }
                     if (StringUtils.isNotBlank(title)) {
                         LineDef def = new LineDef();

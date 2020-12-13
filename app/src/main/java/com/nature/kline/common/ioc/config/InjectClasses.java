@@ -28,6 +28,7 @@ public interface InjectClasses {
             FundRateManager.class,
             ItemQuotaManager.class,
             MarkManager.class,
-            TargetManager.class
+            TargetManager.class,
+            TaskInfoManager.class
     };
 }

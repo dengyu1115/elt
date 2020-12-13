@@ -3,7 +3,7 @@ package com.nature.kline.common.mapper;
 import android.database.Cursor;
 import com.nature.kline.android.db.BaseDB;
 import com.nature.kline.android.db.SqlParam;
-import com.nature.kline.common.constant.DefaultGroup;
+import com.nature.kline.common.enums.DefaultGroup;
 import com.nature.kline.common.model.Group;
 import org.apache.commons.lang3.StringUtils;
 

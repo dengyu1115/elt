@@ -1,8 +1,12 @@
 package com.nature.kline.common.util;
 
+import com.nature.kline.common.model.TaskInfo;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +22,7 @@ public class TaskHolder {
      */
     private static final Map<String, Method> methods = new HashMap<>();
     private static final Map<String, Object> instances = new HashMap<>();
+    private static final List<TaskInfo> tasks = new ArrayList<>();
 
     /**
      * 任务持有
@@ -34,5 +39,16 @@ public class TaskHolder {
     public static void put(String code, Method m, Object o) {
         methods.put(code, m);
         instances.put(code, o);
+    }
+
+    public static void add(String code, String name) {
+        TaskInfo taskInfo = new TaskInfo();
+        taskInfo.setCode(code);
+        taskInfo.setName(name);
+        tasks.add(taskInfo);
+    }
+
+    public static List<TaskInfo> listAll() {
+        return tasks;
     }
 }

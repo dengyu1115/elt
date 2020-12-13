@@ -1,4 +1,4 @@
-package com.nature.kline.common.constant;
+package com.nature.kline.common.enums;
 
 import java.util.Arrays;
 import java.util.List;

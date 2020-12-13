@@ -20,7 +20,7 @@ import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
 import com.nature.kline.android.view.Selector;
 import com.nature.kline.common.constant.DefType;
-import com.nature.kline.common.constant.DefaultGroup;
+import com.nature.kline.common.enums.DefaultGroup;
 import com.nature.kline.common.manager.DefinitionManager;
 import com.nature.kline.common.manager.FundRateManager;
 import com.nature.kline.common.manager.GroupManager;

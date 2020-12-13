@@ -59,7 +59,7 @@ public class KlineManager {
      * 加载最新数据
      * @return int
      */
-    @TaskMethod("load_latest_kline")
+    @TaskMethod(value = "load_latest_kline", name = "加载最新K线")
     public int loadLatest() {
         return workDayManager.doInTradeTimeOrNot(date -> {
             throw new RuntimeException("交易时间不可同步数据");
@@ -72,7 +72,7 @@ public class KlineManager {
      * 计算平均值
      * @return int
      */
-    @TaskMethod("calculate_kline_average")
+    @TaskMethod(value = "calculate_kline_average", name = "K线均值计算")
     public int averageAll() {
         return ExeUtil.exec(this::listItems, this::average);
     }

@@ -12,7 +12,7 @@ import com.nature.kline.android.util.ViewTemplate;
 import com.nature.kline.android.view.ExcelView;
 import com.nature.kline.android.view.SearchBar;
 import com.nature.kline.android.view.Selector;
-import com.nature.kline.common.constant.DefaultGroup;
+import com.nature.kline.common.enums.DefaultGroup;
 import com.nature.kline.common.manager.GroupManager;
 import com.nature.kline.common.model.Group;
 import com.nature.kline.common.util.CommonUtil;
@@ -129,22 +129,18 @@ public class GroupListActivity extends BaseListActivity<Group> {
     private void doEdit(BiFunction<String, String, Boolean> fun) {
         String type = this.type.getValue();
         if (StringUtils.isBlank(type)) {
-            PopUtil.alert(context, "请选择类型");
-            return;
+            throw new RuntimeException("请选择类型");
         }
         String code = this.code.getText().toString();
         if (code.isEmpty()) {
-            PopUtil.alert(context, "请填写编号");
-            return;
+            throw new RuntimeException("请填写编号");
         }
         if (fun.apply(code, type)) {
-            PopUtil.alert(context, "分组已存在");
-            return;
+            throw new RuntimeException("分组已存在");
         }
         String name = this.name.getText().toString();
         if (name.isEmpty()) {
-            PopUtil.alert(context, "请填写名称");
-            return;
+            throw new RuntimeException("请填写名称");
         }
         String remark = this.remark.getText().toString();
         Group group = new Group();

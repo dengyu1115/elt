@@ -12,6 +12,7 @@ import android.os.PowerManager;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import com.nature.kline.R;
+import com.nature.kline.common.constant.Constant;
 import com.nature.kline.common.manager.TaskManager;
 import com.nature.kline.common.util.InstanceHolder;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -59,9 +60,9 @@ public class TaskService extends Service {
 
     private final ExecutorService service = Executors.newCachedThreadPool();
 
-    private static AtomicInteger counter = new AtomicInteger();
+    private static final AtomicInteger counter = new AtomicInteger();
 
-    private TaskManager taskManager = InstanceHolder.get(TaskManager.class);
+    private final TaskManager taskManager = InstanceHolder.get(TaskManager.class);
 
     /**
      * 创建服务
@@ -142,10 +143,10 @@ public class TaskService extends Service {
         return new TimerTask() {
             @Override
             public void run() {
-                String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+                String date = DateFormatUtils.format(new Date(), Constant.FORMAT_DATETIME);
                 String s = String.format("%s:%s", date, counter.incrementAndGet());
                 getNotificationManager().notify(NOTIFICATION_ID, notification(s));
-                service.execute(() -> taskManager.execute());
+                service.execute(taskManager::execute);
             }
         };
     }

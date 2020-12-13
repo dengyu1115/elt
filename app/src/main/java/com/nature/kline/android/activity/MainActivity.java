@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, MarkListActivity.class)));
     }
 
+    public void toTaskManage(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, TaskManageActivity.class)));
+    }
+
     public void toPriceNetList(View view) {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, PriceNetListActivity.class)));
     }

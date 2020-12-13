@@ -10,15 +10,15 @@ public class TaskInfo extends BaseModel {
 
     private String code;
 
+    private String name;
+
     private String startTime;
 
     private String endTime;
 
     private String type;
 
-    private String last;
-
-    private String remark;
+    private String status;
 
     public String getCode() {
         return code;
@@ -26,6 +26,14 @@ public class TaskInfo extends BaseModel {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStartTime() {
@@ -52,19 +60,11 @@ public class TaskInfo extends BaseModel {
         this.type = type;
     }
 
-    public String getLast() {
-        return last;
+    public String getStatus() {
+        return status;
     }
 
-    public void setLast(String last) {
-        this.last = last;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

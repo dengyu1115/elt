@@ -17,32 +17,34 @@ import java.util.function.Function;
  */
 public class TaskInfoMapper {
 
-    private static final String SQL = "select code, type, start_time, end_time, last, remark from task_info";
+    private static final String SQL_QUERY = "select code, name, type, start_time, end_time, status from task_info";
     private static final String SQL_TABLE = "" +
             "CREATE TABLE IF NOT EXISTS task_info (" +
             " code TEXT NOT NULL," +
+            " name TEXT NULL," +
             " type TEXT NOT NULL," +
             " start_time TEXT NOT NULL," +
             " end_time TEXT NOT NULL," +
-            " last TEXT NULL," +
-            " remark TEXT NULL," +
-            " PRIMARY KEY (code)" +
+            " status TEXT NULL," +
+            " PRIMARY KEY (code, start_time)" +
             ")";
+
 
     private final BaseDB baseDB = BaseDB.create();
 
     public TaskInfoMapper() {
+        baseDB.executeSql("DROP TABLE task_info");
         baseDB.executeSql(SQL_TABLE);
     }
 
     private static final Function<Cursor, TaskInfo> resultMapper = c -> {
         TaskInfo t = new TaskInfo();
         t.setCode(BaseDB.getString(c, "code"));
+        t.setName(BaseDB.getString(c, "name"));
         t.setType(BaseDB.getString(c, "type"));
         t.setStartTime(BaseDB.getString(c, "start_time"));
         t.setEndTime(BaseDB.getString(c, "end_time"));
-        t.setLast(BaseDB.getString(c, "last"));
-        t.setRemark(BaseDB.getString(c, "remark"));
+        t.setStatus(BaseDB.getString(c, "status"));
         return t;
     };
 
@@ -51,7 +53,21 @@ public class TaskInfoMapper {
      * @return list
      */
     public List<TaskInfo> list() {
-        return baseDB.list(SqlParam.build().append(SQL), resultMapper);
+        return baseDB.list(SqlParam.build().append(SQL_QUERY), resultMapper);
     }
 
+    /**
+     * 查询全部任务信息
+     * @return list
+     */
+    public List<TaskInfo> listValid() {
+        return baseDB.list(SqlParam.build().append(SQL_QUERY).append("where status = '1'"), resultMapper);
+    }
+
+    public int merge(TaskInfo d) {
+        SqlParam param = SqlParam.build().append("replace into task_info(code, name, type, start_time, end_time, " +
+                        "status) values(?, ?, ?, ?, ?, ?)", d.getCode(), d.getName(), d.getType(),
+                d.getStartTime(), d.getEndTime(), d.getStatus());
+        return baseDB.executeUpdate(param);
+    }
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.function.Consumer;
+
 /**
  * 弹窗工具
  * @author nature
@@ -25,15 +27,7 @@ public class PopUtil {
      * @param runnable 执行逻辑
      */
     public static void confirm(Context context, String title, String message, Runnable runnable) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton("确定", (dialogInterface, i) -> {
-            runnable.run();
-        });
-        builder.setNegativeButton("取消", (dialogInterface, i) -> {
-        });
-        builder.show();
+        buildAlertDialog(context, title, builder -> builder.setMessage(message), runnable);
     }
 
     /**
@@ -44,14 +38,26 @@ public class PopUtil {
      * @param runnable 执行逻辑
      */
     public static void confirm(Context context, String title, View view, Runnable runnable) {
+        buildAlertDialog(context, title, builder -> builder.setView(view), runnable);
+    }
+
+    private static void buildAlertDialog(Context context, String title, Consumer<AlertDialog.Builder> consumer,
+                                         Runnable runnable) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
-        builder.setView(view);
-        builder.setPositiveButton("确定", (dialogInterface, i) -> {
-            runnable.run();
-        });
+        consumer.accept(builder);
+        builder.setPositiveButton("确定", null);
         builder.setNegativeButton("取消", (dialogInterface, i) -> {
         });
-        builder.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            try {
+                runnable.run();
+                dialog.dismiss();
+            } catch (Exception e) {
+                alert(context, e.getMessage());
+            }
+        });
     }
 }

@@ -17,19 +17,27 @@ import java.util.function.Function;
  */
 public class TaskRecordMapper {
 
+    public static final String SQL_TABLE = "" +
+            "CREATE TABLE IF NOT EXISTS task_record ( " +
+            " code TEXT NOT NULL, " +
+            " date TEXT NOT NULL, " +
+            " start_time TEXT NULL, " +
+            " end_time TEXT NULL, " +
+            " status TEXT NOT NULL, " +
+            " exception TEXT NULL, " +
+            " PRIMARY KEY (code, date, start_time) " +
+            ")";
+    public static final String SQL_COUNT = "" +
+            "select count(1) cnt from task_record " +
+            "where code = ? " +
+            "and date = ? " +
+            "and start_time >= ? " +
+            "and start_time < ? " +
+            "and status in ('0', '1')";
     private final BaseDB baseDB = BaseDB.create();
 
     public TaskRecordMapper() {
-        baseDB.executeSql("" +
-                "CREATE TABLE IF NOT EXISTS task_record ( " +
-                " code TEXT NOT NULL, " +
-                " date TEXT NOT NULL, " +
-                " start_time TEXT NULL, " +
-                " end_time TEXT NULL, " +
-                " status TEXT NOT NULL, " +
-                " exception TEXT NULL, " +
-                " PRIMARY KEY (code, date) " +
-                ")");
+        baseDB.executeSql(SQL_TABLE);
     }
 
     private static final Function<Cursor, TaskRecord> resultMapper = c -> {
@@ -43,14 +51,18 @@ public class TaskRecordMapper {
         return t;
     };
 
+    private static final Function<Cursor, Integer> countMapper = c -> BaseDB.getInt(c, "cnt");
+
     /**
-     * 查询任务记录
-     * @return TaskRecord
+     * 查询执行完成或者正执行任务数量
+     * @param code      code
+     * @param date      date
+     * @param timeStart timeStart
+     * @param timeEnd   timeEnd
+     * @return int
      */
-    public TaskRecord get(String code, String date) {
-        SqlParam sql = SqlParam.build().append("select code, date, start_time, end_time, status, exception")
-                .append("from task_record where code = ? and date = ?", code, date);
-        return baseDB.find(sql, resultMapper);
+    public int countExecute(String code, String date, String timeStart, String timeEnd) {
+        return baseDB.find(SqlParam.build().append(SQL_COUNT, code, date, timeStart, timeEnd), countMapper);
     }
 
     /**

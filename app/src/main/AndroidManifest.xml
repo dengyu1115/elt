@@ -40,6 +40,7 @@
         <activity android:name=".android.activity.TargetListActivity"/>
         <activity android:name=".android.activity.GroupListActivity"/>
         <activity android:name=".android.activity.QuotaListActivity"/>
+        <activity android:name=".android.activity.TaskManageActivity"/>
         <service android:name=".android.service.TaskService"/>
     </application>
 

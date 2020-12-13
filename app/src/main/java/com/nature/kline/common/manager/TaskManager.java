@@ -1,6 +1,8 @@
 package com.nature.kline.common.manager;
 
 import com.nature.kline.common.constant.Constant;
+import com.nature.kline.common.enums.ExeStatus;
+import com.nature.kline.common.enums.TaskType;
 import com.nature.kline.common.ioc.annotation.Injection;
 import com.nature.kline.common.mapper.TaskInfoMapper;
 import com.nature.kline.common.mapper.TaskRecordMapper;
@@ -35,9 +37,13 @@ public class TaskManager {
      */
     public void execute() {
         // 1.查询任务集合
-        List<TaskInfo> list = taskInfoMapper.list();
+        List<TaskInfo> list = taskInfoMapper.listValid();
         // 2.遍历执行
-        for (TaskInfo task : list) if (this.isExecuteTime(task)) this.doTask(task);
+        for (TaskInfo task : list) {
+            if (this.isExecuteTime(task)) {
+                this.doTask(task);
+            }
+        }
     }
 
     /**
@@ -47,7 +53,7 @@ public class TaskManager {
      */
     public List<TaskRecord> records(String date) {
         Map<String, String> map = taskInfoMapper.list().stream()
-                .collect(Collectors.toMap(TaskInfo::getCode, TaskInfo::getRemark));
+                .collect(Collectors.toMap(TaskInfo::getCode, TaskInfo::getName, (o, n) -> n));
         List<TaskRecord> records = taskRecordMapper.list(date);
         for (TaskRecord record : records) record.setCode(map.get(record.getCode()));
         return records;
@@ -64,8 +70,8 @@ public class TaskManager {
         Date start = CommonUtil.parseDate(today + " " + task.getStartTime(), Constant.FORMAT_DATETIME);
         Date end = CommonUtil.parseDate(today + " " + task.getEndTime(), Constant.FORMAT_DATETIME);
         String type = task.getType();
-        return (Constant.TASK_TYPE_CURR.equals(type) && workDayManager.isTodayWorkDay()
-                || Constant.TASK_TYPE_PRE.equals(type) && workDayManager.isYesterdayWorkDay())
+        return (TaskType.IN_WORKDAY.getCode().equals(type) && workDayManager.isTodayWorkDay()
+                || TaskType.AFTER_WORKDAY.getCode().equals(type) && workDayManager.isYesterdayWorkDay())
                 && now.after(start) && now.before(end);
     }
 
@@ -75,14 +81,9 @@ public class TaskManager {
      */
     private void doTask(TaskInfo task) {
         String date = DateFormatUtils.format(new Date(), Constant.FORMAT_DATE);
-        String lastCode = task.getLast();
-        if (lastCode != null) {// 1.校验上一任务是否已经执行完毕
-            TaskRecord last = taskRecordMapper.get(lastCode, date);
-            if (last == null || !Constant.TASK_STATUS_END.equals(last.getStatus())) return;
-        }
         // 2.校验当前任务是否执行中
-        TaskRecord current = taskRecordMapper.get(task.getCode(), date);
-        if (current != null && !Constant.TASK_STATUS_EXCEPTION.equals(current.getStatus())) return;
+        int cnt = taskRecordMapper.countExecute(task.getCode(), date, task.getStartTime(), task.getEndTime());
+        if (cnt > 0) return;
         // 3.执行目标方法
         TaskRecord record = this.initRecord(task);
         taskRecordMapper.merge(record);
@@ -106,7 +107,7 @@ public class TaskManager {
         record.setCode(task.getCode());
         record.setDate(workDayManager.getToday());
         record.setStartTime(workDayManager.getNowTime());
-        record.setStatus(Constant.TASK_STATUS_START);
+        record.setStatus(ExeStatus.START.getCode());
         return record;
     }
 
@@ -117,7 +118,7 @@ public class TaskManager {
      * @return TaskRecord
      */
     private TaskRecord recordEnd(TaskRecord record) {
-        record.setStatus(Constant.TASK_STATUS_END);
+        record.setStatus(ExeStatus.END.getCode());
         record.setEndTime(workDayManager.getNowTime());
         return record;
     }
@@ -129,7 +130,7 @@ public class TaskManager {
      * @return TaskRecord
      */
     private TaskRecord recordException(TaskRecord record, Exception e) {
-        record.setStatus(Constant.TASK_STATUS_EXCEPTION);
+        record.setStatus(ExeStatus.EXCEPTION.getCode());
         record.setEndTime(workDayManager.getNowTime());
         record.setException(e.getClass().getName());
         return record;

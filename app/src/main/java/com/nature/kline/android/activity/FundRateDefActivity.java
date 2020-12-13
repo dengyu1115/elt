@@ -96,8 +96,7 @@ public class FundRateDefActivity extends AppCompatActivity {
         PopUtil.confirm(context, "删除显示规则", "确定要删除吗？", () -> {
             Definition definition = selector.getValue();
             if (definition == null) {
-                PopUtil.alert(context, "请选择要删除的规则");
-                return;
+                throw new RuntimeException("请选择要删除的规则");
             }
             definitionManager.delete(DefType.FUND_LIST, definition.getCode());
             PopUtil.alert(context, "删除成功");
@@ -109,13 +108,11 @@ public class FundRateDefActivity extends AppCompatActivity {
         PopUtil.confirm(context, "添加显示规则", popWindow(), () -> {
             String code = this.code.getText().toString();
             if (StringUtils.isBlank(code)) {
-                PopUtil.alert(context, "编号不能为空");
-                return;
+                throw new RuntimeException("编号不能为空");
             }
             String title = this.title.getText().toString();
             if (StringUtils.isBlank(title)) {
-                PopUtil.alert(context, "标题不能为空");
-                return;
+                throw new RuntimeException("标题不能为空");
             }
             Definition definition = new Definition();
             definition.setType(DefType.FUND_LIST);
@@ -132,23 +129,19 @@ public class FundRateDefActivity extends AppCompatActivity {
         PopUtil.confirm(context, "添加显示规则", editShow(), () -> {
             Definition definition = selector.getValue();
             if (definition == null) {
-                PopUtil.alert(context, "请选择规则");
-                return;
+                throw new RuntimeException("请选择规则");
             }
             String code = this.code.getText().toString();
             if (StringUtils.isBlank(code)) {
-                PopUtil.alert(context, "编号不能为空");
-                return;
+                throw new RuntimeException("编号不能为空");
             }
             String title = this.title.getText().toString();
             if (StringUtils.isBlank(title)) {
-                PopUtil.alert(context, "标题不能为空");
-                return;
+                throw new RuntimeException("标题不能为空");
             }
             String type = this.type.getValue();
             if (StringUtils.isBlank(type)) {
-                PopUtil.alert(context, "请选择类型");
-                return;
+                throw new RuntimeException("请选择类型");
             }
             String dateStart = null;
             String dateEnd = null;
@@ -156,14 +149,12 @@ public class FundRateDefActivity extends AppCompatActivity {
             if (FundListDefManager.DEFINED.equals(type)) {
                 dateStart = this.dateStart.getText().toString();
                 if (StringUtils.isBlank(dateStart)) {
-                    PopUtil.alert(context, "请填写开始日期");
-                    return;
+                    throw new RuntimeException("请填写开始日期");
                 } else {
                     try {
                         new SimpleDateFormat("yyyy-MM-dd").parse(dateStart);
                     } catch (ParseException e) {
-                        PopUtil.alert(context, "请填写正确的日期格式");
-                        return;
+                        throw new RuntimeException("请填写正确的日期格式");
                     }
                 }
                 dateEnd = this.dateEnd.getText().toString();
@@ -171,19 +162,16 @@ public class FundRateDefActivity extends AppCompatActivity {
                     try {
                         new SimpleDateFormat("yyyy-MM-dd").parse(dateEnd);
                     } catch (ParseException e) {
-                        PopUtil.alert(context, "请填写正确的日期格式");
-                        return;
+                        throw new RuntimeException("请填写正确的日期格式");
                     }
                 }
             } else {
                 String s = this.count.getText().toString();
                 if (StringUtils.isBlank(s)) {
-                    PopUtil.alert(context, "请填写数量");
-                    return;
+                    throw new RuntimeException("请填写数量");
                 }
                 if (!s.matches("^[0-9]*$")) {
-                    PopUtil.alert(context, "数量必须是数字");
-                    return;
+                    throw new RuntimeException("数量必须是数字");
                 }
                 count = Integer.valueOf(s);
             }
@@ -214,8 +202,7 @@ public class FundRateDefActivity extends AppCompatActivity {
         PopUtil.confirm(context, "删除显示规则", "确定删除 " + o.getTitle() + " 吗？", () -> {
             Definition definition = selector.getValue();
             if (definition == null) {
-                PopUtil.alert(context, "请选择规则");
-                return;
+                throw new RuntimeException("请选择规则");
             }
             List<FundRateDef> list = JSON.parseArray(definition.getJson(), FundRateDef.class);
             for (FundRateDef def : list) {

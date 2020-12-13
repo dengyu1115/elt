@@ -1,8 +1,8 @@
 package com.nature.kline.common.manager;
 
 import com.nature.kline.android.db.BaseDB;
-import com.nature.kline.common.constant.DefaultQuota;
-import com.nature.kline.common.constant.QuotaField;
+import com.nature.kline.common.enums.DefaultQuota;
+import com.nature.kline.common.enums.QuotaField;
 import com.nature.kline.common.http.QuotaHttp;
 import com.nature.kline.common.ioc.annotation.Injection;
 import com.nature.kline.common.ioc.annotation.TaskMethod;
@@ -42,7 +42,7 @@ public class QuotaManager {
         return ExeUtil.exec(quotaMapper::delete, DefaultQuota::codes, this::load);
     }
 
-    @TaskMethod("load_latest_quota")
+    @TaskMethod(value = "load_latest_quota", name = "加载最新指标")
     public int loadLatest() {
         return ExeUtil.exec(DefaultQuota::codes, this::load);
     }
