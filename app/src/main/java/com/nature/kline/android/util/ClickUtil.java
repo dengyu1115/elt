@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.function.Supplier;
 
@@ -28,13 +27,12 @@ public class ClickUtil {
         try {
             long currentTimeMillis = System.currentTimeMillis();
             if (currentTimeMillis - millis < 1000) {
-                Toast.makeText(view.getContext(), "点击过于频繁", Toast.LENGTH_LONG).show();
-                return;
+                throw new RuntimeException("点击过于频繁");
             }
             runnable.run();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            PopUtil.alert(view.getContext(), e.getMessage());
         } finally {
             view.setClickable(true);
             millis = System.currentTimeMillis();
@@ -48,7 +46,7 @@ public class ClickUtil {
      */
     public static void asyncClick(View view, Supplier<String> supplier) {
         Handler handler = new Handler(msg -> {
-            Toast.makeText(view.getContext(), msg.getData().getCharSequence("data"), Toast.LENGTH_LONG).show();
+            PopUtil.alert(view.getContext(), msg.getData().getString("data"));
             return false;
         });
         new Thread(() -> {
@@ -56,11 +54,12 @@ public class ClickUtil {
             try {
                 long currentTimeMillis = System.currentTimeMillis();
                 if (currentTimeMillis - millis < 1000) {
-                    handler.sendMessage(message("点击过于频繁"));
-                    return;
+                    throw new RuntimeException("点击过于频繁");
                 }
                 String s = supplier.get();
-                if (s != null) handler.sendMessage(message(s));
+                if (s != null) {
+                    handler.sendMessage(message(s));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 handler.sendMessage(message(e.getMessage()));
