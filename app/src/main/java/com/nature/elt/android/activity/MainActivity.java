@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private final ScaleManager scaleManager = InstanceHolder.get(ScaleManager.class);
 
     private Context context;
+    private int count;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -191,8 +192,6 @@ public class MainActivity extends AppCompatActivity {
     public void calculatePriceNet(View view) {
         ClickUtil.asyncClick(view, () -> String.format("价值净值历史计算完成,共%s条", priceNetManager.calculate()));
     }
-
-    private int count;
 
     public void switchMain(View view) {
         String tag = (String) view.getTag();

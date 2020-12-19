@@ -27,11 +27,10 @@ import java.util.function.Function;
 @SuppressLint("DefaultLocale")
 public class ExcelView<T> extends BasicView {
 
+    private final int columns;
     private List<D<T>> ds;
     private List<T> list = new ArrayList<>();
-
     private float colWidth, widthRate = 1f;
-    private final int columns;
     private LayoutParams param = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
     private List<HorizontalScrollView> horizontalScrollViews = new ArrayList<>();
     private AtomicInteger sc = new AtomicInteger(-1);
@@ -49,6 +48,8 @@ public class ExcelView<T> extends BasicView {
     private Comparator<T> comparator;
     private int sortCol;
     private boolean sortClicked;
+    private float clickX, clickY;
+    private OnScrollChangeListener scrollChangeListener = (v, x, y, ox, oy) -> this.scrollAll(this.scrollX = x);
 
     public ExcelView(Context context) {
         this(context, 3);
@@ -102,8 +103,6 @@ public class ExcelView<T> extends BasicView {
         }
         return layout;
     }
-
-    private float clickX, clickY;
 
     @SuppressLint("ClickableViewAccessibility")
     private void addSortClickEvent(TextView textView, Comparator<T> comparator, int col) {
@@ -239,43 +238,6 @@ public class ExcelView<T> extends BasicView {
         return list.size();
     }
 
-    class Adapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public T getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @SuppressWarnings("unchecked")
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                ArrayList<TextView> textViews = new ArrayList<>();
-                convertView = itemView(textViews);
-                convertView.setTag(textViews);
-            }
-            List<TextView> textViews = (List<TextView>) convertView.getTag();
-            T item = getItem(position);
-            for (int i = 0; i < textViews.size(); i++) {
-                TextView textView = textViews.get(i);
-                D<T> d = ds.get(i);
-                textView.setText(d.content.apply(item));
-                textView.setGravity(textAlign(d.contentAlign));
-                if (d.click != null) textView.setOnClickListener(v -> d.click.accept(item));
-            }
-            return convertView;
-        }
-    }
-
     private int textAlign(int textAlign) {
         if (textAlign == 1) return Gravity.START | Gravity.CENTER;
         else if (textAlign == 2) return Gravity.END | Gravity.CENTER;
@@ -306,8 +268,6 @@ public class ExcelView<T> extends BasicView {
         view.setBackgroundColor(Color.LTGRAY);
         return view;
     }
-
-    private OnScrollChangeListener scrollChangeListener = (v, x, y, ox, oy) -> this.scrollAll(this.scrollX = x);
 
     private LinearLayout itemView(List<TextView> textViews) {
         LinearLayout line = this.line();
@@ -376,6 +336,43 @@ public class ExcelView<T> extends BasicView {
             this.contentAlign = contentAlign;
             this.sort = sort;
             this.click = click;
+        }
+    }
+
+    class Adapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public T getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @SuppressWarnings("unchecked")
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                ArrayList<TextView> textViews = new ArrayList<>();
+                convertView = itemView(textViews);
+                convertView.setTag(textViews);
+            }
+            List<TextView> textViews = (List<TextView>) convertView.getTag();
+            T item = getItem(position);
+            for (int i = 0; i < textViews.size(); i++) {
+                TextView textView = textViews.get(i);
+                D<T> d = ds.get(i);
+                textView.setText(d.content.apply(item));
+                textView.setGravity(textAlign(d.contentAlign));
+                if (d.click != null) textView.setOnClickListener(v -> d.click.accept(item));
+            }
+            return convertView;
         }
     }
 

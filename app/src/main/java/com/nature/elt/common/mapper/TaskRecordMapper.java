@@ -34,12 +34,6 @@ public class TaskRecordMapper {
             "and start_time >= ? " +
             "and start_time < ? " +
             "and status in ('0', '1')";
-    private final BaseDB baseDB = BaseDB.create();
-
-    public TaskRecordMapper() {
-        baseDB.executeSql(SQL_TABLE);
-    }
-
     private static final Function<Cursor, TaskRecord> resultMapper = c -> {
         TaskRecord t = new TaskRecord();
         t.setCode(BaseDB.getString(c, "code"));
@@ -50,8 +44,12 @@ public class TaskRecordMapper {
         t.setException(BaseDB.getString(c, "exception"));
         return t;
     };
-
     private static final Function<Cursor, Integer> countMapper = c -> BaseDB.getInt(c, "cnt");
+    private final BaseDB baseDB = BaseDB.create();
+
+    public TaskRecordMapper() {
+        baseDB.executeSql(SQL_TABLE);
+    }
 
     /**
      * 查询执行完成或者正执行任务数量

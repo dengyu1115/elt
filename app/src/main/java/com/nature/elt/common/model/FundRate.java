@@ -12,13 +12,13 @@ import java.util.Map;
 public class FundRate extends Net {
 
     /**
-     * 净资产规模
-     */
-    private Double scale;
-    /**
      * 涨幅map
      */
     private final Map<String, Double> rates = new HashMap<>();
+    /**
+     * 净资产规模
+     */
+    private Double scale;
 
     public Double getScale() {
         return scale;

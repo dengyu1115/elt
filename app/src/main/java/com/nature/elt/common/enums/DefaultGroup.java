@@ -18,14 +18,6 @@ public enum DefaultGroup {
         this.name = name;
     }
 
-    public String getCode() {
-        return this.code;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
     public static String getName(String code) {
         DefaultGroup[] values = values();
         for (DefaultGroup group : values) {
@@ -36,5 +28,13 @@ public enum DefaultGroup {
 
     public static List<String> codes() {
         return Arrays.stream(values()).map(DefaultGroup::getCode).collect(Collectors.toList());
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

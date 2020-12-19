@@ -38,37 +38,12 @@ import java.util.function.Consumer;
 public class FundRateActivity extends AppCompatActivity {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-    private Context context;
-
-    private LinearLayout page;
-    private LinearLayout body;
-
-    private ExcelView<FundRate> excel;
-
-    private Selector<Definition> ruleSel;
-
-    private Selector<Group> groupSel;
-
-    private Selector<String> selector;
-
-    private EditText editText;
-
-    private TextView total;
-
-    private Button rb;
-
-    private ViewTemplate template;
-
-    private final DefinitionManager definitionManager = InstanceHolder.get(DefinitionManager.class);
-
-    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
-
-    private final FundRateManager fundRateManager = InstanceHolder.get(FundRateManager.class);
-
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-
     private static final int C = 0, S = 1, E = 2;
-
+    private final DefinitionManager definitionManager = InstanceHolder.get(DefinitionManager.class);
+    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
+    private final FundRateManager fundRateManager = InstanceHolder.get(FundRateManager.class);
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
+    private Context context;
     private final List<ExcelView.D<FundRate>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(FundRate::getName), kline()),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(FundRate::getCode), priceNet()),
@@ -79,6 +54,21 @@ public class FundRateActivity extends AppCompatActivity {
             new ExcelView.D<>("总净值", d -> TextUtil.net(d.getNetTotal()), C, E, Sorter.nullsLast(FundRate::getNetTotal)),
             new ExcelView.D<>("总增长", d -> TextUtil.hundred(d.getRateTotal()), C, E, Sorter.nullsLast(FundRate::getRateTotal))
     );
+    private LinearLayout page;
+    private LinearLayout body;
+    private ExcelView<FundRate> excel;
+    private Selector<Definition> ruleSel;
+    private Selector<Group> groupSel;
+    private Selector<String> selector;
+    private EditText editText;
+    private TextView total;
+    private final Handler handler = new Handler(msg -> {
+        this.total.setText(String.valueOf(this.excel.getListSize()));
+        return false;
+    });
+    private Button rb;
+    private ViewTemplate template;
+    private int height;
 
     private List<ExcelView.D<FundRate>> getDs(Definition def) {
         List<ExcelView.D<FundRate>> list = new ArrayList<>(ds);
@@ -115,8 +105,6 @@ public class FundRateActivity extends AppCompatActivity {
     private String getEditTextValue() {
         return editText.getText().toString();
     }
-
-    private int height;
 
     private void makeStructure() {
         template = ViewTemplate.build(context);
@@ -259,11 +247,6 @@ public class FundRateActivity extends AppCompatActivity {
             this.startActivity(intent);
         };
     }
-
-    private final Handler handler = new Handler(msg -> {
-        this.total.setText(String.valueOf(this.excel.getListSize()));
-        return false;
-    });
 
     private void refreshTotal() {
         handler.sendMessage(new Message());

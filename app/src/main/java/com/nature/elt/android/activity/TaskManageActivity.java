@@ -30,14 +30,9 @@ import java.util.function.Consumer;
  */
 public class TaskManageActivity extends BaseListActivity<TaskInfo> {
 
-    private Selector<TaskInfo> taskSel;
-
-    private Selector<String> typeSel, statusSel;
-
-    private Button add, startTime, endTime;
-
     private final TaskInfoManager taskInfoManager = InstanceHolder.get(TaskInfoManager.class);
-
+    private Selector<TaskInfo> taskSel;
+    private Selector<String> typeSel, statusSel;
     private final List<ExcelView.D<TaskInfo>> ds = Arrays.asList(
             new ExcelView.D<>("code", d -> TextUtil.text(d.getCode()), C, S, CommonUtil.nullsLast(TaskInfo::getCode)),
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, C, CommonUtil.nullsLast(TaskInfo::getName)),
@@ -48,6 +43,7 @@ public class TaskManageActivity extends BaseListActivity<TaskInfo> {
             new ExcelView.D<>("修改", d -> TextUtil.text("+"), C, C, this.edit()),
             new ExcelView.D<>("删除", d -> TextUtil.text("-"), C, C, this.delete())
     );
+    private Button add, startTime, endTime;
 
     @Override
     protected List<ExcelView.D<TaskInfo>> define() {

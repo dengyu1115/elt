@@ -28,14 +28,6 @@ public enum QuotaField {
         this.name = name;
     }
 
-    public String getCode() {
-        return this.code;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
     public static String getName(String code) {
         QuotaField[] values = values();
         for (QuotaField group : values) {
@@ -46,5 +38,13 @@ public enum QuotaField {
 
     public static List<String> codes() {
         return Arrays.stream(values()).map(QuotaField::getCode).collect(Collectors.toList());
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

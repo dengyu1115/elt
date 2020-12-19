@@ -24,14 +24,6 @@ public enum ExeStatus {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public static List<String> codes() {
         return Arrays.stream(values()).map(ExeStatus::getCode).collect(Collectors.toList());
     }
@@ -44,5 +36,13 @@ public enum ExeStatus {
             }
         }
         return null;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
     }
 }

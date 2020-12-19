@@ -28,14 +28,6 @@ public class TaskInfoMapper {
             " status TEXT NULL," +
             " PRIMARY KEY (code, start_time)" +
             ")";
-
-
-    private final BaseDB baseDB = BaseDB.create();
-
-    public TaskInfoMapper() {
-        baseDB.executeSql(SQL_TABLE);
-    }
-
     private static final Function<Cursor, TaskInfo> resultMapper = c -> {
         TaskInfo t = new TaskInfo();
         t.setCode(BaseDB.getString(c, "code"));
@@ -46,6 +38,11 @@ public class TaskInfoMapper {
         t.setStatus(BaseDB.getString(c, "status"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
+
+    public TaskInfoMapper() {
+        baseDB.executeSql(SQL_TABLE);
+    }
 
     /**
      * 查询全部任务信息

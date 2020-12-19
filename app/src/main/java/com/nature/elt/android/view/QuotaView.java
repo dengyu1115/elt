@@ -21,11 +21,7 @@ import java.util.stream.Collectors;
 public class QuotaView extends View {
 
     private static final int SIZE_DEFAULT = 90, SIZE_MIN = 30, SIZE_MAX = 800;
-    private List<Quota> data, list;
-    private List<String> dateTexts, priceTexts;
-    private int intervalDate, intervalPrice, index, listSize = SIZE_DEFAULT, listStart, listEnd;
-    private float unitDate, unitPrice, dx, px, py, lx;
-    private boolean longPressed, moving;
+    private static final int[] COLORS = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.GRAY, Color.CYAN, Color.BLACK};
     private final String[] ns = new String[]{
             "名称:", "日期:", "价格:", "增长:",
             "市盈:", "增长:", "股数:", "增长:",
@@ -38,8 +34,6 @@ public class QuotaView extends View {
             new Q(ns[8]), new Q(ns[9]), new Q(ns[10]), new Q(ns[11]),
             new Q(ns[12]), new Q(ns[13]), new Q(ns[14]), new Q(ns[15])
     };
-    private Double minPrice;
-    private static final int[] COLORS = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.GRAY, Color.CYAN, Color.BLACK};
     /**
      * 位置坐标
      */
@@ -48,6 +42,12 @@ public class QuotaView extends View {
      * 画笔
      */
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private List<Quota> data, list;
+    private List<String> dateTexts, priceTexts;
+    private int intervalDate, intervalPrice, index, listSize = SIZE_DEFAULT, listStart, listEnd;
+    private float unitDate, unitPrice, dx, px, py, lx;
+    private boolean longPressed, moving;
+    private Double minPrice;
 
     public QuotaView(Context context) {
         super(context);

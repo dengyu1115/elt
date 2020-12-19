@@ -41,27 +41,20 @@ import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
  */
 public class ItemGroupActivity extends AppCompatActivity {
 
+    private static final int CENTER = 0, START = 1;
+    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
+    private final ItemGroupManager itemGroupManager = InstanceHolder.get(ItemGroupManager.class);
     private Context context;
-
     private LinearLayout page;
-
     private float uw, uh;
     private EditText tText, aText;
     private Button tQuery, aQuery;
     private ExcelView<Item> toAdd, added;
     private Selector<Group> groupSel;
-
     private ViewTemplate template;
-
-    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-    private final ItemGroupManager itemGroupManager = InstanceHolder.get(ItemGroupManager.class);
-
     private String lkw;
     private String group;
-
-    private static final int CENTER = 0, START = 1;
-
     private final List<ExcelView.D<Item>> lds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), CENTER, START, CommonUtil.nullsLast(Item::getName), toKlineView()),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), CENTER, START, CommonUtil.nullsLast(Item::getCode), toKlineView()),

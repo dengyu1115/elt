@@ -16,8 +16,6 @@ import java.util.function.Function;
  */
 public class DefinitionMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS definition ( " +
             " code TEXT NOT NULL, " +
@@ -26,9 +24,7 @@ public class DefinitionMapper {
             " desc TEXT, " +
             " json TEXT, " +
             " PRIMARY KEY (type, code))";
-
     private static final String COLUMN = "code, title, type, desc, json";
-
     private static final Function<Cursor, Definition> mapper = c -> {
         Definition i = new Definition();
         i.setCode(BaseDB.getString(c, "code"));
@@ -38,6 +34,7 @@ public class DefinitionMapper {
         i.setJson(BaseDB.getString(c, "json"));
         return i;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public DefinitionMapper() {
         baseDB.executeSql(TABLE);

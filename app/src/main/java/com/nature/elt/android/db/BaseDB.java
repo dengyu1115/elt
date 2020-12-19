@@ -50,6 +50,32 @@ public class BaseDB {
         return baseDB;
     }
 
+    public static Integer getInt(Cursor c, String col) {
+        int columnIndex = c.getColumnIndex(col);
+        if (columnIndex == -1) {
+            return null;
+        }
+        String string = c.getString(columnIndex);
+        return string == null ? null : Integer.valueOf(string);
+    }
+
+    public static Double getDouble(Cursor c, String col) {
+        int columnIndex = c.getColumnIndex(col);
+        if (columnIndex == -1) {
+            return null;
+        }
+        String string = c.getString(columnIndex);
+        return string == null ? null : Double.valueOf(string);
+    }
+
+    public static String getString(Cursor c, String col) {
+        int columnIndex = c.getColumnIndex(col);
+        if (columnIndex == -1) {
+            return null;
+        }
+        return c.getString(columnIndex);
+    }
+
     public <T> List<T> list(SqlParam sqlParam, Function<Cursor, T> function) {
         return this.list(sqlParam.toSQL(), sqlParam.toArgs(), function);
     }
@@ -110,32 +136,6 @@ public class BaseDB {
             }
             return statement.executeUpdateDelete();
         }
-    }
-
-    public static Integer getInt(Cursor c, String col) {
-        int columnIndex = c.getColumnIndex(col);
-        if (columnIndex == -1) {
-            return null;
-        }
-        String string = c.getString(columnIndex);
-        return string == null ? null : Integer.valueOf(string);
-    }
-
-    public static Double getDouble(Cursor c, String col) {
-        int columnIndex = c.getColumnIndex(col);
-        if (columnIndex == -1) {
-            return null;
-        }
-        String string = c.getString(columnIndex);
-        return string == null ? null : Double.valueOf(string);
-    }
-
-    public static String getString(Cursor c, String col) {
-        int columnIndex = c.getColumnIndex(col);
-        if (columnIndex == -1) {
-            return null;
-        }
-        return c.getString(columnIndex);
     }
 
     /**

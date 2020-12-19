@@ -28,20 +28,17 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public abstract class BaseListActivity<T> extends AppCompatActivity {
 
     protected static final int C = 0, S = 1, E = 2;
-
-    private LinearLayout page;
-
-    private ExcelView<T> excel;
-
-    private Button button;
-
-    private TextView total;
-
-    private int height;
-
     protected Context context;
-
     protected ViewTemplate template;
+    private LinearLayout page;
+    private ExcelView<T> excel;
+    private Button button;
+    private TextView total;
+    private final Handler handler = new Handler(msg -> {
+        this.total.setText(String.valueOf(this.excel.getListSize()));
+        return false;
+    });
+    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +103,6 @@ public abstract class BaseListActivity<T> extends AppCompatActivity {
             this.refreshTotal();
         }).start();
     }
-
-    private final Handler handler = new Handler(msg -> {
-        this.total.setText(String.valueOf(this.excel.getListSize()));
-        return false;
-    });
 
     private void refreshTotal() {
         handler.sendMessage(new Message());

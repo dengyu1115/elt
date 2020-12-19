@@ -45,21 +45,19 @@ public class TaskService extends Service {
      */
     private final static String CHANNEL_NAME = "KLINE服务通道";
     /**
-     * 唤醒锁
+     * 执行间隔
      */
-    private PowerManager.WakeLock wl;
+    private static final int PERIOD = 60 * 1000;
+    private static final AtomicInteger counter = new AtomicInteger();
     /**
      * 定时器
      */
     private static ScheduledExecutorService service;
-    /**
-     * 执行间隔
-     */
-    private static final int PERIOD = 60 * 1000;
-
-    private static final AtomicInteger counter = new AtomicInteger();
-
     private final TaskManager taskManager = InstanceHolder.get(TaskManager.class);
+    /**
+     * 唤醒锁
+     */
+    private PowerManager.WakeLock wl;
 
     /**
      * 创建服务

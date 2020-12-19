@@ -11,10 +11,10 @@ import java.lang.reflect.Method;
 
 public class ComponentStarter {
 
+    private static ComponentStarter instance;
+
     private ComponentStarter() {
     }
-
-    private static ComponentStarter instance;
 
     public static ComponentStarter getInstance() {
         if (instance == null) {

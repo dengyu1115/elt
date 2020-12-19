@@ -21,14 +21,14 @@ import java.util.function.Function;
 public class Selector<T> extends BasicView {
 
     private final Context context;
+    private final LayoutParams params;
+    private final int height;
     private TextView valueView;
     private T value;
     private PopupWindow popupWindow;
     private ListView listView;
     private List<T> items;
     private Function<T, String> mapper;
-    private final LayoutParams params;
-    private final int height;
     private Runnable changeRun;
 
     public Selector(Context context) {

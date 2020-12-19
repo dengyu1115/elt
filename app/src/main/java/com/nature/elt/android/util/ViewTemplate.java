@@ -30,12 +30,12 @@ public class ViewTemplate {
     public static final int PAD = 10;
     private final Context context;
 
-    public static ViewTemplate build(Context context) {
-        return new ViewTemplate(context);
-    }
-
     private ViewTemplate(Context context) {
         this.context = context;
+    }
+
+    public static ViewTemplate build(Context context) {
+        return new ViewTemplate(context);
     }
 
     public Button button(int w, int h) {

@@ -18,13 +18,12 @@ import java.util.function.BiFunction;
  */
 public class FundListDefManager {
 
-    private static final Map<String, String> map = new LinkedHashMap<>();
-
     public static final String DATE = "date";
     public static final String WEEK = "week";
     public static final String MONTH = "month";
     public static final String YEAR = "year";
     public static final String DEFINED = "defined";
+    private static final Map<String, String> map = new LinkedHashMap<>();
 
     static {
         map.put(DATE, "日");

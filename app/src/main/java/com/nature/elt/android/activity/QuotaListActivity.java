@@ -32,11 +32,6 @@ import java.util.function.Consumer;
 public class QuotaListActivity extends BaseListActivity<ItemQuota> {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-
-    private Button dateStart, dateEnd;
-
-    private Selector<String> codeSel, typeSel;
-
     private final List<ExcelView.D<ItemQuota>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(ItemQuota::getName), this.lineView()),
             new ExcelView.D<>("开始日期", d -> TextUtil.text(d.getDateStart()), C, E, Sorter.nullsLast(ItemQuota::getDateStart)),
@@ -55,9 +50,9 @@ public class QuotaListActivity extends BaseListActivity<ItemQuota> {
             new ExcelView.D<>("%-平均", d -> TextUtil.hundred(d.getRatioAvg()), C, E, Sorter.nullsLast(ItemQuota::getRatioAvg)),
             new ExcelView.D<>("%-最新", d -> TextUtil.hundred(d.getRatioLatest()), C, E, Sorter.nullsLast(ItemQuota::getRatioLatest))
     );
-
     private final QuotaManager quotaManager = InstanceHolder.get(QuotaManager.class);
-
+    private Button dateStart, dateEnd;
+    private Selector<String> codeSel, typeSel;
 
     @SuppressLint("ResourceType")
     private void onDateChooseClick(View v) {

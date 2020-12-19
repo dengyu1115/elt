@@ -22,12 +22,15 @@ import java.util.function.Consumer;
  */
 public class BuySellListActivity extends BaseListActivity<Kline> {
 
-    private Selector<String> dateSel, typeSel;
+    private static final Map<String, String> typeMap = new LinkedHashMap<>();
+
+    static {
+        typeMap.put("1", "可购买");
+        typeMap.put("2", "可卖出");
+    }
 
     private final KlineManager klineManager = InstanceHolder.get(KlineManager.class);
-
     private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
-
     private final List<ExcelView.D<Kline>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, CommonUtil.nullsLast(Kline::getName), getConsumer()),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, S, CommonUtil.nullsLast(Kline::getCode)),
@@ -41,13 +44,7 @@ public class BuySellListActivity extends BaseListActivity<Kline> {
             new ExcelView.D<>("季平均", d -> TextUtil.net(d.getAvgSeason()), C, S, CommonUtil.nullsLast(Kline::getAvgSeason)),
             new ExcelView.D<>("年平均", d -> TextUtil.net(d.getAvgYear()), C, S, CommonUtil.nullsLast(Kline::getAvgYear))
     );
-
-    private static final Map<String, String> typeMap = new LinkedHashMap<>();
-
-    static {
-        typeMap.put("1", "可购买");
-        typeMap.put("2", "可卖出");
-    }
+    private Selector<String> dateSel, typeSel;
 
     private Consumer<Kline> getConsumer() {
         return d -> {

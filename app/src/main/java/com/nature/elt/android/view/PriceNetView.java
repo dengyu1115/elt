@@ -21,15 +21,9 @@ import java.util.stream.Collectors;
 public class PriceNetView extends View {
 
     private static final int SIZE_DEFAULT = 90, SIZE_MIN = 30, SIZE_MAX = 800;
-    private List<PriceNet> data, list;
-    private List<String> dateTexts, priceTexts, rateTexts, amountTexts;
-    private int intervalDate, intervalPrice, intervalRate, intervalAmount, index, listSize = SIZE_DEFAULT, listStart, listEnd;
-    private float unitDate, unitPrice, unitRate, unitAmount, dx, px, py, lx;
-    private boolean longPressed, moving;
+    private static final int[] COLORS = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.GRAY, Color.YELLOW};
     private final String[] ns = new String[]{"日期:", "最高:", "最低:", "价格:", "净值:", "折价率:", "交易额:"};
     private final Q[] qs = new Q[]{new Q(ns[0]), new Q(ns[1]), new Q(ns[2]), new Q(ns[3]), new Q(ns[4]), new Q(ns[5]), new Q(ns[6])};
-    private Double minPrice, minRate, minAmount;
-    private static final int[] COLORS = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.GRAY, Color.YELLOW};
     /**
      * 位置坐标
      */
@@ -38,6 +32,12 @@ public class PriceNetView extends View {
      * 画笔
      */
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private List<PriceNet> data, list;
+    private List<String> dateTexts, priceTexts, rateTexts, amountTexts;
+    private int intervalDate, intervalPrice, intervalRate, intervalAmount, index, listSize = SIZE_DEFAULT, listStart, listEnd;
+    private float unitDate, unitPrice, unitRate, unitAmount, dx, px, py, lx;
+    private boolean longPressed, moving;
+    private Double minPrice, minRate, minAmount;
 
     public PriceNetView(Context context) {
         super(context);
@@ -276,7 +276,7 @@ public class PriceNetView extends View {
     }
 
     private Double getAbs(Double rate) {
-        if(rate == null) return null;
+        if (rate == null) return null;
         return Math.abs(rate);
     }
 

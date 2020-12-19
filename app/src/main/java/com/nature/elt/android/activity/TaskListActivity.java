@@ -26,14 +26,6 @@ import java.util.stream.Collectors;
  */
 public class TaskListActivity extends BaseListActivity<TaskRecord> {
 
-    private Selector<String> selector;
-
-    private EditText editText;
-
-    private final TaskManager taskManager = InstanceHolder.get(TaskManager.class);
-
-    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
-
     private static final Map<String, String> TASK_STATUS_MAP = new HashMap<>();
 
     static {
@@ -42,6 +34,9 @@ public class TaskListActivity extends BaseListActivity<TaskRecord> {
         TASK_STATUS_MAP.put("2", "异常");
     }
 
+    private final TaskManager taskManager = InstanceHolder.get(TaskManager.class);
+
+    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
     private final List<ExcelView.D<TaskRecord>> ds = Arrays.asList(
             new ExcelView.D<>("code", d -> TextUtil.text(d.getCode()), C, S, CommonUtil.nullsLast(TaskRecord::getCode)),
             new ExcelView.D<>("日期", d -> TextUtil.text(d.getDate()), C, C, CommonUtil.nullsLast(TaskRecord::getDate)),
@@ -50,6 +45,8 @@ public class TaskListActivity extends BaseListActivity<TaskRecord> {
             new ExcelView.D<>("执行状态", d -> TextUtil.text(TASK_STATUS_MAP.get(d.getStatus())), C, C, CommonUtil.nullsLast(TaskRecord::getStatus)),
             new ExcelView.D<>("异常", d -> TextUtil.text(d.getException()), C, C, CommonUtil.nullsLast(TaskRecord::getException))
     );
+    private Selector<String> selector;
+    private EditText editText;
 
     @Override
     protected List<ExcelView.D<TaskRecord>> define() {

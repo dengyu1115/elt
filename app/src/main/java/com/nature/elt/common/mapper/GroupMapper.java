@@ -18,8 +18,6 @@ import java.util.function.Function;
  */
 public class GroupMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS `group` ( " +
             " code TEXT NOT NULL, " +
@@ -27,7 +25,6 @@ public class GroupMapper {
             " type TEXT NOT NULL, " +
             " remark TEXT NOT NULL, " +
             " PRIMARY KEY (code,type))";
-
     private static final Function<Cursor, Group> mapper = c -> {
         Group t = new Group();
         t.setCode(BaseDB.getString(c, "code"));
@@ -36,6 +33,7 @@ public class GroupMapper {
         t.setRemark(BaseDB.getString(c, "remark"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public GroupMapper() {
         baseDB.executeSql(TABLE);

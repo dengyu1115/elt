@@ -17,8 +17,6 @@ import java.util.function.Function;
  */
 public class ItemGroupMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS item_group ( " +
             " `group` TEXT NOT NULL, " +
@@ -27,7 +25,6 @@ public class ItemGroupMapper {
             " market TEXT NOT NULL, " +
             " type TEXT NOT NULL, " +
             " PRIMARY KEY (`group`, code, market))";
-
     private static final Function<Cursor, ItemGroup> mapper = c -> {
         ItemGroup t = new ItemGroup();
         t.setGroup(BaseDB.getString(c, "group"));
@@ -37,6 +34,7 @@ public class ItemGroupMapper {
         t.setType(BaseDB.getString(c, "type"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public ItemGroupMapper() {
         baseDB.executeSql(TABLE);

@@ -42,6 +42,10 @@ import java.util.stream.Stream;
  */
 public class MarkListActivity extends BaseListActivity<Mark> {
 
+    private final MarkManager markManager = InstanceHolder.get(MarkManager.class);
+    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
+    private final ItemGroupManager itemGroupManager = InstanceHolder.get(ItemGroupManager.class);
     private EditText keyword;
     private LinearLayout window;
     private EditText text, price, rateBuy, rateSell;
@@ -49,15 +53,7 @@ public class MarkListActivity extends BaseListActivity<Mark> {
     private Selector<String> typeSel;
     private Selector<Group> groupSel;
     private Selector<Item> itemSel;
-
-    private final MarkManager markManager = InstanceHolder.get(MarkManager.class);
-    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-    private final ItemGroupManager itemGroupManager = InstanceHolder.get(ItemGroupManager.class);
-
     private List<Item> items;
-    private Map<String, String> itemMap;
-
     private final List<ExcelView.D<Mark>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, CommonUtil.nullsLast(Mark::getName), this.detail()),
             new ExcelView.D<>("code", d -> TextUtil.text(d.getCode()), C, C, CommonUtil.nullsLast(Mark::getCode)),
@@ -71,6 +67,7 @@ public class MarkListActivity extends BaseListActivity<Mark> {
             new ExcelView.D<>("编辑", d -> "+", C, C, this.edit()),
             new ExcelView.D<>("操作", d -> "-", C, C, this.delete())
     );
+    private Map<String, String> itemMap;
 
     @Override
     protected List<ExcelView.D<Mark>> define() {

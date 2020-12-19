@@ -17,8 +17,6 @@ import java.util.function.Function;
  */
 public class ItemMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS item ( " +
             " code TEXT NOT NULL, " +
@@ -26,7 +24,6 @@ public class ItemMapper {
             " market TEXT NOT NULL, " +
             " type TEXT NOT NULL, " +
             " PRIMARY KEY (code, market))";
-
     private static final Function<Cursor, Item> mapper = c -> {
         Item t = new Item();
         t.setCode(BaseDB.getString(c, "code"));
@@ -35,6 +32,7 @@ public class ItemMapper {
         t.setType(BaseDB.getString(c, "type"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public ItemMapper() {
         baseDB.executeSql(TABLE);

@@ -34,15 +34,11 @@ import java.util.function.Consumer;
 public class ItemQuotaListActivity extends BaseListActivity<ItemQuota> {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
+    private final ItemQuotaManager itemQuotaManager = InstanceHolder.get(ItemQuotaManager.class);
     private Button dateStart, dateEnd;
-
     private Selector<Group> selector;
-
     private Group group;
-
-    private EditText keyword;
-
     private final List<ExcelView.D<ItemQuota>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(ItemQuota::getName), this.lineView()),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(ItemQuota::getCode)),
@@ -62,10 +58,7 @@ public class ItemQuotaListActivity extends BaseListActivity<ItemQuota> {
             new ExcelView.D<>("%-平均", d -> TextUtil.hundred(d.getRatioAvg()), C, E, Sorter.nullsLast(ItemQuota::getRatioAvg)),
             new ExcelView.D<>("%-最新", d -> TextUtil.hundred(d.getRatioLatest()), C, E, Sorter.nullsLast(ItemQuota::getRatioLatest))
     );
-
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-    private final ItemQuotaManager itemQuotaManager = InstanceHolder.get(ItemQuotaManager.class);
-
+    private EditText keyword;
 
     @SuppressLint("ResourceType")
     private void onDateChooseClick(View v) {

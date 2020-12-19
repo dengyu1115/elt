@@ -32,16 +32,12 @@ import java.util.stream.Collectors;
  */
 public class GroupListActivity extends BaseListActivity<Group> {
 
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
     private EditText keyword;
     private LinearLayout page;
     private EditText code, name, remark;
     private Button add;
     private Selector<String> type, typeSel;
-
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-
-    private Map<String, String> typeMap;
-
     private final List<ExcelView.D<Group>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, CommonUtil.nullsLast(Group::getName)),
             new ExcelView.D<>("code", d -> TextUtil.text(d.getCode()), C, C, CommonUtil.nullsLast(Group::getCode)),
@@ -50,6 +46,7 @@ public class GroupListActivity extends BaseListActivity<Group> {
             new ExcelView.D<>("编辑", d -> "+", C, C, this.edit()),
             new ExcelView.D<>("删除", d -> "-", C, C, this.delete())
     );
+    private Map<String, String> typeMap;
 
     @Override
     protected List<ExcelView.D<Group>> define() {

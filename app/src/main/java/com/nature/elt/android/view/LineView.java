@@ -22,16 +22,7 @@ public class LineView extends View {
 
     private static final int SIZE_DEFAULT = 90, SIZE_MIN = 30, SIZE_MAX = 1800, MOVEMENT = 30;
     private static final String DELIMITER = ":";
-    private List<String> dates, list, dateTexts, priceTexts;
-    private Map<String, Line> map;
-    private int intervalDate, intervalPrice, index, listSize = SIZE_DEFAULT, listStart, listEnd, titleY;
     private final int[] tx = new int[10];
-    private float unitDate, unitPrice, dx, px, py, lx;
-    private boolean longPressed, moving;
-    private String dateStart;
-    private List<Q> qs = Collections.singletonList(new Q("日期", null, "初始", Color.BLACK));
-    private Double minPrice;
-
     /**
      * 位置坐标
      */
@@ -40,6 +31,14 @@ public class LineView extends View {
      * 画笔
      */
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private List<String> dates, list, dateTexts, priceTexts;
+    private Map<String, Line> map;
+    private int intervalDate, intervalPrice, index, listSize = SIZE_DEFAULT, listStart, listEnd, titleY;
+    private float unitDate, unitPrice, dx, px, py, lx;
+    private boolean longPressed, moving;
+    private String dateStart;
+    private List<Q> qs = Collections.singletonList(new Q("日期", null, "初始", Color.BLACK));
+    private Double minPrice;
 
     public LineView(Context context) {
         super(context);

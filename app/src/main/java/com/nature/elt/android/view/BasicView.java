@@ -6,10 +6,10 @@ import android.widget.LinearLayout;
 
 public class BasicView extends LinearLayout {
 
-    protected Context context;
     protected static final int MATCH_PARENT = LayoutParams.MATCH_PARENT;
     protected static final int WRAP_CONTENT = LayoutParams.WRAP_CONTENT;
     protected final float DENSITY;
+    protected Context context;
 
     public BasicView(Context context) {
         super(context);

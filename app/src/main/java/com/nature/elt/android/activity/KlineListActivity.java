@@ -24,14 +24,8 @@ import java.util.function.Consumer;
  */
 public class KlineListActivity extends BaseListActivity<Kline> {
 
-    private Selector<String> selector;
-
-    private EditText editText;
-
     private final KlineManager klineManager = InstanceHolder.get(KlineManager.class);
-
     private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
-
     private final List<ExcelView.D<Kline>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, CommonUtil.nullsLast(Kline::getName), getConsumer()),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, S, CommonUtil.nullsLast(Kline::getCode)),
@@ -45,6 +39,8 @@ public class KlineListActivity extends BaseListActivity<Kline> {
             new ExcelView.D<>("季平均", d -> TextUtil.net(d.getAvgSeason()), C, E, CommonUtil.nullsLast(Kline::getAvgSeason)),
             new ExcelView.D<>("年平均", d -> TextUtil.net(d.getAvgYear()), C, E, CommonUtil.nullsLast(Kline::getAvgYear))
     );
+    private Selector<String> selector;
+    private EditText editText;
 
     private Consumer<Kline> getConsumer() {
         return d -> {

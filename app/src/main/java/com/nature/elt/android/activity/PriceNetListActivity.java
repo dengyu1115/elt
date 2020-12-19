@@ -34,19 +34,14 @@ import java.util.stream.Collectors;
  */
 public class PriceNetListActivity extends BaseListActivity<PriceNet> {
 
+    private final PriceNetManager priceNetManager = InstanceHolder.get(PriceNetManager.class);
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
+    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
+    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
     private Selector<String> selector;
     private Selector<Group> groupSel;
     private EditText editText;
     private LinearLayout window;
-
-    private final PriceNetManager priceNetManager = InstanceHolder.get(PriceNetManager.class);
-
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-
-    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
-
-    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
-
     private Map<String, String> codeToMarket;
 
     private final List<ExcelView.D<PriceNet>> ds = Arrays.asList(

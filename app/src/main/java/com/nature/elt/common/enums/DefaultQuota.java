@@ -26,14 +26,6 @@ public enum DefaultQuota {
         this.name = name;
     }
 
-    public String getCode() {
-        return this.code;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
     public static String getName(String code) {
         DefaultQuota[] values = values();
         for (DefaultQuota group : values) {
@@ -44,5 +36,13 @@ public enum DefaultQuota {
 
     public static List<String> codes() {
         return Arrays.stream(values()).map(DefaultQuota::getCode).collect(Collectors.toList());
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

@@ -32,19 +32,6 @@ import java.util.stream.Stream;
  */
 public class TargetListActivity extends BaseListActivity<Target> {
 
-    private EditText keyword;
-    private Selector<String> typeSel;
-    private Selector<Group> groupSel;
-    private Selector<String> dateSel;
-
-    private final TargetManager targetManager = InstanceHolder.get(TargetManager.class);
-
-    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
-
-    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
-
-    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
-
     private static final Map<String, String> map = new HashMap<>();
 
     static {
@@ -53,6 +40,14 @@ public class TargetListActivity extends BaseListActivity<Target> {
         map.put("2", "卖出");
     }
 
+    private final TargetManager targetManager = InstanceHolder.get(TargetManager.class);
+    private final GroupManager groupManager = InstanceHolder.get(GroupManager.class);
+    private final WorkDayManager workDayManager = InstanceHolder.get(WorkDayManager.class);
+    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
+    private EditText keyword;
+    private Selector<String> typeSel;
+    private Selector<Group> groupSel;
+    private Selector<String> dateSel;
     private Map<String, String> itemMap;
 
     private String type;

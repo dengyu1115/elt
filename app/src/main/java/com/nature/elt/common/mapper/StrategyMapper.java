@@ -18,8 +18,6 @@ import java.util.function.Function;
  */
 public class StrategyMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS strategy ( " +
             " code TEXT NOT NULL, " +
@@ -27,9 +25,7 @@ public class StrategyMapper {
             " date TEXT, " +
             " json TEXT, " +
             " PRIMARY KEY (code))";
-
     private static final String COLUMN = "code, name, date, json";
-
     private static final Function<Cursor, Strategy> mapper = c -> {
         Strategy t = new Strategy();
         t.setCode(BaseDB.getString(c, "code"));
@@ -39,6 +35,7 @@ public class StrategyMapper {
         if (json != null) t.setList(JSON.parseArray(json, LineDef.class));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public StrategyMapper() {
         baseDB.executeSql(TABLE);

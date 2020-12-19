@@ -1,2 +1,2 @@
-rootProject.name='kline'
+rootProject.name = 'kline'
 include ':app'

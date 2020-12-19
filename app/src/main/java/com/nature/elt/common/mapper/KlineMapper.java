@@ -16,8 +16,6 @@ import java.util.function.Function;
  */
 public class KlineMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS kline ( " +
             " code TEXT NOT NULL, " +
@@ -34,16 +32,13 @@ public class KlineMapper {
             " avg_season REAL, " +
             " avg_year REAL, " +
             " PRIMARY KEY (code, market, date))";
-
     private static final String COLUMNS = "code, market, date, open, latest, high, low, share, amount" +
             ", avg_week, avg_month, avg_season, avg_year";
-
     private static final String SQL_QUERY_DATE = "" +
             "select t2.* from " +
             "(select code,market,? date from item) t1 " +
             "left join kline t2 on t1.code = t2.code and t1.market = t2.market and t1.date = t2.date " +
             "where t2.date is not null";
-
     private static final Function<Cursor, Kline> mapper = c -> {
         Kline t = new Kline();
         t.setCode(BaseDB.getString(c, "code"));
@@ -61,6 +56,7 @@ public class KlineMapper {
         t.setAvgYear(BaseDB.getDouble(c, "avg_year"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public KlineMapper() {
         baseDB.executeSql(TABLE);

@@ -16,14 +16,13 @@ import java.util.function.Function;
  */
 public class LineMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final Function<Cursor, Line> mapper = c -> {
         Line t = new Line();
         t.setDate(BaseDB.getString(c, "date"));
         t.setPrice(BaseDB.getDouble(c, "price"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public List<Line> list(String sql) {
         return baseDB.list(SqlParam.build().append(sql), mapper);

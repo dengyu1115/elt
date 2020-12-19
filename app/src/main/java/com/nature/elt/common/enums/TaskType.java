@@ -23,14 +23,6 @@ public enum TaskType {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public static List<String> codes() {
         return Arrays.stream(values()).map(TaskType::getCode).collect(Collectors.toList());
     }
@@ -43,5 +35,13 @@ public enum TaskType {
             }
         }
         return null;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
     }
 }

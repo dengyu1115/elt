@@ -41,7 +41,7 @@ public class LineActivity extends AppCompatActivity {
     private final LineManager lineManager = InstanceHolder.get(LineManager.class);
 
     private final StrategyManager strategyManager = InstanceHolder.get(StrategyManager.class);
-
+    private final Map<Integer, Button> bs = new LinkedHashMap<>();
     private Context context;
     private LinearLayout page;
     private ViewTemplate template;
@@ -49,7 +49,6 @@ public class LineActivity extends AppCompatActivity {
     private EditText code, name, date, title, sql;
     private Selector<Strategy> selector;
     private LineView view;
-    private final Map<Integer, Button> bs = new LinkedHashMap<>();
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override

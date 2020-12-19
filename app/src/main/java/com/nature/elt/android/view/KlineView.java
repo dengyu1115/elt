@@ -21,15 +21,9 @@ import java.util.stream.Collectors;
 public class KlineView extends View {
 
     private static final int SIZE_DEFAULT = 90, SIZE_MIN = 30, SIZE_MAX = 800;
-    private List<Kline> data, list;
-    private List<String> dateTexts, priceTexts, amountTexts;
-    private int intervalDate, intervalPrice, intervalAmount, index, listSize = SIZE_DEFAULT, listStart, listEnd;
-    private float unitDate, unitPrice, unitAmount, dx, px, py, lx;
-    private boolean longPressed, moving;
+    private static final int[] COLORS = new int[]{0xFFFF0000, 0xFF1E90FF, 0xFF32CD32, 0xFFEEEE00, 0xFF8E388E};
     private final String[] ns = new String[]{"日期:", "当前:", "周平均:", "月平均:", "季平均:", "年平均:", "交易量:", "交易额:"};
     private final Q[] qs = new Q[]{new Q(ns[0]), new Q(ns[1]), new Q(ns[2]), new Q(ns[3]), new Q(ns[4]), new Q(ns[5]), new Q(ns[6]), new Q(ns[7])};
-    private Double minPrice, minAmount;
-    private static final int[] COLORS = new int[]{0xFFFF0000, 0xFF1E90FF, 0xFF32CD32, 0xFFEEEE00, 0xFF8E388E};
     /**
      * 位置坐标
      */
@@ -38,6 +32,12 @@ public class KlineView extends View {
      * 画笔
      */
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private List<Kline> data, list;
+    private List<String> dateTexts, priceTexts, amountTexts;
+    private int intervalDate, intervalPrice, intervalAmount, index, listSize = SIZE_DEFAULT, listStart, listEnd;
+    private float unitDate, unitPrice, unitAmount, dx, px, py, lx;
+    private boolean longPressed, moving;
+    private Double minPrice, minAmount;
 
     public KlineView(Context context) {
         super(context);

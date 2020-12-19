@@ -16,8 +16,6 @@ import java.util.function.Function;
  */
 public class MarkMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS trade ( " +
             " code TEXT NOT NULL, " +
@@ -27,9 +25,7 @@ public class MarkMapper {
             " rate_buy REAL NOT NULL, " +
             " rate_sell REAL NOT NULL, " +
             " PRIMARY KEY (code,market,date))";
-
     private static final String COLUMNS = "code, market, date, price, rate_buy, rate_sell";
-
     private static final Function<Cursor, Mark> mapper = c -> {
         Mark t = new Mark();
         t.setCode(BaseDB.getString(c, "code"));
@@ -40,6 +36,7 @@ public class MarkMapper {
         t.setRateSell(BaseDB.getDouble(c, "rate_sell"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public MarkMapper() {
         baseDB.executeSql(TABLE);

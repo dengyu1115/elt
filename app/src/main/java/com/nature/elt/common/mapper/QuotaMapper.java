@@ -16,8 +16,6 @@ import java.util.function.Function;
  */
 public class QuotaMapper {
 
-    private final BaseDB baseDB = BaseDB.create();
-
     private static final String TABLE = "" +
             "CREATE TABLE IF NOT EXISTS quota ( " +
             " code TEXT NOT NULL, " +
@@ -37,10 +35,8 @@ public class QuotaMapper {
             " price_rate REAL, " +
             " count_rate REAL, " +
             " PRIMARY KEY (code, date))";
-
     private static final String COLUMN = "code, date, syl, sz_z, gb_z, sz_lt, gb_lt, price, count, syl_rate, " +
             "sz_z_rate, gb_z_rate, sz_lt_rate, gb_lt_rate, price_rate, count_rate";
-
     private static final Function<Cursor, Quota> mapper = c -> {
         Quota t = new Quota();
         t.setCode(BaseDB.getString(c, "code"));
@@ -61,6 +57,7 @@ public class QuotaMapper {
         t.setCountRate(BaseDB.getDouble(c, "count_rate"));
         return t;
     };
+    private final BaseDB baseDB = BaseDB.create();
 
     public QuotaMapper() {
         baseDB.executeSql(TABLE);

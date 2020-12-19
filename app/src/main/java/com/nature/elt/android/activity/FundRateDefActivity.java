@@ -40,30 +40,15 @@ import java.util.List;
 public class FundRateDefActivity extends AppCompatActivity {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-
-    private Context context;
-
-    private LinearLayout page;
-
-    private int width, height;
-
     private static final int C = 0, S = 1, E = 2;
-
     private final DefinitionManager definitionManager = InstanceHolder.get(DefinitionManager.class);
     private final FundListDefManager fundListDefManager = InstanceHolder.get(FundListDefManager.class);
-
+    private Context context;
+    private LinearLayout page;
+    private int width, height;
     private ExcelView<FundRateDef> excel;
 
     private Selector<Definition> selector;
-
-    private Selector<String> type;
-
-    private EditText code, title, count, dateStart, dateEnd;
-
-    private Button add, delete, addDef;
-
-    private LinearLayout header, body, footer;
-
     private final List<ExcelView.D<FundRateDef>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getTitle()), C, S, Sorter.nullsLast(FundRateDef::getTitle)),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(FundRateDef::getCode)),
@@ -73,6 +58,10 @@ public class FundRateDefActivity extends AppCompatActivity {
             new ExcelView.D<>("结束日期", d -> TextUtil.text(d.getDateEnd()), C, E, Sorter.nullsLast(FundRateDef::getDateEnd)),
             new ExcelView.D<>("操作", d -> "-", C, C, this::popDelDef)
     );
+    private Selector<String> type;
+    private EditText code, title, count, dateStart, dateEnd;
+    private Button add, delete, addDef;
+    private LinearLayout header, body, footer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
