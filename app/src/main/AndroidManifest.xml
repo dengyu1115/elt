@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.nature.kline">
+          xmlns:tools="http://schemas.android.com/tools" package="com.nature.elt">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -16,32 +16,32 @@
                  android:usesCleartextTraffic="true"
                  android:requestLegacyExternalStorage="true"
                  tools:ignore="AllowBackup">
-        <activity android:name=".android.activity.MainActivity">
+        <activity android:name="com.nature.elt.android.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".android.activity.TaskListActivity"/>
-        <activity android:name=".android.activity.KlineListActivity"/>
-        <activity android:name=".android.activity.KlineActivity"/>
-        <activity android:name=".android.activity.BuySellListActivity"/>
-        <activity android:name=".android.activity.ItemGroupActivity"/>
-        <activity android:name=".android.activity.PriceNetListActivity"/>
-        <activity android:name=".android.activity.PriceNetActivity"/>
-        <activity android:name=".android.activity.QuotaActivity"/>
-        <activity android:name=".android.activity.LineActivity"/>
-        <activity android:name=".android.activity.FundRateDefActivity"/>
-        <activity android:name=".android.activity.FundRateActivity"/>
-        <activity android:name=".android.activity.ItemQuotaListActivity"/>
-        <activity android:name=".android.activity.FundLineActivity"/>
-        <activity android:name=".android.activity.ScaleListActivity"/>
-        <activity android:name=".android.activity.MarkListActivity"/>
-        <activity android:name=".android.activity.TargetListActivity"/>
-        <activity android:name=".android.activity.GroupListActivity"/>
-        <activity android:name=".android.activity.QuotaListActivity"/>
-        <activity android:name=".android.activity.TaskManageActivity"/>
-        <service android:name=".android.service.TaskService"/>
+        <activity android:name="com.nature.elt.android.activity.TaskListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.KlineListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.KlineActivity"/>
+        <activity android:name="com.nature.elt.android.activity.BuySellListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.ItemGroupActivity"/>
+        <activity android:name="com.nature.elt.android.activity.PriceNetListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.PriceNetActivity"/>
+        <activity android:name="com.nature.elt.android.activity.QuotaActivity"/>
+        <activity android:name="com.nature.elt.android.activity.LineActivity"/>
+        <activity android:name="com.nature.elt.android.activity.FundRateDefActivity"/>
+        <activity android:name="com.nature.elt.android.activity.FundRateActivity"/>
+        <activity android:name="com.nature.elt.android.activity.ItemQuotaListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.FundLineActivity"/>
+        <activity android:name="com.nature.elt.android.activity.ScaleListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.MarkListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.TargetListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.GroupListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.QuotaListActivity"/>
+        <activity android:name="com.nature.elt.android.activity.TaskManageActivity"/>
+        <service android:name="com.nature.elt.android.service.TaskService"/>
     </application>
 
 </manifest>
