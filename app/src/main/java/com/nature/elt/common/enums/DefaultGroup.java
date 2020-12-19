@@ -13,7 +13,7 @@ public enum DefaultGroup {
 
     private String name;
 
-    private DefaultGroup(String code, String name) {
+    DefaultGroup(String code, String name) {
         this.code = code;
         this.name = name;
     }
