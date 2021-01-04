@@ -12,13 +12,15 @@ import com.nature.elt.android.view.ExcelView;
 import com.nature.elt.android.view.SearchBar;
 import com.nature.elt.android.view.Selector;
 import com.nature.elt.common.enums.DefaultGroup;
-import com.nature.elt.common.manager.GroupManager;
+import com.nature.elt.fund.activity.FundLineActivity;
+import com.nature.elt.item.manager.GroupManager;
 import com.nature.elt.common.manager.ItemQuotaManager;
-import com.nature.elt.common.model.Group;
+import com.nature.elt.item.model.Group;
 import com.nature.elt.common.model.ItemQuota;
 import com.nature.elt.common.util.CommonUtil;
 import com.nature.elt.common.util.InstanceHolder;
 import com.nature.elt.common.util.Sorter;
+import com.nature.elt.index.activity.KlineActivity;
 
 import java.util.Arrays;
 import java.util.Date;

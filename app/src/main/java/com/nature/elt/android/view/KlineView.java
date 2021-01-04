@@ -6,7 +6,7 @@ import android.graphics.*;
 import android.view.MotionEvent;
 import android.view.View;
 import com.nature.elt.android.util.TextUtil;
-import com.nature.elt.common.model.Kline;
+import com.nature.elt.index.model.Kline;
 
 import java.util.*;
 import java.util.function.Function;

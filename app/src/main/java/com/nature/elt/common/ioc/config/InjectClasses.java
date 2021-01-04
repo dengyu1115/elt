@@ -1,6 +1,15 @@
 package com.nature.elt.common.ioc.config;
 
 import com.nature.elt.common.manager.*;
+import com.nature.elt.fund.manager.FundListDefManager;
+import com.nature.elt.fund.manager.FundRateManager;
+import com.nature.elt.fund.manager.ScaleManager;
+import com.nature.elt.index.manager.QuotaManager;
+import com.nature.elt.item.manager.GroupManager;
+import com.nature.elt.item.manager.ItemGroupManager;
+import com.nature.elt.item.manager.ItemManager;
+import com.nature.elt.index.manager.KlineManager;
+import com.nature.elt.fund.manager.NetManager;
 
 /**
  * 需要进行注入操作的类

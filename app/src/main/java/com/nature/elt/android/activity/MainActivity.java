@@ -19,6 +19,20 @@ import com.nature.elt.android.util.ViewUtil;
 import com.nature.elt.common.ioc.starter.ComponentStarter;
 import com.nature.elt.common.manager.*;
 import com.nature.elt.common.util.InstanceHolder;
+import com.nature.elt.fund.activity.FundRateActivity;
+import com.nature.elt.fund.activity.FundRateDefActivity;
+import com.nature.elt.fund.manager.ScaleManager;
+import com.nature.elt.index.activity.QuotaActivity;
+import com.nature.elt.index.activity.QuotaListActivity;
+import com.nature.elt.index.manager.QuotaManager;
+import com.nature.elt.item.activity.GroupListActivity;
+import com.nature.elt.item.activity.ItemGroupActivity;
+import com.nature.elt.item.activity.ItemListActivity;
+import com.nature.elt.item.manager.ItemManager;
+import com.nature.elt.index.activity.BuySellListActivity;
+import com.nature.elt.index.activity.KlineListActivity;
+import com.nature.elt.index.manager.KlineManager;
+import com.nature.elt.fund.manager.NetManager;
 
 /**
  * 主入口activity
@@ -109,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void toKlineList(View view) {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, KlineListActivity.class)));
+    }
+
+    public void toItemList(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemListActivity.class)));
     }
 
     public void toBsList(View view) {

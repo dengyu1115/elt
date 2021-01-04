@@ -23,24 +23,25 @@
             </intent-filter>
         </activity>
         <activity android:name="com.nature.elt.android.activity.TaskListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.KlineListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.KlineActivity"/>
-        <activity android:name="com.nature.elt.android.activity.BuySellListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.ItemGroupActivity"/>
+        <activity android:name="com.nature.elt.index.activity.KlineListActivity"/>
+        <activity android:name="com.nature.elt.index.activity.KlineActivity"/>
+        <activity android:name="com.nature.elt.index.activity.BuySellListActivity"/>
+        <activity android:name="com.nature.elt.item.activity.ItemGroupActivity"/>
         <activity android:name="com.nature.elt.android.activity.PriceNetListActivity"/>
         <activity android:name="com.nature.elt.android.activity.PriceNetActivity"/>
-        <activity android:name="com.nature.elt.android.activity.QuotaActivity"/>
+        <activity android:name="com.nature.elt.index.activity.QuotaActivity"/>
         <activity android:name="com.nature.elt.android.activity.LineActivity"/>
-        <activity android:name="com.nature.elt.android.activity.FundRateDefActivity"/>
-        <activity android:name="com.nature.elt.android.activity.FundRateActivity"/>
+        <activity android:name="com.nature.elt.fund.activity.FundRateDefActivity"/>
+        <activity android:name="com.nature.elt.fund.activity.FundRateActivity"/>
         <activity android:name="com.nature.elt.android.activity.ItemQuotaListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.FundLineActivity"/>
-        <activity android:name="com.nature.elt.android.activity.ScaleListActivity"/>
+        <activity android:name="com.nature.elt.fund.activity.FundLineActivity"/>
+        <activity android:name="com.nature.elt.fund.activity.ScaleListActivity"/>
         <activity android:name="com.nature.elt.android.activity.MarkListActivity"/>
         <activity android:name="com.nature.elt.android.activity.TargetListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.GroupListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.QuotaListActivity"/>
+        <activity android:name="com.nature.elt.item.activity.GroupListActivity"/>
+        <activity android:name="com.nature.elt.index.activity.QuotaListActivity"/>
         <activity android:name="com.nature.elt.android.activity.TaskManageActivity"/>
+        <activity android:name=".item.activity.ItemListActivity"/>
         <service android:name="com.nature.elt.android.service.TaskService"/>
     </application>
 

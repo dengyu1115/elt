@@ -2,8 +2,9 @@ package com.nature.elt.common.manager;
 
 import com.nature.elt.common.ioc.annotation.Injection;
 import com.nature.elt.common.mapper.MarkMapper;
-import com.nature.elt.common.model.Item;
-import com.nature.elt.common.model.Kline;
+import com.nature.elt.item.model.Item;
+import com.nature.elt.index.manager.KlineManager;
+import com.nature.elt.index.model.Kline;
 import com.nature.elt.common.model.Mark;
 import com.nature.elt.common.util.CommonUtil;
 

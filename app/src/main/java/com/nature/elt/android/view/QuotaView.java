@@ -6,7 +6,7 @@ import android.graphics.*;
 import android.view.MotionEvent;
 import android.view.View;
 import com.nature.elt.android.util.TextUtil;
-import com.nature.elt.common.model.Quota;
+import com.nature.elt.index.model.Quota;
 
 import java.util.*;
 import java.util.function.Function;

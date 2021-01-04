@@ -1,5 +1,7 @@
 package com.nature.elt.common.model;
 
+import com.nature.elt.item.model.Item;
+
 /**
  * 交易
  * @author nature

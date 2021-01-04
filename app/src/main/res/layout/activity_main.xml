@@ -32,6 +32,11 @@
             <Button android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:gravity="center"
+                    android:onClick="toItemList"
+                    android:text="项目列表"/>
+            <Button android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
                     android:onClick="toBsList"
                     android:text="买卖列表"/>
             <Button android:layout_width="120dp"

@@ -1,10 +1,12 @@
 package com.nature.elt.common.manager;
 
-import com.nature.elt.common.http.KlineHttp;
+import com.nature.elt.index.http.KlineHttp;
 import com.nature.elt.common.ioc.annotation.Injection;
-import com.nature.elt.common.model.Kline;
+import com.nature.elt.index.manager.KlineManager;
+import com.nature.elt.index.model.Kline;
 import com.nature.elt.common.model.Mark;
 import com.nature.elt.common.model.Target;
+import com.nature.elt.item.manager.ItemManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;
