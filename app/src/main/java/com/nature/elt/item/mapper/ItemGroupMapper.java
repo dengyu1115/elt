@@ -1,8 +1,8 @@
 package com.nature.elt.item.mapper;
 
 import android.database.Cursor;
-import com.nature.elt.android.db.BaseDB;
-import com.nature.elt.android.db.SqlParam;
+import com.nature.elt.common.db.BaseDB;
+import com.nature.elt.common.db.SqlParam;
 import com.nature.elt.item.model.ItemGroup;
 import org.apache.commons.lang3.StringUtils;
 

@@ -2,8 +2,8 @@ package com.nature.elt.common.mapper;
 
 
 import android.database.Cursor;
-import com.nature.elt.android.db.BaseDB;
-import com.nature.elt.android.db.SqlParam;
+import com.nature.elt.common.db.BaseDB;
+import com.nature.elt.common.db.SqlParam;
 import com.nature.elt.common.model.PriceNet;
 
 import java.util.List;

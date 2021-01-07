@@ -1,24 +1,20 @@
 package com.nature.elt.common.manager;
 
-import com.nature.elt.android.db.BaseDB;
 import com.nature.elt.common.constant.Constant;
-import com.nature.elt.fund.http.NetHttp;
-import com.nature.elt.common.http.PriceHttp;
+import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.ioc.annotation.Injection;
 import com.nature.elt.common.ioc.annotation.TaskMethod;
 import com.nature.elt.common.mapper.PriceNetMapper;
-import com.nature.elt.common.model.*;
+import com.nature.elt.common.model.PriceNet;
 import com.nature.elt.common.util.ExeUtil;
 import com.nature.elt.common.util.Sorter;
-import com.nature.elt.fund.manager.ScaleManager;
-import com.nature.elt.fund.model.Scale;
+import com.nature.elt.item.http.NetHttp;
+import com.nature.elt.item.http.PriceHttp;
 import com.nature.elt.item.manager.ItemManager;
-import com.nature.elt.item.model.Group;
-import com.nature.elt.item.model.Item;
-import com.nature.elt.index.manager.KlineManager;
-import com.nature.elt.index.model.Kline;
-import com.nature.elt.fund.manager.NetManager;
-import com.nature.elt.fund.model.Net;
+import com.nature.elt.item.manager.KlineManager;
+import com.nature.elt.item.manager.NetManager;
+import com.nature.elt.item.manager.ScaleManager;
+import com.nature.elt.item.model.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;

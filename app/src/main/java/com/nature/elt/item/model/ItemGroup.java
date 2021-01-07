@@ -1,7 +1,5 @@
 package com.nature.elt.item.model;
 
-import com.nature.elt.item.model.Item;
-
 /**
  * 项目分组
  * @author nature

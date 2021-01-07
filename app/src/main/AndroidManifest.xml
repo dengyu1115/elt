@@ -16,33 +16,33 @@
                  android:usesCleartextTraffic="true"
                  android:requestLegacyExternalStorage="true"
                  tools:ignore="AllowBackup">
-        <activity android:name="com.nature.elt.android.activity.MainActivity">
+        <activity android:name="com.nature.elt.common.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.nature.elt.android.activity.TaskListActivity"/>
-        <activity android:name="com.nature.elt.index.activity.KlineListActivity"/>
-        <activity android:name="com.nature.elt.index.activity.KlineActivity"/>
-        <activity android:name="com.nature.elt.index.activity.BuySellListActivity"/>
+        <activity android:name="com.nature.elt.common.activity.TaskListActivity"/>
+        <activity android:name=".item.activity.KlineListActivity"/>
+        <activity android:name=".item.activity.KlineActivity"/>
+        <activity android:name=".item.activity.BuySellListActivity"/>
         <activity android:name="com.nature.elt.item.activity.ItemGroupActivity"/>
-        <activity android:name="com.nature.elt.android.activity.PriceNetListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.PriceNetActivity"/>
-        <activity android:name="com.nature.elt.index.activity.QuotaActivity"/>
-        <activity android:name="com.nature.elt.android.activity.LineActivity"/>
-        <activity android:name="com.nature.elt.fund.activity.FundRateDefActivity"/>
-        <activity android:name="com.nature.elt.fund.activity.FundRateActivity"/>
-        <activity android:name="com.nature.elt.android.activity.ItemQuotaListActivity"/>
-        <activity android:name="com.nature.elt.fund.activity.FundLineActivity"/>
-        <activity android:name="com.nature.elt.fund.activity.ScaleListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.MarkListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.TargetListActivity"/>
+        <activity android:name="com.nature.elt.func.activity.PriceNetListActivity"/>
+        <activity android:name="com.nature.elt.func.activity.PriceNetActivity"/>
+        <activity android:name=".item.activity.QuotaActivity"/>
+        <activity android:name="com.nature.elt.common.activity.LineActivity"/>
+        <activity android:name="com.nature.elt.func.activity.FundRateDefActivity"/>
+        <activity android:name="com.nature.elt.func.activity.FundRateActivity"/>
+        <activity android:name="com.nature.elt.func.activity.ItemQuotaListActivity"/>
+        <activity android:name="com.nature.elt.func.activity.FundLineActivity"/>
+        <activity android:name="com.nature.elt.item.activity.ScaleListActivity"/>
+        <activity android:name="com.nature.elt.func.activity.MarkListActivity"/>
+        <activity android:name="com.nature.elt.func.activity.TargetListActivity"/>
         <activity android:name="com.nature.elt.item.activity.GroupListActivity"/>
-        <activity android:name="com.nature.elt.index.activity.QuotaListActivity"/>
-        <activity android:name="com.nature.elt.android.activity.TaskManageActivity"/>
+        <activity android:name=".item.activity.QuotaListActivity"/>
+        <activity android:name="com.nature.elt.common.activity.TaskManageActivity"/>
         <activity android:name=".item.activity.ItemListActivity"/>
-        <service android:name="com.nature.elt.android.service.TaskService"/>
+        <service android:name=".common.service.TaskService"/>
     </application>
 
 </manifest>

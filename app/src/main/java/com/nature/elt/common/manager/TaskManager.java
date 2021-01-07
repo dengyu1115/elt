@@ -30,7 +30,7 @@ public class TaskManager {
     @Injection
     private TaskRecordMapper taskRecordMapper;
     @Injection
-    private WorkDayManager workDayManager;
+    private WorkdayManager workdayManager;
 
     /**
      * 执行
@@ -66,12 +66,12 @@ public class TaskManager {
      */
     private boolean isExecuteTime(TaskInfo task) {
         Date now = new Date();
-        String today = workDayManager.getToday();
+        String today = workdayManager.getToday();
         Date start = CommonUtil.parseDate(today + " " + task.getStartTime(), Constant.FORMAT_DATETIME);
         Date end = CommonUtil.parseDate(today + " " + task.getEndTime(), Constant.FORMAT_DATETIME);
         String type = task.getType();
-        return (TaskType.IN_WORKDAY.getCode().equals(type) && workDayManager.isTodayWorkDay()
-                || TaskType.AFTER_WORKDAY.getCode().equals(type) && workDayManager.isYesterdayWorkDay())
+        return (TaskType.IN_WORKDAY.getCode().equals(type) && workdayManager.isTodayWorkDay()
+                || TaskType.AFTER_WORKDAY.getCode().equals(type) && workdayManager.isYesterdayWorkDay())
                 && now.after(start) && now.before(end);
     }
 
@@ -105,8 +105,8 @@ public class TaskManager {
     private TaskRecord initRecord(TaskInfo task) {
         TaskRecord record = new TaskRecord();
         record.setCode(task.getCode());
-        record.setDate(workDayManager.getToday());
-        record.setStartTime(workDayManager.getNowTime());
+        record.setDate(workdayManager.getToday());
+        record.setStartTime(workdayManager.getNowTime());
         record.setStatus(ExeStatus.START.getCode());
         return record;
     }
@@ -119,7 +119,7 @@ public class TaskManager {
      */
     private TaskRecord recordEnd(TaskRecord record) {
         record.setStatus(ExeStatus.END.getCode());
-        record.setEndTime(workDayManager.getNowTime());
+        record.setEndTime(workdayManager.getNowTime());
         return record;
     }
 
@@ -131,7 +131,7 @@ public class TaskManager {
      */
     private TaskRecord recordException(TaskRecord record, Exception e) {
         record.setStatus(ExeStatus.EXCEPTION.getCode());
-        record.setEndTime(workDayManager.getNowTime());
+        record.setEndTime(workdayManager.getNowTime());
         record.setException(e.getClass().getName());
         return record;
     }

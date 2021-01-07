@@ -2,15 +2,15 @@ package com.nature.elt.item.activity;
 
 import android.widget.Button;
 import android.widget.EditText;
-import com.nature.elt.android.activity.BaseListActivity;
-import com.nature.elt.android.util.PopUtil;
-import com.nature.elt.android.util.TextUtil;
-import com.nature.elt.android.view.ExcelView;
-import com.nature.elt.android.view.SearchBar;
+import com.nature.elt.common.activity.BaseListActivity;
+import com.nature.elt.common.util.InstanceHolder;
+import com.nature.elt.common.util.PopUtil;
+import com.nature.elt.common.util.Sorter;
+import com.nature.elt.common.util.TextUtil;
+import com.nature.elt.common.view.ExcelView;
+import com.nature.elt.common.view.SearchBar;
 import com.nature.elt.item.manager.ItemManager;
 import com.nature.elt.item.model.Item;
-import com.nature.elt.common.util.InstanceHolder;
-import com.nature.elt.common.util.Sorter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,16 +24,14 @@ import java.util.List;
 public class ItemListActivity extends BaseListActivity<Item> {
 
     private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
-
-    private EditText keyword;
-    private Button loadLatest;
-
     private final List<ExcelView.D<Item>> ds = Arrays.asList(
             new ExcelView.D<>("名称", d -> TextUtil.text(d.getName()), C, S, Sorter.nullsLast(Item::getName)),
             new ExcelView.D<>("CODE", d -> TextUtil.text(d.getCode()), C, C, Sorter.nullsLast(Item::getCode)),
             new ExcelView.D<>("市场", d -> TextUtil.text(d.getMarket()), C, E, Sorter.nullsLast(Item::getMarket)),
             new ExcelView.D<>("类型", d -> TextUtil.text(d.getType()), C, E, Sorter.nullsLast(Item::getType))
     );
+    private EditText keyword;
+    private Button loadLatest;
 
     protected List<Item> listData() {
         return itemManager.listByKeyWord(this.keyword.getText().toString());

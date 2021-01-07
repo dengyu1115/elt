@@ -1,8 +1,8 @@
 package com.nature.elt.item.manager;
 
-import com.nature.elt.android.db.BaseDB;
-import com.nature.elt.item.http.ItemHttp;
+import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.ioc.annotation.Injection;
+import com.nature.elt.item.http.ItemHttp;
 import com.nature.elt.item.mapper.ItemMapper;
 import com.nature.elt.item.model.Item;
 

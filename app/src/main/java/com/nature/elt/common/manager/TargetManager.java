@@ -1,12 +1,12 @@
 package com.nature.elt.common.manager;
 
-import com.nature.elt.index.http.KlineHttp;
 import com.nature.elt.common.ioc.annotation.Injection;
-import com.nature.elt.index.manager.KlineManager;
-import com.nature.elt.index.model.Kline;
 import com.nature.elt.common.model.Mark;
 import com.nature.elt.common.model.Target;
+import com.nature.elt.item.http.KlineHttp;
 import com.nature.elt.item.manager.ItemManager;
+import com.nature.elt.item.manager.KlineManager;
+import com.nature.elt.item.model.Kline;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,7 +31,7 @@ public class TargetManager {
     @Injection
     private KlineManager klineManager;
     @Injection
-    private WorkDayManager workDayManager;
+    private WorkdayManager workdayManager;
     @Injection
     private KlineHttp klineHttp;
 
@@ -73,7 +73,7 @@ public class TargetManager {
     }
 
     private List<Kline> listKline(String date) {
-        return workDayManager.doInTradeTimeOrNot(() -> klineHttp.listLatest(), () -> klineManager.listByDate(date));
+        return workdayManager.doInTradeTimeOrNot(() -> klineHttp.listLatest(), () -> klineManager.listByDate(date));
     }
 
     private Target markToTarget(Map<String, Mark> tradeMap, Kline k, Function<Mark, Double> getRate,
