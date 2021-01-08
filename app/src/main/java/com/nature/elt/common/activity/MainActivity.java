@@ -12,13 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import com.nature.elt.R;
 import com.nature.elt.common.ioc.starter.ComponentStarter;
-import com.nature.elt.common.manager.PriceNetManager;
 import com.nature.elt.common.manager.WorkdayManager;
 import com.nature.elt.common.service.TaskService;
 import com.nature.elt.common.util.*;
 import com.nature.elt.func.activity.*;
+import com.nature.elt.func.manager.PriceNetManager;
 import com.nature.elt.item.activity.*;
-import com.nature.elt.item.manager.*;
+import com.nature.elt.item.manager.KlineManager;
 
 /**
  * 主入口activity
@@ -33,12 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String PERMISSION_WES = "android.permission.WRITE_EXTERNAL_STORAGE";
     private static final String[] PERMISSIONS_STORAGE = {PERMISSION_RES, PERMISSION_WES};
     private final WorkdayManager workDayManager = InstanceHolder.get(WorkdayManager.class);
-    private final ItemManager itemManager = InstanceHolder.get(ItemManager.class);
     private final KlineManager klineManager = InstanceHolder.get(KlineManager.class);
-    private final NetManager netManager = InstanceHolder.get(NetManager.class);
     private final PriceNetManager priceNetManager = InstanceHolder.get(PriceNetManager.class);
-    private final QuotaManager quotaManager = InstanceHolder.get(QuotaManager.class);
-    private final ScaleManager scaleManager = InstanceHolder.get(ScaleManager.class);
 
     private Context context;
     private int count;
@@ -107,12 +103,16 @@ public class MainActivity extends AppCompatActivity {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, PriceNetListActivity.class)));
     }
 
+    public void toItemList(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemListActivity.class)));
+    }
+
     public void toKlineList(View view) {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, KlineListActivity.class)));
     }
 
-    public void toItemList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ItemListActivity.class)));
+    public void toNetList(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, NetListActivity.class)));
     }
 
     public void toBsList(View view) {
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toQuotaList(View view) {
-        ClickUtil.doClick(view, () -> startActivity(new Intent(context, QuotaListActivity.class)));
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, IndexQuotaListActivity.class)));
     }
 
     public void toQuotaView(View view) {
@@ -145,43 +145,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void toDefineFundList(View view) {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, FundRateDefActivity.class)));
-    }
-
-    public void loadLatestKline(View view) {
-        ClickUtil.asyncClick(view, () -> String.format("K线最新加载完成,共%s条", klineManager.loadLatest()));
-    }
-
-    public void loadLatestNet(View view) {
-        ClickUtil.asyncClick(view, () -> String.format("净值最新加载完成,共%s条", netManager.loadLatest()));
-    }
-
-    public void loadLatestQuota(View view) {
-        ClickUtil.asyncClick(view, () -> String.format("指数指标最新加载完成,共%s条", quotaManager.loadLatest()));
-    }
-
-    public void reloadItem(View view) {
-        PopUtil.confirm(context, "项目数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
-                () -> String.format("项目数据加载完成,共%s条", itemManager.reloadAll())));
-    }
-
-    public void reloadKline(View view) {
-        PopUtil.confirm(context, "K线数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
-                () -> String.format("K线历史加载完成,共%s条", klineManager.reloadAll())));
-    }
-
-    public void reloadNet(View view) {
-        PopUtil.confirm(context, "净值数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
-                () -> String.format("净值历史加载完成,共%s条", netManager.reloadAll())));
-    }
-
-    public void reloadQuota(View view) {
-        PopUtil.confirm(context, "指数指标数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
-                () -> String.format("指数指标数据加载完成,共%s条", quotaManager.loadAll())));
-    }
-
-    public void reloadScale(View view) {
-        PopUtil.confirm(context, "规模数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
-                () -> String.format("规模数据加载完成,共%s条", scaleManager.reloadAll())));
     }
 
     public void calculateKlineAverage(View view) {

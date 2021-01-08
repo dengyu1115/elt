@@ -1,4 +1,6 @@
-package com.nature.elt.common.model;
+package com.nature.elt.func.model;
+
+import com.nature.elt.common.model.BaseModel;
 
 /**
  * kline

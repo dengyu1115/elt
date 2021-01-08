@@ -2,10 +2,10 @@ package com.nature.elt.func.activity;
 
 import android.widget.EditText;
 import com.nature.elt.common.activity.BaseListActivity;
-import com.nature.elt.common.manager.TargetManager;
+import com.nature.elt.func.manager.TargetManager;
 import com.nature.elt.common.manager.WorkdayManager;
-import com.nature.elt.common.model.Mark;
-import com.nature.elt.common.model.Target;
+import com.nature.elt.func.model.Mark;
+import com.nature.elt.func.model.Target;
 import com.nature.elt.common.util.CommonUtil;
 import com.nature.elt.common.util.InstanceHolder;
 import com.nature.elt.common.util.TextUtil;

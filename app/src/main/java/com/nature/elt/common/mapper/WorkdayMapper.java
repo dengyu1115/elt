@@ -3,7 +3,7 @@ package com.nature.elt.common.mapper;
 
 import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.db.SqlParam;
-import com.nature.elt.common.model.WorkDay;
+import com.nature.elt.common.model.Workday;
 
 import java.util.List;
 
@@ -77,12 +77,12 @@ public class WorkdayMapper {
 
     /**
      * 保存或者更新工作日数据
-     * @param workDays 数据
+     * @param workdays 数据
      * @return int
      */
-    public int batchMerge(List<WorkDay> workDays) {
+    public int batchMerge(List<Workday> workdays) {
         SqlParam param = SqlParam.build().append("REPLACE INTO work_day (date, type) VALUES")
-                .foreach(workDays, null, null, ",",
+                .foreach(workdays, null, null, ",",
                         (w, p) -> p.append("(?, ?)", w.getDate(), w.getType()));
         return baseDB.executeUpdate(param);
     }

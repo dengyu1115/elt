@@ -1,10 +1,10 @@
-package com.nature.elt.common.mapper;
+package com.nature.elt.func.mapper;
 
 
 import android.database.Cursor;
 import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.db.SqlParam;
-import com.nature.elt.common.model.PriceNet;
+import com.nature.elt.func.model.PriceNet;
 
 import java.util.List;
 import java.util.function.Function;

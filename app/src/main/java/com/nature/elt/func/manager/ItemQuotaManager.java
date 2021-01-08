@@ -1,8 +1,8 @@
-package com.nature.elt.common.manager;
+package com.nature.elt.func.manager;
 
 import com.nature.elt.common.enums.DefaultGroup;
 import com.nature.elt.common.ioc.annotation.Injection;
-import com.nature.elt.common.model.ItemQuota;
+import com.nature.elt.func.model.ItemQuota;
 import com.nature.elt.common.util.CalUtil;
 import com.nature.elt.item.manager.ItemGroupManager;
 import com.nature.elt.item.manager.KlineManager;

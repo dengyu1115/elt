@@ -1,4 +1,4 @@
-package com.nature.elt.common.model;
+package com.nature.elt.func.model;
 
 import com.nature.elt.item.model.Item;
 

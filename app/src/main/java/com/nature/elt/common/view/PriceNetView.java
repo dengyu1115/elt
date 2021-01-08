@@ -5,7 +5,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.view.MotionEvent;
 import android.view.View;
-import com.nature.elt.common.model.PriceNet;
+import com.nature.elt.func.model.PriceNet;
 import com.nature.elt.common.util.TextUtil;
 
 import java.util.*;

@@ -1,12 +1,11 @@
 package com.nature.elt.item.activity;
 
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.EditText;
 import com.nature.elt.common.activity.BaseListActivity;
 import com.nature.elt.common.manager.WorkdayManager;
-import com.nature.elt.common.util.CommonUtil;
-import com.nature.elt.common.util.InstanceHolder;
-import com.nature.elt.common.util.TextUtil;
+import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.ExcelView;
 import com.nature.elt.common.view.SearchBar;
 import com.nature.elt.common.view.Selector;
@@ -42,6 +41,7 @@ public class KlineListActivity extends BaseListActivity<Kline> {
     );
     private Selector<String> selector;
     private EditText editText;
+    private Button reload, loadLatest;
 
     private Consumer<Kline> getConsumer() {
         return d -> {
@@ -66,13 +66,22 @@ public class KlineListActivity extends BaseListActivity<Kline> {
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
-        searchBar.addConditionView(selector = template.selector(100, 30));
-        searchBar.addConditionView(editText = template.editText(100, 30));
+        searchBar.addConditionView(reload = template.button("重新加载", 80, 30));
+        searchBar.addConditionView(loadLatest = template.button("加载最新", 80, 30));
+        searchBar.addConditionView(selector = template.selector(80, 30));
+        searchBar.addConditionView(editText = template.editText(80, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
         selector.mapper(s -> s).init().refreshData(workDayManager.listWorkDays(workDayManager.getLatestWorkDay()));
+        reload.setOnClickListener(v ->
+                PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
+                        () -> ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", klineManager.reloadAll()))
+                )
+        );
+        loadLatest.setOnClickListener(v ->
+                ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", klineManager.loadLatest())));
     }
 
 }

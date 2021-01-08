@@ -1,8 +1,7 @@
 package com.nature.elt.common.ioc.config;
 
 import com.nature.elt.common.manager.*;
-import com.nature.elt.func.manager.FundListDefManager;
-import com.nature.elt.func.manager.FundRateManager;
+import com.nature.elt.func.manager.*;
 import com.nature.elt.item.manager.*;
 
 /**

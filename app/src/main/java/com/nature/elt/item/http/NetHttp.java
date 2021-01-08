@@ -3,7 +3,7 @@ package com.nature.elt.item.http;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nature.elt.common.model.PriceNet;
+import com.nature.elt.func.model.PriceNet;
 import com.nature.elt.common.util.HttpUtil;
 import com.nature.elt.common.util.TextUtil;
 import com.nature.elt.item.model.Net;

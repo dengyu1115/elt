@@ -1,11 +1,11 @@
-package com.nature.elt.common.manager;
+package com.nature.elt.func.manager;
 
 import com.nature.elt.common.constant.Constant;
 import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.ioc.annotation.Injection;
 import com.nature.elt.common.ioc.annotation.TaskMethod;
-import com.nature.elt.common.mapper.PriceNetMapper;
-import com.nature.elt.common.model.PriceNet;
+import com.nature.elt.func.mapper.PriceNetMapper;
+import com.nature.elt.func.model.PriceNet;
 import com.nature.elt.common.util.ExeUtil;
 import com.nature.elt.common.util.Sorter;
 import com.nature.elt.item.http.NetHttp;

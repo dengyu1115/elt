@@ -1,8 +1,9 @@
-package com.nature.elt.common.manager;
+package com.nature.elt.func.manager;
 
 import com.nature.elt.common.ioc.annotation.Injection;
-import com.nature.elt.common.mapper.MarkMapper;
-import com.nature.elt.common.model.Mark;
+import com.nature.elt.common.manager.WorkdayManager;
+import com.nature.elt.func.mapper.MarkMapper;
+import com.nature.elt.func.model.Mark;
 import com.nature.elt.common.util.CommonUtil;
 import com.nature.elt.item.manager.KlineManager;
 import com.nature.elt.item.model.Item;

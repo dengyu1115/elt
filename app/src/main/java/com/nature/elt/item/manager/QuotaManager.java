@@ -5,10 +5,10 @@ import com.nature.elt.common.enums.DefaultQuota;
 import com.nature.elt.common.enums.QuotaField;
 import com.nature.elt.common.ioc.annotation.Injection;
 import com.nature.elt.common.ioc.annotation.TaskMethod;
-import com.nature.elt.common.manager.ItemQuotaManager;
 import com.nature.elt.common.manager.WorkdayManager;
-import com.nature.elt.common.model.ItemQuota;
 import com.nature.elt.common.util.ExeUtil;
+import com.nature.elt.func.manager.ItemQuotaManager;
+import com.nature.elt.func.model.ItemQuota;
 import com.nature.elt.item.http.QuotaHttp;
 import com.nature.elt.item.mapper.QuotaMapper;
 import com.nature.elt.item.model.Item;
@@ -40,7 +40,7 @@ public class QuotaManager {
     @Injection
     private ItemQuotaManager itemQuotaManager;
 
-    public int loadAll() {
+    public int reloadAll() {
         return ExeUtil.exec(quotaMapper::delete, DefaultQuota::codes, this::load);
     }
 

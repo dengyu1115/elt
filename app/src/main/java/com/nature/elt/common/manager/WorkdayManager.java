@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nature.elt.common.ioc.annotation.Injection;
 import com.nature.elt.common.mapper.WorkdayMapper;
-import com.nature.elt.common.model.WorkDay;
+import com.nature.elt.common.model.Workday;
 import com.nature.elt.common.util.Counter;
 import com.nature.elt.common.util.HttpUtil;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -166,8 +166,8 @@ public class WorkdayManager {
      * @param year year
      * @return list
      */
-    private List<WorkDay> getYearWorkDays(String year) {
-        Map<String, WorkDay> workDays = this.initYearDays(year);    // 获取全年工作日
+    private List<Workday> getYearWorkDays(String year) {
+        Map<String, Workday> workDays = this.initYearDays(year);    // 获取全年工作日
         List<String> holidays = this.getHolidaysFromNet(year);      // 获取全年节假日
         List<String> weekends = this.initWeekends(year);            // 获取全年周末
         Set<String> days = new TreeSet<>(holidays);
@@ -175,7 +175,7 @@ public class WorkdayManager {
         return workDays.entrySet().parallelStream().map(entry -> {  // 假日标记
             if (days.contains(entry.getKey())) entry.getValue().setType(TYPE_HOLIDAY);
             return entry.getValue();
-        }).sorted(Comparator.comparing(WorkDay::getDate)).collect(Collectors.toList());
+        }).sorted(Comparator.comparing(Workday::getDate)).collect(Collectors.toList());
     }
 
     /**
@@ -198,13 +198,13 @@ public class WorkdayManager {
      * @param year year
      * @return map
      */
-    private Map<String, WorkDay> initYearDays(String year) {
-        Map<String, WorkDay> workDays = new HashMap<>();
+    private Map<String, Workday> initYearDays(String year) {
+        Map<String, Workday> workDays = new HashMap<>();
         try {
             Date date = DateUtils.parseDate(year, "yyyy");  // 年初第一天
             int i = 0;
             while (true) {
-                WorkDay workDay = new WorkDay();
+                Workday workDay = new Workday();
                 String day = DateFormatUtils.format(DateUtils.addDays(date, i++), FORMAT_DATE);
                 workDay.setDate(day);
                 workDay.setType(TYPE_WORKDAY);

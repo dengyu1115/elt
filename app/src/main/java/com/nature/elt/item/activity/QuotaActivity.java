@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import androidx.appcompat.app.AppCompatActivity;
-import com.nature.elt.common.util.InstanceHolder;
-import com.nature.elt.common.util.ViewTemplate;
-import com.nature.elt.common.util.ViewUtil;
+import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.QuotaView;
 import com.nature.elt.item.manager.QuotaManager;
 import com.nature.elt.item.model.Quota;
@@ -34,6 +32,7 @@ public class QuotaActivity extends AppCompatActivity {
     private int width, height;
     private QuotaView view;
     private LinearLayout page;
+    private ViewTemplate template;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -58,7 +57,7 @@ public class QuotaActivity extends AppCompatActivity {
 
 
     public void makeStructure() {
-        ViewTemplate template = ViewTemplate.build(context);
+        template = ViewTemplate.build(context);
         page = template.linearPage();
         page.setOrientation(LinearLayout.HORIZONTAL);
         page.setGravity(Gravity.CENTER);
@@ -72,11 +71,28 @@ public class QuotaActivity extends AppCompatActivity {
         page.addView(n2);
         page.addView(n1);
         n1.setOrientation(LinearLayout.VERTICAL);
+        n1.addView(this.handleLine());
         n1.addView(this.button("沪深300", "000300"));
         n1.addView(this.button("上证综指", "000001"));
         n1.addView(this.button("深证成指", "399001"));
         n1.addView(this.button("中小板指", "399005"));
         n1.addView(this.button("创业板指", "399006"));
+    }
+
+    private LinearLayout handleLine() {
+        LinearLayout line = template.line((int) (width * 0.2d), (int) (height * 0.1d));
+        Button reload = template.button("重新加载", 80, 30);
+        Button loadLatest = template.button("加载最新", 80, 30);
+        reload.setOnClickListener(v ->
+                PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
+                        () -> ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", quotaManager.reloadAll()))
+                )
+        );
+        loadLatest.setOnClickListener(v ->
+                ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", quotaManager.loadLatest())));
+        line.addView(reload);
+        line.addView(loadLatest);
+        return line;
     }
 
     private LinearLayout line(int weight) {

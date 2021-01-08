@@ -1,4 +1,4 @@
-package com.nature.elt.item.activity;
+package com.nature.elt.func.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import com.nature.elt.common.activity.BaseListActivity;
 import com.nature.elt.common.enums.DefaultQuota;
 import com.nature.elt.common.enums.QuotaField;
-import com.nature.elt.common.model.ItemQuota;
+import com.nature.elt.func.model.ItemQuota;
 import com.nature.elt.common.util.CommonUtil;
 import com.nature.elt.common.util.InstanceHolder;
 import com.nature.elt.common.util.Sorter;
@@ -16,6 +16,7 @@ import com.nature.elt.common.util.TextUtil;
 import com.nature.elt.common.view.ExcelView;
 import com.nature.elt.common.view.SearchBar;
 import com.nature.elt.common.view.Selector;
+import com.nature.elt.item.activity.QuotaActivity;
 import com.nature.elt.item.manager.QuotaManager;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +31,7 @@ import java.util.function.Consumer;
  * @version 1.0.0
  * @since 2020/11/24 19:09
  */
-public class QuotaListActivity extends BaseListActivity<ItemQuota> {
+public class IndexQuotaListActivity extends BaseListActivity<ItemQuota> {
 
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
     private final List<ExcelView.D<ItemQuota>> ds = Arrays.asList(

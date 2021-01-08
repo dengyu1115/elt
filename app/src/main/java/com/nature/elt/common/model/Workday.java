@@ -1,6 +1,6 @@
 package com.nature.elt.common.model;
 
-public class WorkDay extends BaseModel {
+public class Workday extends BaseModel {
 
     private String date;
 

@@ -1,9 +1,8 @@
 package com.nature.elt.item.activity;
 
+import android.widget.Button;
 import com.nature.elt.common.activity.BaseListActivity;
-import com.nature.elt.common.util.CommonUtil;
-import com.nature.elt.common.util.InstanceHolder;
-import com.nature.elt.common.util.TextUtil;
+import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.ExcelView;
 import com.nature.elt.common.view.SearchBar;
 import com.nature.elt.item.manager.ScaleManager;
@@ -32,6 +31,8 @@ public class ScaleListActivity extends BaseListActivity<Scale> {
             new ExcelView.D<>("变动", d -> TextUtil.percent(d.getChange()), C, C, CommonUtil.nullsLast(Scale::getChange))
     );
 
+    private Button reload;
+
     @Override
     protected List<ExcelView.D<Scale>> define() {
         return ds;
@@ -46,10 +47,17 @@ public class ScaleListActivity extends BaseListActivity<Scale> {
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
+        searchBar.addConditionView(reload = template.button("重新加载", 80, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
+        reload.setOnClickListener(v ->
+                PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
+                        () -> ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", scaleManager.reloadAll()))
+                )
+        );
+
     }
 
 }

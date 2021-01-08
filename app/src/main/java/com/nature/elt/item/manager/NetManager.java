@@ -122,7 +122,18 @@ public class NetManager {
         return netMapper.findLast(code, date);
     }
 
-    public List<Net> listByDate(String date) {
-        return netMapper.listByDate(date);
+    public List<Net> listByDate(String date, String keyWord) {
+        List<Net> list = netMapper.listByDate(date);
+        Map<String, String> map = itemManager.list().stream()
+                .collect(Collectors.toMap(Item::getCode, Item::getName, (o, n) -> n));
+        if (keyWord != null && !keyWord.isEmpty()) {
+            list = list.stream().filter(i -> {
+                i.setName(map.get(i.getCode()));
+                return i.getCode().contains(keyWord) || i.getName().contains(keyWord);
+            }).collect(Collectors.toList());
+        } else {
+            for (Net i : list) i.setName(map.get(i.getCode()));
+        }
+        return list;
     }
 }

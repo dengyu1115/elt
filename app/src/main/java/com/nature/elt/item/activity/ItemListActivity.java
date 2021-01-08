@@ -3,10 +3,7 @@ package com.nature.elt.item.activity;
 import android.widget.Button;
 import android.widget.EditText;
 import com.nature.elt.common.activity.BaseListActivity;
-import com.nature.elt.common.util.InstanceHolder;
-import com.nature.elt.common.util.PopUtil;
-import com.nature.elt.common.util.Sorter;
-import com.nature.elt.common.util.TextUtil;
+import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.ExcelView;
 import com.nature.elt.common.view.SearchBar;
 import com.nature.elt.item.manager.ItemManager;
@@ -31,7 +28,7 @@ public class ItemListActivity extends BaseListActivity<Item> {
             new ExcelView.D<>("类型", d -> TextUtil.text(d.getType()), C, E, Sorter.nullsLast(Item::getType))
     );
     private EditText keyword;
-    private Button loadLatest;
+    private Button reload;
 
     protected List<Item> listData() {
         return itemManager.listByKeyWord(this.keyword.getText().toString());
@@ -39,14 +36,17 @@ public class ItemListActivity extends BaseListActivity<Item> {
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
-        searchBar.addConditionView(loadLatest = template.button("加载最新", 80, 30));
+        searchBar.addConditionView(reload = template.button("加载最新", 80, 30));
         searchBar.addConditionView(keyword = template.editText(80, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
-        loadLatest.setOnClickListener(v ->
-                PopUtil.confirm(context, "重新加载项目数据", "确定重新加载吗？", itemManager::reloadAll));
+        reload.setOnClickListener(v ->
+                PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
+                        () -> ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", itemManager.reloadAll()))
+                )
+        );
     }
 
     @Override

@@ -4,11 +4,11 @@ import com.nature.elt.common.constant.Constant;
 import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.ioc.annotation.Injection;
 import com.nature.elt.common.ioc.annotation.TaskMethod;
-import com.nature.elt.common.manager.ItemQuotaManager;
 import com.nature.elt.common.manager.WorkdayManager;
 import com.nature.elt.common.util.CommonUtil;
 import com.nature.elt.common.util.ExeUtil;
 import com.nature.elt.common.util.MaUtil;
+import com.nature.elt.func.manager.ItemQuotaManager;
 import com.nature.elt.item.http.KlineHttp;
 import com.nature.elt.item.mapper.KlineMapper;
 import com.nature.elt.item.model.Item;
@@ -165,12 +165,27 @@ public class KlineManager {
      * 加载k线数据
      * @return int
      */
-    public int doLoad(Item item) {
+    private int doLoad(Item item) {
         String code = item.getCode();
         String market = item.getMarket();
         Kline kline = map.get(code);
         String start = this.getLastDate(kline), end = DateFormatUtils.format(new Date(), Constant.FORMAT_DAY);
-        return this.batchMerge(klineHttp.list(code, market, start, end));
+        List<Kline> list = klineHttp.list(code, market, start, end);
+        return this.mergeAndAverage(item, list);
+    }
+
+    /**
+     * 批量保存并计算平均值
+     * @param item 项目
+     * @param list k线数据
+     * @return int
+     */
+    private int mergeAndAverage(Item item, List<Kline> list) {
+        int merged = this.batchMerge(list);
+        if (merged > 0) {   // 有获取到新数据则同时计算平均值
+            this.average(item);
+        }
+        return merged;
     }
 
     private String getLastDate(Kline kline) {
@@ -185,7 +200,7 @@ public class KlineManager {
     public int reload(Item item) {
         String start = "", end = DateFormatUtils.format(new Date(), Constant.FORMAT_DAY);
         List<Kline> list = klineHttp.list(item.getCode(), item.getMarket(), start, end);
-        return this.batchMerge(list);
+        return this.mergeAndAverage(item, list);
     }
 
     /**

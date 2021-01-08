@@ -1,9 +1,9 @@
-package com.nature.elt.common.mapper;
+package com.nature.elt.func.mapper;
 
 import android.database.Cursor;
 import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.db.SqlParam;
-import com.nature.elt.common.model.Mark;
+import com.nature.elt.func.model.Mark;
 
 import java.util.List;
 import java.util.function.Function;
