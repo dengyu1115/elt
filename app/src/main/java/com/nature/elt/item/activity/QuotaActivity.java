@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import androidx.appcompat.app.AppCompatActivity;
+import com.nature.elt.common.enums.DefaultQuota;
 import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.QuotaView;
 import com.nature.elt.item.manager.QuotaManager;
@@ -72,11 +73,11 @@ public class QuotaActivity extends AppCompatActivity {
         page.addView(n1);
         n1.setOrientation(LinearLayout.VERTICAL);
         n1.addView(this.handleLine());
-        n1.addView(this.button("沪深300", "000300"));
-        n1.addView(this.button("上证综指", "000001"));
-        n1.addView(this.button("深证成指", "399001"));
-        n1.addView(this.button("中小板指", "399005"));
-        n1.addView(this.button("创业板指", "399006"));
+        n1.addView(this.button(DefaultQuota.HS));
+        n1.addView(this.button(DefaultQuota.SZ));
+        n1.addView(this.button(DefaultQuota.SC));
+        n1.addView(this.button(DefaultQuota.ZXB));
+        n1.addView(this.button(DefaultQuota.CYB));
     }
 
     private LinearLayout handleLine() {
@@ -104,14 +105,14 @@ public class QuotaActivity extends AppCompatActivity {
         return line;
     }
 
-    private Button button(String name, String code) {
+    private Button button(DefaultQuota quota) {
         Button button = new Button(context);
-        button.setText(name);
+        button.setText(quota.getName());
         LayoutParams param = new LayoutParams((int) (width * 0.2d), (int) (height * 0.1d));
         button.setLayoutParams(param);
         button.setPadding(10, 10, 10, 10);
         button.setGravity(Gravity.CENTER);
-        button.setOnClickListener(v -> view.data(this.refreshData(code)));
+        button.setOnClickListener(v -> view.data(this.refreshData(quota.getCode())));
         return button;
     }
 
