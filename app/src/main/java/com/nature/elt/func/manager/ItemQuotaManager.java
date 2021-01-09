@@ -2,8 +2,8 @@ package com.nature.elt.func.manager;
 
 import com.nature.elt.common.enums.DefaultGroup;
 import com.nature.elt.common.ioc.annotation.Injection;
-import com.nature.elt.func.model.ItemQuota;
 import com.nature.elt.common.util.CalUtil;
+import com.nature.elt.func.model.ItemQuota;
 import com.nature.elt.item.manager.ItemGroupManager;
 import com.nature.elt.item.manager.KlineManager;
 import com.nature.elt.item.manager.NetManager;
@@ -13,6 +13,7 @@ import com.nature.elt.item.model.Kline;
 import com.nature.elt.item.model.Net;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -48,7 +49,7 @@ public class ItemQuotaManager {
                     () -> klineManager.findLast(i.getCode(), i.getMarket(), dateStart),
                     Kline::getLatest,
                     Kline::getLow,
-                    Kline::getHigh)).filter(Objects::nonNull).collect(Collectors.toList());
+                    Kline::getHigh)).filter(Objects::nonNull).sorted(this.comparator()).collect(Collectors.toList());
         } else {
             return list.parallelStream().map(i -> this.calculate(
                     i,
@@ -58,8 +59,24 @@ public class ItemQuotaManager {
                     () -> netManager.findLast(i.getCode(), dateStart),
                     Net::getNetTotal,
                     Net::getNetTotal,
-                    Net::getNetTotal)).filter(Objects::nonNull).collect(Collectors.toList());
+                    Net::getNetTotal)).filter(Objects::nonNull).sorted(this.comparator()).collect(Collectors.toList());
         }
+    }
+
+    private Comparator<? super ItemQuota> comparator() {
+        return (o1, o2) -> {
+            double hl1 = o1.getRateHL();
+            double hl2 = o2.getRateHL();
+            double lh1 = o1.getRateLH();
+            double lh2 = o2.getRateLH();
+            if (hl2 == 0) {
+                return 1;
+            }
+            if (hl1 == 0) {
+                return -1;
+            }
+            return Double.compare(lh1 / hl1, lh2 / hl2);
+        };
     }
 
     public <T> ItemQuota calculate(Item item, String dateStart, Function<T, String> getDate,

@@ -30,14 +30,15 @@ public class ExcelView<T> extends BasicView {
     private final int columns;
     private List<D<T>> ds;
     private List<T> list = new ArrayList<>();
-    private float colWidth, widthRate = 1f;
-    private LayoutParams param = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
-    private List<HorizontalScrollView> horizontalScrollViews = new ArrayList<>();
-    private AtomicInteger sc = new AtomicInteger(-1);
-    private AtomicBoolean canceled = new AtomicBoolean();
-    private AtomicBoolean running = new AtomicBoolean();
-    private Adapter adapter = new Adapter();
-    private Handler handler = new Handler(msg -> {
+    private float colWidth;
+    private final float widthRate;
+    private final LayoutParams param = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+    private final List<HorizontalScrollView> horizontalScrollViews = new ArrayList<>();
+    private final AtomicInteger sc = new AtomicInteger(-1);
+    private final AtomicBoolean canceled = new AtomicBoolean();
+    private final AtomicBoolean running = new AtomicBoolean();
+    private final Adapter adapter = new Adapter();
+    private final Handler handler = new Handler(msg -> {
         adapter.notifyDataSetChanged();
         return false;
     });
@@ -49,7 +50,7 @@ public class ExcelView<T> extends BasicView {
     private int sortCol;
     private boolean sortClicked;
     private float clickX, clickY;
-    private OnScrollChangeListener scrollChangeListener = (v, x, y, ox, oy) -> this.scrollAll(this.scrollX = x);
+    private final OnScrollChangeListener scrollChangeListener = (v, x, y, ox, oy) -> this.scrollAll(this.scrollX = x);
 
     public ExcelView(Context context) {
         this(context, 3);
