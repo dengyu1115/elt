@@ -24,7 +24,9 @@ public class SearchBar extends BasicView {
 
     private void makeStructure() {
         conditions = part(1);
+        conditions.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         handles = part(5);
+        handles.setGravity(Gravity.CENTER);
         this.addView(conditions);
         this.addView(handles);
     }
@@ -42,7 +44,6 @@ public class SearchBar extends BasicView {
         LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         params.weight = weight;
         layout.setLayoutParams(params);
-        layout.setGravity(Gravity.CENTER);
         return layout;
     }
 

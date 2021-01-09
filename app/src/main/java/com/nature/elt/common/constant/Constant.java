@@ -2,6 +2,8 @@ package com.nature.elt.common.constant;
 
 public interface Constant {
 
+    String FORMAT_YEAR = "yyyy";
+
     String FORMAT_DAY = "yyyyMMdd";
 
     String FORMAT_DATE = "yyyy-MM-dd";

@@ -2,15 +2,20 @@ package com.nature.elt.common.activity;
 
 import android.annotation.SuppressLint;
 import android.widget.Button;
+import com.nature.elt.common.constant.Constant;
 import com.nature.elt.common.enums.DateType;
 import com.nature.elt.common.manager.WorkdayManager;
 import com.nature.elt.common.model.Month;
 import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.ExcelView;
 import com.nature.elt.common.view.SearchBar;
+import com.nature.elt.common.view.Selector;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,7 +28,8 @@ import java.util.List;
 public class WorkdayActivity extends BaseListActivity<Month> {
 
     private final WorkdayManager workDayManager = InstanceHolder.get(WorkdayManager.class);
-    private Button year, reload, loadLatest;
+    private Button reload, loadLatest;
+    private Selector<String> year;
 
     @Override
     protected List<ExcelView.D<Month>> define() {
@@ -44,7 +50,7 @@ public class WorkdayActivity extends BaseListActivity<Month> {
 
     @Override
     protected List<Month> listData() {
-        String date = this.year.getText().toString();
+        String date = this.year.getValue();
         if (StringUtils.isBlank(date)) return new ArrayList<>();
         return workDayManager.listYearMonths(date.substring(0, 4));
     }
@@ -52,34 +58,44 @@ public class WorkdayActivity extends BaseListActivity<Month> {
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
-        searchBar.addConditionView(reload = template.button("重新加载", 100, 30));
-        searchBar.addConditionView(loadLatest = template.button("加载最新", 100, 30));
-        searchBar.addConditionView(year = template.button(100, 30));
+        searchBar.addConditionView(reload = template.button("重新加载", 60, 30));
+        searchBar.addConditionView(loadLatest = template.button("加载最新", 60, 30));
+        searchBar.addConditionView(year = template.selector(100, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
-        year.setOnClickListener(v -> template.datePiker(year));
+        year.mapper(i -> i).init().refreshData(this.initYears());
         reload.setOnClickListener(v ->
                 PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
                         () -> {
-                            String date = this.year.getText().toString();
-                            if (StringUtils.isBlank(date)) {
+                            String year = this.year.getValue();
+                            if (StringUtils.isBlank(year)) {
                                 throw new RuntimeException("请选择年份");
                             }
                             ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条",
-                                    workDayManager.reloadAll(date.substring(0, 4))));
+                                    workDayManager.reloadAll(year)));
                         }
                 )
         );
         loadLatest.setOnClickListener(v ->
                 ClickUtil.asyncClick(v, () -> {
-                    String date = this.year.getText().toString();
-                    if (StringUtils.isBlank(date)) {
+                    String year = this.year.getValue();
+                    if (StringUtils.isBlank(year)) {
                         throw new RuntimeException("请选择年份");
                     }
-                    return String.format("加载完成,共%s条", workDayManager.loadLatest(date.substring(0, 4)));
+                    return String.format("加载完成,共%s条", workDayManager.loadLatest(year));
                 }));
+    }
+
+    private List<String> initYears() {
+        List<String> years = new ArrayList<>();
+        Date now = new Date();
+        for (int i = -10; i < 2; i++) {
+            Date date = DateUtils.addYears(now, i);
+            years.add(DateFormatUtils.format(date, Constant.FORMAT_YEAR));
+        }
+        return years;
     }
 
 }
