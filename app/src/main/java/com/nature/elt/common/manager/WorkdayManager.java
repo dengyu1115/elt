@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nature.elt.common.ioc.annotation.Injection;
 import com.nature.elt.common.mapper.WorkdayMapper;
+import com.nature.elt.common.model.Month;
 import com.nature.elt.common.model.Workday;
-import com.nature.elt.common.util.Counter;
 import com.nature.elt.common.util.HttpUtil;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -16,7 +16,6 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * work day manager
@@ -129,18 +128,16 @@ public class WorkdayManager {
         return workdayMapper.getPreWorkDay(date);
     }
 
-    /**
-     * 初始化工作日
-     */
-    public int initWorkdays() {
-        Counter counter = new Counter();
-        IntStream.range(YEAR_START, YEAR_END).parallel().forEach(i -> {
-            String year = String.format("20%02d", i);
-            int exists = workdayMapper.count(year);
-            if (exists > 0) counter.count(exists);
-            else counter.count(workdayMapper.batchMerge(this.getYearWorkDays(year)));
-        });
-        return counter.get();
+    public int reloadAll(String year) {
+        return workdayMapper.batchMerge(this.getYearWorkDays(year));
+    }
+
+    public int loadLatest(String year) {
+        int exists = workdayMapper.count(year);
+        if (exists > 0) {
+            return exists;
+        }
+        return workdayMapper.batchMerge(this.getYearWorkDays(year));
     }
 
     /**
@@ -282,4 +279,24 @@ public class WorkdayManager {
         String yesterday = this.getYesterday();
         return yesterday.equals(workdayMapper.getLatestWorkDay(yesterday));
     }
+
+    public List<Month> listYearMonths(String year) {
+        List<Workday> workdays = workdayMapper.listByYear(year);
+        Map<String, List<Workday>> map = workdays.stream()
+                .collect(Collectors.groupingBy(i -> i.getDate().substring(0, 7)));
+        List<Month> results = new ArrayList<>();
+        map.keySet().stream().sorted().forEach(i -> {
+            List<Workday> list = map.get(i);
+            if (list != null) {
+                Month month = new Month();
+                month.setMonth(i);
+                for (Workday w : list) {
+                    month.setDateType(w.getDate(), w.getType());
+                }
+                results.add(month);
+            }
+        });
+        return results;
+    }
+
 }

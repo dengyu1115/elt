@@ -43,6 +43,7 @@
         <activity android:name=".item.activity.GroupListActivity"/>
         <activity android:name=".item.activity.ItemListActivity"/>
         <activity android:name=".item.activity.NetListActivity"/>
+        <activity android:name=".common.activity.WorkdayActivity"/>
         <service android:name=".common.service.TaskService"/>
     </application>
 

@@ -1,11 +1,13 @@
 package com.nature.elt.common.mapper;
 
 
+import android.database.Cursor;
 import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.db.SqlParam;
 import com.nature.elt.common.model.Workday;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * 工作日
@@ -25,6 +27,13 @@ public class WorkdayMapper {
             ")";
 
     private final BaseDB baseDB = BaseDB.create();
+
+    private final Function<Cursor, Workday> mapper = c -> {
+        Workday d = new Workday();
+        d.setDate(BaseDB.getString(c, "date"));
+        d.setType(BaseDB.getString(c, "type"));
+        return d;
+    };
 
     public WorkdayMapper() {
         baseDB.executeSql(SQL_TABLE);
@@ -107,6 +116,17 @@ public class WorkdayMapper {
         SqlParam param = SqlParam.build().append("select count(1) from work_day")
                 .append("where date like ?", year.concat("%"));
         return baseDB.find(param, c -> c.getInt(0));
+    }
+
+    /**
+     * 按年份查询
+     * @param year year
+     * @return list
+     */
+    public List<Workday> listByYear(String year) {
+        SqlParam param = SqlParam.build().append("select date, type from work_day")
+                .append("where date like ?", year.concat("%"));
+        return baseDB.list(param, mapper);
     }
 
     /**

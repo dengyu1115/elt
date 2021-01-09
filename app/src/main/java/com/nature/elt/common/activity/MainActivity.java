@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         this.context = MainActivity.this;
     }
 
-    public void initWorkdays(View view) {
-        ClickUtil.asyncClick(view, () -> "工作日数据初始化完成:" + workDayManager.initWorkdays());
+    public void toWorkday(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, WorkdayActivity.class)));
     }
 
     public void testNotification(View view) {
