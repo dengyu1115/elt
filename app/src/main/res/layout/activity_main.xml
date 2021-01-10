@@ -135,16 +135,6 @@
             <Button android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:onClick="toDefineFundList"
-                    android:text="基金页面定义"/>
-            <Button android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:onClick="toMarkManage"
-                    android:text="标记数据编辑"/>
-            <Button android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
                     android:onClick="toTaskManage"
                     android:text="任务管理"/>
         </LinearLayout>
@@ -155,18 +145,13 @@
             <Button android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:onClick="calculateKlineAverage"
-                    android:text="K线均值计算"/>
+                    android:onClick="toDefineFundList"
+                    android:text="基金页面定义"/>
             <Button android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:onClick="calculatePriceNet"
-                    android:text="价值净值计算"/>
-            <Button android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:onClick="recalculatePriceNet"
-                    android:text="价值净值重算"/>
+                    android:onClick="toMarkManage"
+                    android:text="标记数据编辑"/>
         </LinearLayout>
     </LinearLayout>
 

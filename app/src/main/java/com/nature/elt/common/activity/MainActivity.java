@@ -12,13 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import com.nature.elt.R;
 import com.nature.elt.common.ioc.starter.ComponentStarter;
-import com.nature.elt.common.manager.WorkdayManager;
 import com.nature.elt.common.service.TaskService;
-import com.nature.elt.common.util.*;
+import com.nature.elt.common.util.ClickUtil;
+import com.nature.elt.common.util.NotifyUtil;
+import com.nature.elt.common.util.ViewUtil;
 import com.nature.elt.func.activity.*;
-import com.nature.elt.func.manager.PriceNetManager;
 import com.nature.elt.item.activity.*;
-import com.nature.elt.item.manager.KlineManager;
 
 /**
  * 主入口activity
@@ -32,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String PERMISSION_RES = "android.permission.READ_EXTERNAL_STORAGE";
     private static final String PERMISSION_WES = "android.permission.WRITE_EXTERNAL_STORAGE";
     private static final String[] PERMISSIONS_STORAGE = {PERMISSION_RES, PERMISSION_WES};
-    private final WorkdayManager workDayManager = InstanceHolder.get(WorkdayManager.class);
-    private final KlineManager klineManager = InstanceHolder.get(KlineManager.class);
-    private final PriceNetManager priceNetManager = InstanceHolder.get(PriceNetManager.class);
 
     private Context context;
     private int count;
@@ -145,19 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void toDefineFundList(View view) {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, FundRateDefActivity.class)));
-    }
-
-    public void calculateKlineAverage(View view) {
-        ClickUtil.asyncClick(view, () -> String.format("K线均值计算完成,共%s条", klineManager.averageAll()));
-    }
-
-    public void recalculatePriceNet(View view) {
-        PopUtil.confirm(context, "价值净值数据全部重载", "确定执行吗？", () -> ClickUtil.asyncClick(view,
-                () -> String.format("价值净值历史计算完成,共%s条", priceNetManager.recalculate())));
-    }
-
-    public void calculatePriceNet(View view) {
-        ClickUtil.asyncClick(view, () -> String.format("价值净值历史计算完成,共%s条", priceNetManager.calculate()));
     }
 
     public void switchMain(View view) {

@@ -2,20 +2,18 @@ package com.nature.elt.func.activity;
 
 import android.content.Intent;
 import android.view.Gravity;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import com.nature.elt.common.activity.BaseListActivity;
 import com.nature.elt.common.enums.DefaultGroup;
-import com.nature.elt.func.manager.PriceNetManager;
 import com.nature.elt.common.manager.WorkdayManager;
-import com.nature.elt.func.model.PriceNet;
-import com.nature.elt.common.util.InstanceHolder;
-import com.nature.elt.common.util.PopUtil;
-import com.nature.elt.common.util.Sorter;
-import com.nature.elt.common.util.TextUtil;
+import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.ExcelView;
 import com.nature.elt.common.view.SearchBar;
 import com.nature.elt.common.view.Selector;
+import com.nature.elt.func.manager.PriceNetManager;
+import com.nature.elt.func.model.PriceNet;
 import com.nature.elt.item.activity.KlineActivity;
 import com.nature.elt.item.manager.GroupManager;
 import com.nature.elt.item.manager.ItemManager;
@@ -44,6 +42,7 @@ public class PriceNetListActivity extends BaseListActivity<PriceNet> {
     private Selector<Group> groupSel;
     private EditText editText;
     private LinearLayout window;
+    private Button reload, loadLatest;
     private Map<String, String> codeToMarket;
 
     private final List<ExcelView.D<PriceNet>> ds = Arrays.asList(
@@ -87,15 +86,24 @@ public class PriceNetListActivity extends BaseListActivity<PriceNet> {
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
-        searchBar.addConditionView(groupSel = template.selector(100, 30));
-        searchBar.addConditionView(selector = template.selector(100, 30));
-        searchBar.addConditionView(editText = template.editText(100, 30));
+        searchBar.addConditionView(reload = template.button("重算", 40, 30));
+        searchBar.addConditionView(loadLatest = template.button("计算", 40, 30));
+        searchBar.addConditionView(groupSel = template.selector(80, 30));
+        searchBar.addConditionView(selector = template.selector(80, 30));
+        searchBar.addConditionView(editText = template.editText(80, 30));
     }
 
     @Override
     protected void initHeaderBehaviours() {
         selector.mapper(s -> s).init().refreshData(workDayManager.listWorkDays(workDayManager.getLatestWorkDay()));
         groupSel.mapper(Group::getName).init().refreshData(this.getGroups());
+        reload.setOnClickListener(v ->
+                PopUtil.confirm(context, "重新计算全部", "确定重新计算吗？",
+                        () -> ClickUtil.asyncClick(v, () -> String.format("计算完成,共%s条", priceNetManager.recalculate()))
+                )
+        );
+        loadLatest.setOnClickListener(v ->
+                ClickUtil.asyncClick(v, () -> String.format("计算完成,共%s条", priceNetManager.calculate())));
     }
 
     private void showDetail(PriceNet priceNet) {
