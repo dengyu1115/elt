@@ -111,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, NetListActivity.class)));
     }
 
+    public void toScaleList(View view) {
+        ClickUtil.doClick(view, () -> startActivity(new Intent(context, ScaleListActivity.class)));
+    }
+
     public void toBsList(View view) {
         ClickUtil.doClick(view, () -> startActivity(new Intent(context, BuySellListActivity.class)));
     }

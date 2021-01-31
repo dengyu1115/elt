@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.nature.elt.common.db.BaseDB;
 import com.nature.elt.common.db.SqlParam;
 import com.nature.elt.item.model.Scale;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.function.Function;
@@ -32,6 +33,7 @@ public class ScaleMapper {
     private final Function<Cursor, Scale> mapper = c -> {
         Scale i = new Scale();
         i.setCode(BaseDB.getString(c, "code"));
+        i.setName(BaseDB.getString(c, "name"));
         i.setDate(BaseDB.getString(c, "date"));
         i.setAmount(BaseDB.getDouble(c, "amount"));
         i.setChange(BaseDB.getDouble(c, "change"));
@@ -59,6 +61,17 @@ public class ScaleMapper {
 
     public List<Scale> listByCode(String code) {
         SqlParam param = SqlParam.build().append("select code, date, amount, change from scale where code = ?", code);
+        return baseDB.list(param, mapper);
+    }
+
+    public List<Scale> listLatest(String keyword) {
+        SqlParam param = SqlParam.build().append("select t1.*,t2.name from (" +
+                "select code,max(date) date from scale group by code) t0 " +
+                "join scale t1 on t0.code = t1.code and t0.date = t1.date " +
+                "left join item t2 on t1.code = t2.code");
+        if (StringUtils.isNotBlank(keyword)) {
+            param.append("where t1.code like ?||'%' or t2.name like ?||'%'", keyword, keyword);
+        }
         return baseDB.list(param, mapper);
     }
 }

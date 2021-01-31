@@ -87,6 +87,11 @@
             <Button android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:gravity="center"
+                    android:onClick="toScaleList"
+                    android:text="规模列表"/>
+            <Button android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
                     android:onClick="toQuotaView"
                     android:text="大盘指标图表"/>
         </LinearLayout>

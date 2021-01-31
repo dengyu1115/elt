@@ -74,11 +74,18 @@ public class NetListActivity extends BaseListActivity<Net> {
         selector.mapper(s -> s).init().refreshData(workDayManager.listWorkDays(workDayManager.getLatestWorkDay()));
         reload.setOnClickListener(v ->
                 PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
-                        () -> ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", netManager.reloadAll()))
+                        () -> {
+                            ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", netManager.reloadAll()));
+                            this.refreshData();
+                        }
                 )
         );
         loadLatest.setOnClickListener(v ->
-                ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", netManager.loadLatest())));
+                ClickUtil.asyncClick(v, () -> {
+                    String s = String.format("加载完成,共%s条", netManager.loadLatest());
+                    this.refreshData();
+                    return s;
+                }));
     }
 
 }

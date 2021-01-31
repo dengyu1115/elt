@@ -44,7 +44,11 @@ public class ItemListActivity extends BaseListActivity<Item> {
     protected void initHeaderBehaviours() {
         reload.setOnClickListener(v ->
                 PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
-                        () -> ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", itemManager.reloadAll()))
+                        () -> ClickUtil.asyncClick(v, () -> {
+                            String s = String.format("加载完成,共%s条", itemManager.reloadAll());
+                            this.refreshData();
+                            return s;
+                        })
                 )
         );
     }

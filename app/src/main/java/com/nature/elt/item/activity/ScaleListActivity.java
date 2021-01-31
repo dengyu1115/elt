@@ -1,6 +1,7 @@
 package com.nature.elt.item.activity;
 
 import android.widget.Button;
+import android.widget.EditText;
 import com.nature.elt.common.activity.BaseListActivity;
 import com.nature.elt.common.util.*;
 import com.nature.elt.common.view.ExcelView;
@@ -23,12 +24,14 @@ public class ScaleListActivity extends BaseListActivity<Scale> {
 
     private String name;
 
+    private EditText keyword;
+
     private final List<ExcelView.D<Scale>> ds = Arrays.asList(
-            new ExcelView.D<>("name", d -> TextUtil.text(name), C, S),
+            new ExcelView.D<>("name", d -> TextUtil.text(name == null ? d.getName() : name), C, S),
             new ExcelView.D<>("code", d -> TextUtil.text(d.getCode()), C, S, CommonUtil.nullsLast(Scale::getCode)),
             new ExcelView.D<>("日期", d -> TextUtil.text(d.getDate()), C, C, CommonUtil.nullsLast(Scale::getDate)),
-            new ExcelView.D<>("金额", d -> TextUtil.amount(d.getAmount()), C, C, CommonUtil.nullsLast(Scale::getAmount)),
-            new ExcelView.D<>("变动", d -> TextUtil.percent(d.getChange()), C, C, CommonUtil.nullsLast(Scale::getChange))
+            new ExcelView.D<>("金额", d -> TextUtil.amount(d.getAmount()), C, E, CommonUtil.nullsLast(Scale::getAmount)),
+            new ExcelView.D<>("变动", d -> TextUtil.percent(d.getChange()), C, E, CommonUtil.nullsLast(Scale::getChange))
     );
 
     private Button reload;
@@ -42,22 +45,31 @@ public class ScaleListActivity extends BaseListActivity<Scale> {
     protected List<Scale> listData() {
         String code = this.getIntent().getStringExtra("code");
         name = this.getIntent().getStringExtra("name");
+        if (code == null) {
+            return scaleManager.listLatest(keyword.getText().toString());
+        }
         return scaleManager.listByCode(code);
     }
 
     @Override
     protected void initHeaderViews(SearchBar searchBar) {
         searchBar.addConditionView(reload = template.button("重新加载", 80, 30));
+        String code = this.getIntent().getStringExtra("code");
+        if (code == null) {
+            searchBar.addConditionView(keyword = template.editText(80, 30));
+        }
     }
 
     @Override
     protected void initHeaderBehaviours() {
         reload.setOnClickListener(v ->
                 PopUtil.confirm(context, "重新加载数据", "确定重新加载吗？",
-                        () -> ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", scaleManager.reloadAll()))
+                        () -> {
+                            ClickUtil.asyncClick(v, () -> String.format("加载完成,共%s条", scaleManager.reloadAll()));
+                            this.refreshData();
+                        }
                 )
         );
-
     }
 
 }

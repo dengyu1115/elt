@@ -42,6 +42,10 @@ public class ScaleManager {
         return scaleMapper.listLast(date);
     }
 
+    public List<Scale> listLatest(String keyword) {
+        return scaleMapper.listLatest(keyword);
+    }
+
     public List<Scale> listByCode(String code) {
         return scaleMapper.listByCode(code);
     }

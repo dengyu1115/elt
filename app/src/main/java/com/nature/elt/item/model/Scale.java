@@ -14,6 +14,10 @@ public class Scale extends BaseModel {
      */
     private String code;
     /**
+     * 名称
+     */
+    private String name;
+    /**
      * 日期
      */
     private String date;
@@ -32,6 +36,14 @@ public class Scale extends BaseModel {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDate() {
